@@ -101,4 +101,30 @@ bool Login::match(char inputted[], char sN[]) {
 	return true;
 }
 
+int Login::passWord(char filename[]) {
+	ifstream in;
+	in.open(filename);
+	if (!in.is_open()) {
+		cout << "Sorry, our service encountered an error, please retry!" << endl;
+		return 0;
+	}
 
+	char* pW = new char[50];
+	for (int i = 0; i < stt; ++i) {
+		//ignore stt-1 rows of record
+		//in.get(c, 50, '\n');
+		in.ignore(50, '\n');
+	}
+	in.get(pW, 50, '\n');
+	//pW[strlen(pW)] = '\0';
+	if (match(password, pW)) {
+		in.close();
+		return 1;
+	}
+	delete[]pW;
+	cout << "Wrong password, please check your typing" << endl;
+	type = 1;
+	stt = -1;
+	in.close();
+	return 2;
+}
