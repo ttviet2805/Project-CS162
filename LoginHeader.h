@@ -3,9 +3,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include"Utils.h"
-#include"Const.h"
-#include"ViewInfo.h"
+
 using namespace std;
 class Login {
 private:
