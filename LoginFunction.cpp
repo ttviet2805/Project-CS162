@@ -191,3 +191,18 @@ void Login::login() {
 	}
 
 }
+
+void Login::deLogin() {
+
+	delete[]password;
+	stt = -1;
+	type = 1;
+}
+Login::Login() {
+	password = new char[50];
+	stt = -1;
+	type = 1;
+}
+Login::~Login() {
+	deLogin();
+}
