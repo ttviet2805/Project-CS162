@@ -128,3 +128,36 @@ int Login::passWord(char filename[]) {
 	in.close();
 	return 2;
 }
+
+int Login::foundUsername(char filename[]) {
+	ifstream in;
+	in.open(filename);
+	if (!in.is_open()) {
+		cout << "Sorry, our service encountered an error, please retry!" << endl;
+		return 0;
+	}
+	char* sN = new char[50];
+	int id = -1;
+	while (!in.eof()) {
+		in.get(sN, 50, '\n');
+		in.ignore(1, '\n');
+		if (sN[0] == '-')++type;
+		//sN[strlen(sN)] = '\0';
+		++stt;
+		//sN loaded, now check if this sN matches the inputted one:
+		if (match(username, sN)) {
+			in.close();
+			return 1;
+		}
+		delete[]sN;
+		sN = new char[50];
+		id = -1;
+	}
+	cout << "User non-existed, please check your typing" << endl;
+
+	type = 1;
+	stt = -1;
+
+	in.close();
+	return 2;
+}
