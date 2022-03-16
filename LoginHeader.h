@@ -1,0 +1,6 @@
+#ifndef LOGINHEADER_H_INCLUDED
+#define LOGINHEADER_H_INCLUDED
+
+void Login();
+
+#endif // LOGINHEADER_H_INCLUDED
