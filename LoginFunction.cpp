@@ -93,4 +93,12 @@ int Login::changePasswordInit(char filename[]) {
 	return 1;
 }
 
+bool Login::match(char inputted[], char sN[]) {
+	if (strlen(inputted) != strlen(sN))return false;
+	for (int i = 0; i < strlen(inputted); ++i) {
+		if (inputted[i] != sN[i])return false;
+	}
+	return true;
+}
+
 
