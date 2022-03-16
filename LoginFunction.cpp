@@ -161,3 +161,33 @@ int Login::foundUsername(char filename[]) {
 	in.close();
 	return 2;
 }
+
+void Login::login() {
+	char filenameUsername[50], filenamePassword[50];
+	do {
+		cout << "Username: ";
+		cin.get(username, 50, '\n');
+		if (username[0] >= '1' && username[0] <= '9') {
+			strcpy_s(filenameUsername, Const::usernameStudent);
+			strcpy_s(filenamePassword, Const::passwordStudent);
+			type = 0;
+		}
+		else {
+			strcpy_s(filenameUsername, Const::usernameSL);
+			strcpy_s(filenamePassword, Const::passwordSL);
+			type = 1;//redundant?
+		}
+		cout << "Password: ";
+		cin.ignore(50, '\n');
+		cin.get(password, 50, '\n');
+		cin.ignore(50, '\n');
+
+		if (username[0] != ' ' && password[0] != ' ' && foundUsername(filenameUsername) == 1 && passWord(filenamePassword) == 1)break;
+	} while (1);
+	cout << "Login successfully!" << endl;
+	if (strlen(password) == 1 && password[0] == defaultPass) {
+		cout << "Please change your password" << endl;
+		changePasswordInit(filenamePassword);
+	}
+
+}
