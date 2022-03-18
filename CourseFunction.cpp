@@ -1,19 +1,10 @@
-#include "CourseHeader.h"
 #include <iostream>
 #include <fstream>
 
+#include "DateHeader.h"
+#include "CourseHeader.h"
+
 using namespace std;
-
-void Date::OutputDate()
-{
-    cout << Day << " " << Month << " " << Year << '\n';
-}
-
-void Date::InputDate()
-{
-    cout << "(DD MM YYYY) ";
-    cin >> Day >> Month >> Year;
-}
 
 void Course::CourseInfo()
 {

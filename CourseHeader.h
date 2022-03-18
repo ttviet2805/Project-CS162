@@ -1,15 +1,6 @@
 #ifndef COURSEHEADER_H_INCLUDED
 #define COURSEHEADER_H_INCLUDED
 
-class Date
-{
-public:
-    int Day, Month, Year;
-
-    void OutputDate();
-    void InputDate();
-};
-
 class Course {
 	public:
         char CourseName[50], CourseID[50], LecturerName[50];
