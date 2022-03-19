@@ -1,4 +1,4 @@
-#include"Login_Password.h"
+#include"LoginHeader.h"
 
 void Login::logout() {
 	deLogin();
