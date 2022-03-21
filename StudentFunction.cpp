@@ -31,3 +31,72 @@ void LoadLastStudentData(Student *&Head, string Filename)
     delete (pD);
     fi.close();
 }
+
+void Student::EnrollACourse(Course NewCourse) {
+    if(!CourseHead) {
+        CourseHead = &NewCourse;
+        return;
+    }
+
+    Course* cur = CourseHead;
+
+    while(cur->Next) cur = cur->Next;
+
+    cout << "Do you want to enroll this course\n";
+    cout << "If you want, please write YES, else write NO\n";
+
+    string Option; cin >> Option;
+    if(Option == "YES") {
+        NewCourse.CourseInfo();
+
+        Course* tmp = &NewCourse;
+        cur->Next = tmp;
+        cout << "Enroll Succesful\n";
+    }
+    else {
+        cout << "You have not enroll this Course\n";
+    }
+}
+
+void Student::ViewAListOfEnrollCourse() {
+    cout << "Here is List of Enroll Courses\n";
+    Course* cur = CourseHead;
+
+    while(cur) {
+        (*cur).CourseInfo();
+        cur = cur->Next;
+        cout << '\n';
+    }
+
+    cout << '\n';
+}
+
+void Student::RemoveACourse(Course DelCourse) {
+    Course* cur = CourseHead;
+    Course* pre = nullptr;
+
+    while(cur) {
+        if(cur->CourseID == DelCourse.CourseID) {
+            cout << "You have removed this course\n";
+
+            if(pre) pre->Next = cur->Next;
+            else {
+                CourseHead = cur->Next;
+            }
+
+            delete cur;
+            return;
+        }
+
+        pre = cur;
+        cur = cur->Next;
+    }
+
+    cout << "We have not find this course\n";
+}
+
+
+
+
+
+
