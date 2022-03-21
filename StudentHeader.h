@@ -19,6 +19,8 @@ class Student
 
         Course* CourseHead = nullptr;
 
+        void StudentInfo();
+
         void EnrollACourse(Course NewCourse);
 
         void ViewAListOfEnrollCourse();

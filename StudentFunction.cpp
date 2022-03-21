@@ -32,6 +32,14 @@ void LoadLastStudentData(Student *&Head, string Filename)
     fi.close();
 }
 
+void Student::StudentInfo() {
+    cout << "StudentID: " << ID << '\n';
+    cout << "Name: " << FirstName << ' ' << LastName << '\n';
+    cout << "Gender: " << Gender << '\n';
+    cout << "Date of Birth: ";
+    Dob.OutputDate();
+}
+
 void Student::EnrollACourse(Course NewCourse) {
     if(!CourseHead) {
         CourseHead = &NewCourse;
