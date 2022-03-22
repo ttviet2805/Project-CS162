@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <unistd.h>
 
 #include "DateHeader.h"
@@ -17,8 +18,8 @@ void Course::CourseInfo()
     cout << Lecturer << LecturerName << '\n';
     cout << Start; StartDate.OutputDate();
     cout << End; EndDate.OutputDate();
-    cout << Ses1 << ": " << FirstS << '\n';
-    cout << Ses2 << ": " << SecondS << '\n';
+    cout << Ses1 << FirstS << '\n';
+    cout << Ses2 << SecondS << '\n';
 }
 
 void Course::CourseInfoWithNumber()
@@ -31,28 +32,22 @@ void Course::CourseInfoWithNumber()
     cout << "3. " << Lecturer << LecturerName << '\n';
     cout << "4. " << Start; StartDate.OutputDate();
     cout << "5. " << End; EndDate.OutputDate();
-    cout << "6. " << Ses1 << ": " << FirstS << '\n';
-    cout << "7. " << Ses2 << ": " << SecondS << '\n';
+    cout << "6. " << Ses1 << FirstS << '\n';
+    cout << "7. " << Ses2 << SecondS << '\n';
 }
 
-void Course::SaveCoursesData(char Filename[])
+void Course::AllCoursesInfo()
 {
-    ofstream fo(Filename);
+    system("cls");
     Course *Cur = this;
     while (Cur)
     {
-        fo << Cur->CourseName << '\n';
-        fo << Cur->CourseID << '\n';
-        fo << Cur->LecturerName << '\n';
-        fo << Cur->StartDate.Day << " " << Cur->StartDate.Month << Cur->StartDate.Year << '\n';
-        fo << Cur->EndDate.Day << " " << Cur->EndDate.Month << Cur->EndDate.Year << '\n';
-        fo << Cur->FirstS << '\n' << Cur->SecondS << '\n';
+        Cur->CourseInfo();
+        Cur = Cur->Next;
     }
-
-    fo.close();
 }
 
-void Course::Update(char Filename[])
+void Course::Update(string Filename)
 {
     while (1)
     {
@@ -62,7 +57,7 @@ void Course::Update(char Filename[])
         for (Course *cur = this; cur; cur = cur->Next, i++)
             cout << i << ". " << cur->CourseName << '\n';
         int num;
-        cout << "Return and save = 0\n";
+        cout << "Return = 0\n";
         cout << "Please input a number: ";
         cin >> num;
         if (num == 0) break;
@@ -77,7 +72,7 @@ void Course::Update(char Filename[])
             cout << "Choose element: \n";
             Cur->CourseInfoWithNumber();
             int part;
-            cout << "Return and save = 0\n";
+            cout << "Return = 0\n";
             cout << "Please input a number: ";
             cin >> part;
             if (part == 0) break;
@@ -94,19 +89,19 @@ void Course::Update(char Filename[])
                 case 1:
                 {
                     cin.ignore();
-                    cin.getline(Cur->CourseName, 50);
+                    getline(cin, Cur->CourseName);
                     break;
                 }
                 case 2:
                 {
                     cin.ignore();
-                    cin.getline(Cur->CourseID, 50);
+                    getline(cin, Cur->CourseID);
                     break;
                 }
                 case 3:
                 {
                     cin.ignore();
-                    cin.getline(Cur->LecturerName, 50);
+                    getline(cin, Cur->LecturerName);
                     break;
                 }
                 case 4:
@@ -122,40 +117,58 @@ void Course::Update(char Filename[])
                 case 6:
                 {
                     cin.ignore();
-                    cin.getline(Cur->FirstS, 50);
+                    getline(cin, Cur->FirstS);
                     break;
                 }
                 default:
                 {
                     cin.ignore();
-                    cin.getline(Cur->SecondS, 50);
+                    getline(cin, Cur->SecondS);
                 }
             }
         }
     }
-
-    SaveCoursesData(Filename);
 }
 
-void LoadLastCoursesData(Course *&Head, char Filename[])
+void Course::SaveCoursesData(string Filename)
+{
+    ofstream fo(Filename);
+    Course *Cur = this;
+    while (Cur)
+    {
+        fo << Cur->CourseName << '\n';
+        fo << Cur->CourseID << '\n';
+        fo << Cur->LecturerName << '\n';
+        fo << Cur->StartDate.Day << " " << Cur->StartDate.Month << " " << Cur->StartDate.Year << '\n';
+        fo << Cur->EndDate.Day << " " << Cur->EndDate.Month << " " << Cur->EndDate.Year << '\n';
+        fo << Cur->FirstS << '\n' << Cur->SecondS << '\n';
+        Cur = Cur->Next;
+    }
+
+    fo.close();
+}
+
+void LoadLastCoursesData(Course *&Head, string Filename)
 {
     ifstream fi(Filename);
     Head = new Course;
     Course *Dummy = Head;
-    while (!fi.eof())
+    string CourseName;
+    while (!fi.eof() && getline(fi, CourseName))
     {
         Dummy->Next = new Course, Dummy = Dummy->Next;
-        fi.getline(Dummy->CourseName, 50);
-        fi.getline(Dummy->CourseID, 50);
-        fi.getline(Dummy->LecturerName, 50);
+        Dummy->CourseName = CourseName;
+        //getline(fi, Dummy->CourseName);
+        getline(fi, Dummy->CourseID);
+        getline(fi, Dummy->LecturerName);
         int d, m, y;
         fi >> d >> m >> y;
         Dummy->StartDate = Date({d, m, y});
         fi >> d >> m >> y;
         Dummy->EndDate = Date({d, m, y});
         fi.ignore();
-        fi.getline(Dummy->FirstS, 50);
-        fi.getline(Dummy->SecondS, 50);
+        getline(fi, Dummy->FirstS);
+        getline(fi, Dummy->SecondS);
     }
     Course *pD = Head;
     Head = Head->Next;
@@ -163,7 +176,31 @@ void LoadLastCoursesData(Course *&Head, char Filename[])
     fi.close();
 }
 
-void Delete(Course *&Head, char Filename[])
+void AddCourse(Course *&Head)
+{
+    system("cls");
+    Course *New = new Course;
+    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
+                    Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
+    cout << Name; cin >> New->CourseName;
+    cout << ID; cin >> New->CourseID;
+    cout << Lecturer; cin >> New->LecturerName;
+    cout << Start; Head->StartDate.InputDate();
+    cout << End; Head->EndDate.InputDate();
+    string Day, Ses;
+    cout << Ses1; cin >> Day >> Ses; New->FirstS = Day + ' ' + Ses;
+    cout << Ses2; cin >> Day >> Ses; New->SecondS = Day + ' ' + Ses;
+    if (Head == nullptr) Head = New;
+        else
+        {
+            Course *cur = Head;
+            while (cur->Next)
+                cur = cur->Next;
+            cur->Next = New;
+        }
+}
+
+void Delete(Course *&Head, string Filename)
 {
     while (1)
     {
@@ -179,7 +216,7 @@ void Delete(Course *&Head, char Filename[])
         for (Course *cur = Head; cur; cur = cur->Next, i++)
             cout << i << ". " << cur->CourseName << '\n';
         int num;
-        cout << "Return and save = 0\n";
+        cout << "Return = 0\n";
         cout << "Please input a number: ";
         cin >> num;
         if (num == 0) break;
@@ -210,19 +247,6 @@ void Delete(Course *&Head, char Filename[])
             delete(pD);
         }
     }
-
-    Head->SaveCoursesData(Filename);
-}
-
-void Course::AllCoursesInfo()
-{
-    system("cls");
-    Course *Cur = this;
-    while (Cur)
-    {
-        Cur->CourseInfo();
-        Cur = Cur->Next;
-    }
 }
 
 void DeleteCourse(Course *&Head)
@@ -235,4 +259,53 @@ void DeleteCourse(Course *&Head)
     }
 }
 
-//Them description
+void StaffWorkWithCourse(Course *&Head, string Filename)
+{
+    while (1)
+    {
+        system("cls");
+        if (Head == nullptr)
+        {
+            cout << "No courses exist!";
+            system("pause");
+            break;
+        }
+        cout << "Choose an action:\n";
+        cout << "I: Show all courses information\n";
+        cout << "A: Add a course\n";
+        cout << "U: Update a course\n";
+        cout << "D: Delete a course\n";
+        cout << "0: Return and save all changes!\n";
+        cout << "Input an option: ";
+        char c;
+        cin >> c;
+        switch (c)
+        {
+        case 'I':
+            {
+                Head->AllCoursesInfo();
+                system("pause");
+                break;
+            }
+        case 'A':
+            {
+                AddCourse(Head);
+                break;
+            }
+        case 'U':
+            {
+                Head->Update(Filename);
+                break;
+            }
+        case 'D':
+            {
+                Delete(Head, Filename);
+                break;
+            }
+        default:
+            {
+                return;
+            }
+        }
+    }
+}
