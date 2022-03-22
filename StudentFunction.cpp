@@ -12,12 +12,13 @@ void LoadLastStudentData(Student *&Head, string Filename)
     ifstream fi;
     fi.open(Filename);
     if (!fi.is_open()) return;
+
     Head = new Student;
     Student *cur = Head;
+
     while (!fi.eof())
     {
         cur->Next = new Student, cur = cur->Next;
-        getline(fi, cur->ID);
         getline(fi, cur->ID);
         getline(fi, cur->FirstName);
         getline(fi, cur->LastName);
@@ -25,6 +26,8 @@ void LoadLastStudentData(Student *&Head, string Filename)
         fi >> cur->Dob.Day >> cur->Dob.Month >> cur->Dob.Year;
         fi.ignore();
         getline(fi, cur->SocialID);
+        getline(fi, cur->StudentClass);
+
     }
     Student *pD = Head;
     Head = Head->Next;
@@ -38,6 +41,8 @@ void Student::StudentInfo() {
     cout << "Gender: " << Gender << '\n';
     cout << "Date of Birth: ";
     Dob.OutputDate();
+
+    cout << '\n';
 }
 
 void Student::EnrollACourse(Course NewCourse) {
