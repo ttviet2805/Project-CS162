@@ -6,12 +6,23 @@
 
 using namespace std;
 
+class Session {
+    public:
+        string Day;
+        string Ses;
+        int Hour, Mins;
+
+        void Init();
+        void Cout();
+        void Cin();
+};
+
 class Course {
 	public:
 
         string CourseName, CourseID, LecturerName;
         Date StartDate, EndDate;
-        string FirstS, SecondS; //(S1 (07:30), S2 (09:30), S3(13:30) and S4 (15:30))
+        Session FirstS, SecondS; //(S1 (07:30), S2 (09:30), S3(13:30) and S4 (15:30))
             // 2 sessions in a week
             // (nhiều nhất 5 course, không thể enroll course trùng lịch với các courses đã đăng kí)
         //ScoreBoard Scoreboard;

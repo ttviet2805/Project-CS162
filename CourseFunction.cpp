@@ -8,6 +8,25 @@
 
 using namespace std;
 
+void Session::Init()
+{
+    if (Ses == "S1") Hour = 7;
+    else if (Ses == "S2") Hour = 9;
+    else if (Ses == "S3") Hour = 13;
+    else Hour = 15;
+    Mins = 30;
+}
+
+void Session::Cout()
+{
+    cout << Day << " (" + Ses + ") " << Hour << ':' << Mins << '\n';
+}
+
+void Session::Cin()
+{
+    cin >> Day >> Ses;
+    Init();
+}
 
 void Course::CourseInfo()
 {
@@ -18,8 +37,8 @@ void Course::CourseInfo()
     cout << Lecturer << LecturerName << '\n';
     cout << Start; StartDate.OutputDate();
     cout << End; EndDate.OutputDate();
-    cout << Ses1 << FirstS << '\n';
-    cout << Ses2 << SecondS << '\n';
+    cout << Ses1; FirstS.Cout();
+    cout << Ses2; SecondS.Cout();
 }
 
 void Course::CourseInfoWithNumber()
@@ -32,8 +51,8 @@ void Course::CourseInfoWithNumber()
     cout << "3. " << Lecturer << LecturerName << '\n';
     cout << "4. " << Start; StartDate.OutputDate();
     cout << "5. " << End; EndDate.OutputDate();
-    cout << "6. " << Ses1 << FirstS << '\n';
-    cout << "7. " << Ses2 << SecondS << '\n';
+    cout << "6. " << Ses1; FirstS.Cout();
+    cout << "7. " << Ses2; SecondS.Cout();
 }
 
 void Course::AllCoursesInfo()
@@ -117,13 +136,13 @@ void Course::Update(string Filename)
                 case 6:
                 {
                     cin.ignore();
-                    getline(cin, Cur->FirstS);
+                    Cur->FirstS.Cin();
                     break;
                 }
                 default:
                 {
                     cin.ignore();
-                    getline(cin, Cur->SecondS);
+                    Cur->SecondS.Cin();
                 }
             }
         }
@@ -141,7 +160,8 @@ void Course::SaveCoursesData(string Filename)
         fo << Cur->LecturerName << '\n';
         fo << Cur->StartDate.Day << " " << Cur->StartDate.Month << " " << Cur->StartDate.Year << '\n';
         fo << Cur->EndDate.Day << " " << Cur->EndDate.Month << " " << Cur->EndDate.Year << '\n';
-        fo << Cur->FirstS << '\n' << Cur->SecondS << '\n';
+        fo << Cur->FirstS.Day << " " << Cur->FirstS.Ses << '\n';
+        fo << Cur->SecondS.Day << " " << Cur->SecondS.Ses << '\n';
         Cur = Cur->Next;
     }
 
@@ -158,7 +178,6 @@ void LoadLastCoursesData(Course *&Head, string Filename)
     {
         Dummy->Next = new Course, Dummy = Dummy->Next;
         Dummy->CourseName = CourseName;
-        //getline(fi, Dummy->CourseName);
         getline(fi, Dummy->CourseID);
         getline(fi, Dummy->LecturerName);
         int d, m, y;
@@ -166,9 +185,11 @@ void LoadLastCoursesData(Course *&Head, string Filename)
         Dummy->StartDate = Date({d, m, y});
         fi >> d >> m >> y;
         Dummy->EndDate = Date({d, m, y});
+        fi >> Dummy->FirstS.Day >> Dummy->FirstS.Ses;
+        fi >> Dummy->SecondS.Day >> Dummy->SecondS.Ses;
+        Dummy->FirstS.Init();
+        Dummy->SecondS.Init();
         fi.ignore();
-        getline(fi, Dummy->FirstS);
-        getline(fi, Dummy->SecondS);
     }
     Course *pD = Head;
     Head = Head->Next;
@@ -182,14 +203,13 @@ void AddCourse(Course *&Head)
     Course *New = new Course;
     char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-    cout << Name; cin >> New->CourseName;
-    cout << ID; cin >> New->CourseID;
-    cout << Lecturer; cin >> New->LecturerName;
-    cout << Start; Head->StartDate.InputDate();
-    cout << End; Head->EndDate.InputDate();
-    string Day, Ses;
-    cout << Ses1; cin >> Day >> Ses; New->FirstS = Day + ' ' + Ses;
-    cout << Ses2; cin >> Day >> Ses; New->SecondS = Day + ' ' + Ses;
+    cout << Name; cin.ignore(); getline(cin, New->CourseName);
+    cout << ID; getline(cin, New->CourseID);
+    cout << Lecturer; getline(cin, New->LecturerName);
+    cout << Start; New->StartDate.InputDate();
+    cout << End; New->EndDate.InputDate();
+    cout << Ses1; New->FirstS.Cin();
+    cout << Ses2; New->SecondS.Cin();
     if (Head == nullptr) Head = New;
         else
         {
