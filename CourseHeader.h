@@ -26,7 +26,7 @@ class Course {
             // 2 sessions in a week
             // (nhiều nhất 5 course, không thể enroll course trùng lịch với các courses đã đăng kí)
         //ScoreBoard Scoreboard;
-        //Mình nghĩ là mỗi môn có tỉ lệ % điểm thành phần khác nhau
+        //Mỗi môn có tỉ lệ % điểm thành phần khác nhau
         double process_percent; //tỉ lệ điểm quá trình, thực hành, dự án...
         double midterm_percent; //thi giữa kỳ
         double final_percent; //thi cuối kỳ
