@@ -9,26 +9,47 @@
 using namespace std;
 
 using namespace std;
+
+class Account {
+public:
+    char username[50];
+    char password[50];
+
+    Account* Next;
+
+    Account() {
+        Next = nullptr;
+    }
+};
+
+// File txt of Login: username -> password -> username -> password -> ...
 class Login {
 private:
-	Login();
 	char username[50];
-	char *password;
+	char* password;
 	static const char defaultPass = '1';
+
+    // return 0 if can not find the Account File
+    // return 1 if find the account
+    // return 2 if can not find the account
 	int foundUsername(char filename[]);
-	int passWord(char filename[]);
-	bool match(char inputted[], char sN[]);
-	
+	bool match(char inputted[], char sN[]); // to check if 2 string equal together
+
 	int changePasswordInit(char filename[]);
-	void deLogin();
-	
+
 public:
+    Login() {
+	    delete password;
+        memset(username, 0, sizeof(username));
+        password = new char[50];
+        stt = -1;
+        type = 1;
+	}
+
 	int stt;//so thu tu cua hoc sinh trong file
 	int type;//student/lecturer/staff
-	Login();
-	~Login();
-	void login();
-	void logout();
+	void login(char fileName[]); // login system
+	void logout(char fileName[]);
 	void changePassword(char filename[]);
 };
 #endif
