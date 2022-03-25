@@ -84,7 +84,7 @@ void Login::login(char FileName[]) {
             break;
         }
     }
-//    changePassword(FileName);
+    changePassword(FileName);
 }
 
 void Login::changePassword(char filename[]) {
