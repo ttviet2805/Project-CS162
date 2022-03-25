@@ -32,12 +32,11 @@ class Student {
 
         void StudentInfo();
 
-        void EnrollACourse(Course NewCourse);
+        void EnrollACourse(Course* NewCourse);
 
         void ViewAListOfEnrollCourse();
 
-        void RemoveACourse(Course DelCourse);
-
+        void RemoveACourse(Course* DelCourse);
 };
 
 void LoadLastStudentData(Student *&Head, string Filename);

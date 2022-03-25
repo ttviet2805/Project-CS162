@@ -45,26 +45,34 @@ void Student::StudentInfo() {
     cout << '\n';
 }
 
-void Student::EnrollACourse(Course NewCourse) {
-    if(!CourseHead) {
-        CourseHead = &NewCourse;
-        return;
-    }
+void Student::EnrollACourse(Course* AddCourse) {
+    Course* NewCourse = new Course;
+    (*NewCourse) = (*AddCourse);
+    NewCourse->Next = nullptr;
+
+    (*NewCourse).CourseInfo();
 
     Course* cur = CourseHead;
 
-    while(cur->Next) cur = cur->Next;
+    while(cur && cur->Next) cur = cur->Next;
+
+    if(CourseHead) {
+        cout << CourseHead->CourseID << ' ' << CourseHead->CourseName << '\n';
+    }
 
     cout << "Do you want to enroll this course\n";
-    cout << "If you want, please write YES, else write NO\n";
+    cout << "If you want, please write YES, else write NO: ";
 
     string Option; cin >> Option;
     if(Option == "YES") {
-        NewCourse.CourseInfo();
-
-        Course* tmp = &NewCourse;
-        cur->Next = tmp;
-        cout << "Enroll Succesful\n";
+        if(cur) cur->Next = NewCourse;
+        else {
+            CourseHead = NewCourse;
+        }
+        if(CourseHead) {
+        cout << CourseHead->CourseID << ' ' << CourseHead->CourseName << '\n';
+    }
+        cout << "Enrollment Success\n";
     }
     else {
         cout << "You have not enroll this Course\n";
@@ -84,12 +92,12 @@ void Student::ViewAListOfEnrollCourse() {
     cout << '\n';
 }
 
-void Student::RemoveACourse(Course DelCourse) {
+void Student::RemoveACourse(Course* DelCourse) {
     Course* cur = CourseHead;
     Course* pre = nullptr;
 
     while(cur) {
-        if(cur->CourseID == DelCourse.CourseID) {
+        if(cur->CourseID == DelCourse->CourseID) {
             cout << "You have removed this course\n";
 
             if(pre) pre->Next = cur->Next;
