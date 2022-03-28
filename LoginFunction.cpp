@@ -105,6 +105,7 @@ void Login::changePassword(char filename[]) {
 int Login::changePasswordInit(char filename[]) {
 	ifstream in;
 	in.open(filename);
+
 	if (!in.is_open()) {
 		cout << "Sorry, our service encountered an error, please retry!" << endl;
 		return 0;
@@ -112,28 +113,27 @@ int Login::changePasswordInit(char filename[]) {
 
     // to get the data from Account File
 	Account* accountHead = nullptr;
-	Account* accountRear = nullptr;
+	Account* Dummy = new Account;
+	Dummy->Next = nullptr;
+	Account* curDummy = Dummy;
 
     while(!in.eof()) {
         char tmpUsername[50];
         char tmpPassword[50];
-        in >> tmpUsername >> tmpPassword;
+        in >> tmpUsername;
+        in >> tmpPassword;
 
-        if(!accountHead) {
-            accountHead = new Account;
-            strcpy(accountHead->username, tmpUsername);
-            strcpy(accountHead->password, tmpPassword);
-            accountRear = accountHead;
-        }
-        else {
-            Account* tmp = new Account;
-            strcpy(tmp->username, tmpUsername);
-            strcpy(tmp->password, tmpPassword);
-
-            accountRear->Next = tmp;
-            accountRear = tmp;
-        }
+        curDummy->Next = new Account;
+        strcpy(curDummy->Next->username, tmpUsername);
+        strcpy(curDummy->Next->password, tmpPassword);
+        curDummy = curDummy->Next;
     }
+
+    curDummy->Next = nullptr;
+
+    accountHead = Dummy->Next;
+
+    in.close();
 
 	cout << "Type in your new password, password must be at least 6 characters" << endl;
 	cout << "New password: ";
@@ -153,24 +153,50 @@ int Login::changePasswordInit(char filename[]) {
 	//append new password to position at stt
 
     fstream fout;
-    fout.open(filename);
+    fout.open(filename, ios::out | ios::trunc);
     int cnt = 0;
 
     Account* accountCur = accountHead;
 
-    while(accountCur) {
+    if(accountCur) {
         ++cnt;
 
         if(cnt != stt) {
             fout << accountCur->username << '\n';
-            fout << accountCur->password << '\n';
+            fout << accountCur->password;
         }
         else {
             fout << accountCur->username << '\n';
-            fout << newP << '\n';
+            fout << newP;
         }
 
         accountCur = accountCur->Next;
+    }
+
+    while(accountCur) {
+        ++cnt;
+
+        fout << '\n';
+        if(cnt != stt) {
+            fout << accountCur->username << '\n';
+            fout << accountCur->password;
+        }
+        else {
+            fout << accountCur->username << '\n';
+            fout << newP;
+        }
+
+        accountCur = accountCur->Next;
+    }
+
+
+    accountCur = accountHead;
+
+    while(accountCur) {
+        Account* Del = accountCur;
+        accountCur = accountCur->Next;
+
+        delete Del;
     }
 
     fout.close();
