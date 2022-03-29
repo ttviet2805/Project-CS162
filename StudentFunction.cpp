@@ -27,7 +27,7 @@ void LoadLastStudentData(Student *&Head, string Filename)
         fi.ignore();
         getline(fi, cur->SocialID);
         getline(fi, cur->StudentClass);
-
+        
     }
     Student *pD = Head;
     Head = Head->Next;
@@ -93,27 +93,7 @@ void Student::ViewAListOfEnrollCourse() {
 }
 
 void Student::RemoveACourse(Course* DelCourse) {
-    Course* cur = CourseHead;
-    Course* pre = nullptr;
-
-    while(cur) {
-        if(cur->CourseID == DelCourse->CourseID) {
-            cout << "You have removed this course\n";
-
-            if(pre) pre->Next = cur->Next;
-            else {
-                CourseHead = cur->Next;
-            }
-
-            delete cur;
-            return;
-        }
-
-        pre = cur;
-        cur = cur->Next;
-    }
-
-    cout << "We have not find this course\n";
+    Delete(CourseHead);
 }
 
 

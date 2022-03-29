@@ -32,13 +32,13 @@ class Course {
         void CourseInfo();
         void CourseInfoWithNumber();
         void AllCoursesInfo();
-        void Update(string Filename);
+        void Update();
         void SaveCoursesData(string Filename);
 };
 
 void LoadLastCoursesData(Course *&Head, string Filename);
 void AddCourse(Course *&Head);
-void Delete(Course *&Head, string Filename);
+void Delete(Course *&Head);
 void DeleteCourse(Course *&Head);
 void StaffWorkWithCourse(Course *&Head, string Filename);
 

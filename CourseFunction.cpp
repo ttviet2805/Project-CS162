@@ -66,7 +66,7 @@ void Course::AllCoursesInfo()
     }
 }
 
-void Course::Update(string Filename)
+void Course::Update()
 {
     while (1)
     {
@@ -220,7 +220,7 @@ void AddCourse(Course *&Head)
         }
 }
 
-void Delete(Course *&Head, string Filename)
+void Delete(Course *&Head)
 {
     while (1)
     {
@@ -314,12 +314,12 @@ void StaffWorkWithCourse(Course *&Head, string Filename)
             }
         case 'U':
             {
-                Head->Update(Filename);
+                Head->Update();
                 break;
             }
         case 'D':
             {
-                Delete(Head, Filename);
+                Delete(Head);
                 break;
             }
         default:
