@@ -28,31 +28,31 @@ void Session::Cin()
     Init();
 }
 
-void Course::CourseInfo()
+void Course::ShowCourseInfo()
 {
     char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-    cout << Name << CourseName << '\n';
-    cout << ID << CourseID << '\n';
-    cout << Lecturer << LecturerName << '\n';
-    cout << Start; StartDate.OutputDate();
-    cout << End; EndDate.OutputDate();
-    cout << Ses1; FirstS.Cout();
-    cout << Ses2; SecondS.Cout();
+    cout << Name << Info->CourseName << '\n';
+    cout << ID << Info->CourseID << '\n';
+    cout << Lecturer << Info->LecturerName << '\n';
+    cout << Start; Info->StartDate.OutputDate();
+    cout << End; Info->EndDate.OutputDate();
+    cout << Ses1; Info->FirstS.Cout();
+    cout << Ses2; Info->SecondS.Cout();
 }
 
-void Course::CourseInfoWithNumber()
+void Course::ShowCourseInfoWithNumber()
 {
     system("cls");
     char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-    cout << "1. " << Name << CourseName << '\n';
-    cout << "2. " << ID << CourseID << '\n';
-    cout << "3. " << Lecturer << LecturerName << '\n';
-    cout << "4. " << Start; StartDate.OutputDate();
-    cout << "5. " << End; EndDate.OutputDate();
-    cout << "6. " << Ses1; FirstS.Cout();
-    cout << "7. " << Ses2; SecondS.Cout();
+    cout << "1. " << Name << Info->CourseName << '\n';
+    cout << "2. " << ID << Info->CourseID << '\n';
+    cout << "3. " << Lecturer << Info->LecturerName << '\n';
+    cout << "4. " << Start; Info->StartDate.OutputDate();
+    cout << "5. " << End; Info->EndDate.OutputDate();
+    cout << "6. " << Ses1; Info->FirstS.Cout();
+    cout << "7. " << Ses2; Info->SecondS.Cout();
 }
 
 void Course::AllCoursesInfo()
@@ -61,7 +61,7 @@ void Course::AllCoursesInfo()
     Course *Cur = this;
     while (Cur)
     {
-        Cur->CourseInfo();
+        Cur->ShowCourseInfo();
         Cur = Cur->Next;
     }
 }
@@ -74,7 +74,7 @@ void Course::Update()
         cout << "Choose course: \n";
         int i = 1;
         for (Course *cur = this; cur; cur = cur->Next, i++)
-            cout << i << ". " << cur->CourseName << '\n';
+            cout << i << ". " << cur->Info->CourseName << '\n';
         int num;
         cout << "Return = 0\n";
         cout << "Please input a number: ";
@@ -87,9 +87,9 @@ void Course::Update()
         while (1)
         {
             system("cls");
-            cout << Cur->CourseName << '\n';
+            cout << Cur->Info->CourseName << '\n';
             cout << "Choose element: \n";
-            Cur->CourseInfoWithNumber();
+            Cur->ShowCourseInfoWithNumber();
             int part;
             cout << "Return = 0\n";
             cout << "Please input a number: ";
@@ -108,41 +108,41 @@ void Course::Update()
                 case 1:
                 {
                     cin.ignore();
-                    getline(cin, Cur->CourseName);
+                    getline(cin, Cur->Info->CourseName);
                     break;
                 }
                 case 2:
                 {
                     cin.ignore();
-                    getline(cin, Cur->CourseID);
+                    getline(cin, Cur->Info->CourseID);
                     break;
                 }
                 case 3:
                 {
                     cin.ignore();
-                    getline(cin, Cur->LecturerName);
+                    getline(cin, Cur->Info->LecturerName);
                     break;
                 }
                 case 4:
                 {
-                    Cur->StartDate.InputDate();
+                    Cur->Info->StartDate.InputDate();
                     break;
                 }
                 case 5:
                 {
-                    Cur->EndDate.InputDate();
+                    Cur->Info->EndDate.InputDate();
                     break;
                 }
                 case 6:
                 {
                     cin.ignore();
-                    Cur->FirstS.Cin();
+                    Cur->Info->FirstS.Cin();
                     break;
                 }
                 default:
                 {
                     cin.ignore();
-                    Cur->SecondS.Cin();
+                    Cur->Info->SecondS.Cin();
                 }
             }
         }
@@ -155,13 +155,13 @@ void Course::SaveCoursesData(string Filename)
     Course *Cur = this;
     while (Cur)
     {
-        fo << Cur->CourseName << '\n';
-        fo << Cur->CourseID << '\n';
-        fo << Cur->LecturerName << '\n';
-        fo << Cur->StartDate.Day << " " << Cur->StartDate.Month << " " << Cur->StartDate.Year << '\n';
-        fo << Cur->EndDate.Day << " " << Cur->EndDate.Month << " " << Cur->EndDate.Year << '\n';
-        fo << Cur->FirstS.Day << " " << Cur->FirstS.Ses << '\n';
-        fo << Cur->SecondS.Day << " " << Cur->SecondS.Ses << '\n';
+        fo << Cur->Info->CourseName << '\n';
+        fo << Cur->Info->CourseID << '\n';
+        fo << Cur->Info->LecturerName << '\n';
+        fo << Cur->Info->StartDate.Day << " " << Cur->Info->StartDate.Month << " " << Cur->Info->StartDate.Year << '\n';
+        fo << Cur->Info->EndDate.Day << " " << Cur->Info->EndDate.Month << " " << Cur->Info->EndDate.Year << '\n';
+        fo << Cur->Info->FirstS.Day << " " << Cur->Info->FirstS.Ses << '\n';
+        fo << Cur->Info->SecondS.Day << " " << Cur->Info->SecondS.Ses << '\n';
         Cur = Cur->Next;
     }
 
@@ -177,18 +177,18 @@ void LoadLastCoursesData(Course *&Head, string Filename)
     while (!fi.eof() && getline(fi, CourseName))
     {
         Dummy->Next = new Course, Dummy = Dummy->Next;
-        Dummy->CourseName = CourseName;
-        getline(fi, Dummy->CourseID);
-        getline(fi, Dummy->LecturerName);
+        Dummy->Info->CourseName = CourseName;
+        getline(fi, Dummy->Info->CourseID);
+        getline(fi, Dummy->Info->LecturerName);
         int d, m, y;
         fi >> d >> m >> y;
-        Dummy->StartDate = Date({d, m, y});
+        Dummy->Info->StartDate = Date({d, m, y});
         fi >> d >> m >> y;
-        Dummy->EndDate = Date({d, m, y});
-        fi >> Dummy->FirstS.Day >> Dummy->FirstS.Ses;
-        fi >> Dummy->SecondS.Day >> Dummy->SecondS.Ses;
-        Dummy->FirstS.Init();
-        Dummy->SecondS.Init();
+        Dummy->Info->EndDate = Date({d, m, y});
+        fi >> Dummy->Info->FirstS.Day >> Dummy->Info->FirstS.Ses;
+        fi >> Dummy->Info->SecondS.Day >> Dummy->Info->SecondS.Ses;
+        Dummy->Info->FirstS.Init();
+        Dummy->Info->SecondS.Init();
         fi.ignore();
     }
     Course *pD = Head;
@@ -203,13 +203,13 @@ void AddCourse(Course *&Head)
     Course *New = new Course;
     char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-    cout << Name; cin.ignore(); getline(cin, New->CourseName);
-    cout << ID; getline(cin, New->CourseID);
-    cout << Lecturer; getline(cin, New->LecturerName);
-    cout << Start; New->StartDate.InputDate();
-    cout << End; New->EndDate.InputDate();
-    cout << Ses1; New->FirstS.Cin();
-    cout << Ses2; New->SecondS.Cin();
+    cout << Name; cin.ignore(); getline(cin, New->Info->CourseName);
+    cout << ID; getline(cin, New->Info->CourseID);
+    cout << Lecturer; getline(cin, New->Info->LecturerName);
+    cout << Start; New->Info->StartDate.InputDate();
+    cout << End; New->Info->EndDate.InputDate();
+    cout << Ses1; New->Info->FirstS.Cin();
+    cout << Ses2; New->Info->SecondS.Cin();
     if (Head == nullptr) Head = New;
         else
         {
@@ -218,6 +218,13 @@ void AddCourse(Course *&Head)
                 cur = cur->Next;
             cur->Next = New;
         }
+}
+
+void DeleteACourse(Course *&pD)
+{
+    if (pD == nullptr) return;
+    delete(pD->Info);
+    delete(pD);
 }
 
 void Delete(Course *&Head)
@@ -234,7 +241,7 @@ void Delete(Course *&Head)
         cout << "Choose course: \n";
         int i = 1;
         for (Course *cur = Head; cur; cur = cur->Next, i++)
-            cout << i << ". " << cur->CourseName << '\n';
+            cout << i << ". " << cur->Info->CourseName << '\n';
         int num;
         cout << "Return = 0\n";
         cout << "Please input a number: ";
@@ -258,24 +265,24 @@ void Delete(Course *&Head)
         {
             Course *pD = Head;
             Head = Head->Next;
-            delete(pD);
+            DeleteACourse(pD);
         }
         else
         {
             Course *pD = Cur->Next;
             Cur->Next = pD->Next;
-            delete(pD);
+            DeleteACourse(pD);
         }
     }
 }
 
-void DeleteCourse(Course *&Head)
+void DeleteAllCourse(Course *&Head)
 {
     while (Head)
     {
         Course *pD = Head;
         Head = Head->Next;
-        delete(pD);
+        DeleteACourse(pD);
     }
 }
 

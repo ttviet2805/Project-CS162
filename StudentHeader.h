@@ -8,29 +8,34 @@
 
 using namespace std;
 
-class Student {
+class StudentInfo
+{
     public:
         string ID, FirstName, LastName;
         string Gender;
         Date Dob;
         string SocialID;
         string StudentClass;
-        Student *Next = nullptr;
-
-        Course* CourseHead = nullptr;
-
         int numCredit = 0;
         bool isFree[6][5]; // first dimension is the day of week, second dimension is session
 
-        Student() {
-            numCredit = 0;
+        StudentInfo() {
+        numCredit = 0;
 
-            for(int i = 0; i < 6; i++)
-                for(int j = 0; j < 5; j++)
-                    isFree[i][j] = false;
+        for(int i = 0; i < 6; i++)
+            for(int j = 0; j < 5; j++)
+                isFree[i][j] = false;
         }
+};
 
-        void StudentInfo();
+class Student {
+    public:
+
+        StudentInfo *Info = new StudentInfo;
+        Course* CourseHead = nullptr;
+        Student *Next = nullptr;
+
+        void ShowStudentInfo();
 
         void EnrollACourse(Course* NewCourse);
 
@@ -39,4 +44,6 @@ class Student {
         void RemoveACourse(Course* DelCourse);
 };
 
+void DeleteAStudent(Student *&pD);
+void DeleteAllStudent(Student *&pD);
 void LoadLastStudentData(Student *&Head, string Filename);
