@@ -1,5 +1,7 @@
-#include"LoginHeader.h"
 #include <conio.h>
+
+#include"LoginHeader.h"
+#include "ConsoleSolve.h"
 
 bool Login::match(char inputted[], char sN[]) {
 	if (strlen(inputted) != strlen(sN))return false;
@@ -21,7 +23,11 @@ int Login::foundUsername(char FileName[]) {
     fin.open(FileName);
 
     if(!fin.is_open()) {
-        cout << "Sorry, our service encountered an error, please retry!" << endl;
+        string errorService = "Sorry, our service encountered an error, please retry!";
+        gotoxy(midScreen - errorService.size() / 2 + 1, 11);
+        cout << errorService;
+        Sleep(2000);
+        clrscr();
         return 0;
     }
 
@@ -41,23 +47,52 @@ int Login::foundUsername(char FileName[]) {
         }
     }
 
-    cout << "User non-existed, please check your typing" << '\n';
-    cout << '\n';
+    string noExistAccount = "User non-existed, please check your typing";
+    gotoxy(midScreen - noExistAccount.size() / 2 + 1, 11);
+    cout << noExistAccount;
+    Sleep(3000);
+    clrscr();
 
     fin.close();
     return 2;
 }
 
+void setLogInPosition() {
+    gotoxy(45, 3);
+    for(int i = 0; i < 30; i++) cout << char(219);
+    gotoxy(45, 5);
+    for(int i = 0; i < 30; i++) cout << char(219);
+
+    gotoxy(57, 4);
+    cout << "LOGIN";
+    gotoxy(74, 4);
+    cout << char(219);
+
+    for(int i = 3; i <= 9; i++) {
+        gotoxy(45, i);
+        cout << char(219);
+        gotoxy(74, i);
+        cout << char(219);
+    }
+
+    gotoxy(45, 9);
+    for(int i = 0; i < 30; i++) cout << char(219);
+}
 
 void Login::login(char FileName[]) {
-    cout << "**********LOGIN**********\n";
 
     while(1) {
+        setLogInPosition();
         // Login View
+        gotoxy(47, 6);
         cout << "Username: ";
-        cin >> username;
+        gotoxy(47, 7);
         cout << "Password: ";
 
+        gotoxy(57, 6);
+        cin >> username;
+
+        gotoxy(57, 7);
         memset(password, 0, sizeof(password));
 
         // login with print * in password
@@ -80,11 +115,15 @@ void Login::login(char FileName[]) {
         int loginState = foundUsername(FileName);
 
         if(loginState == 1) {
-            cout << "You have login successful\n";
+            string successLogin = "You have login successful\n";
+            gotoxy(midScreen - successLogin.size() / 2 + 1, 11);
+            cout << successLogin;
+            Sleep(2000);
+            clrscr();
             break;
         }
     }
-    changePassword(FileName);
+//    changePassword(FileName);
 }
 
 void Login::changePassword(char filename[]) {
