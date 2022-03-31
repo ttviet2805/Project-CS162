@@ -3,7 +3,7 @@
 #include <string>
 
 #include "ClassHeader.h"
-#include "StudentHeader.h"
+#include "StudentAndCourseHeader.h"
 
 using namespace std;
 
