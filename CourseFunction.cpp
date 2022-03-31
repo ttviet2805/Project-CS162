@@ -4,10 +4,11 @@
 #include <unistd.h>
 
 #include "DateHeader.h"
-#include "CourseHeader.h"
+#include "StudentAndCourseHeader.h"
 
 using namespace std;
 
+//Session
 void Session::Init()
 {
     if (Ses == "S1") Hour = 7;
@@ -27,8 +28,14 @@ void Session::Cin()
     cin >> Day >> Ses;
     Init();
 }
+///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< Updated upstream
 void Course::CourseInfo()
+=======
+//CourseInfo
+void CourseInfo::ShowCourseInfo()
+>>>>>>> Stashed changes
 {
     char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
@@ -39,6 +46,62 @@ void Course::CourseInfo()
     cout << End; EndDate.OutputDate();
     cout << Ses1; FirstS.Cout();
     cout << Ses2; SecondS.Cout();
+<<<<<<< Updated upstream
+=======
+}
+///////////////////////////////////////////////////////////////////////////
+
+//CourseScore
+void CourseScore::CalScore()
+{
+    //tinh diem
+    Final = Other * 0.2 + MidTerm * 0.3 + Final * 0.5;
+}
+
+void CourseScore::ShowCourseScore()
+{
+    CalScore();
+    cout << MidTerm << " " << Final << " " << Other << " " << Total << '\n';
+}
+///////////////////////////////////////////////////////////////////////////
+
+//CourseScoreBoard
+void CourseScoreBoard::ShowCourseScoreBoard()
+{
+    cout << Student->ID << " " << Student->FirstName << " " << Student->LastName << " ";
+    Score->ShowCourseScore();
+}
+
+void LoadLastCourseScoreBoardData(CourseScoreBoard *ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename, Student *StudentHead)
+{
+    ifstream fi(path + Filename);
+    string ID;
+    ScoreBoard = new CourseScoreBoard;
+    CourseScoreBoard *cur = ScoreBoard;
+    while (!fi.eof() && getline(fi, ID))
+    {
+        cur->Next = new CourseScoreBoard;
+        cur = cur->Next;
+        Student *CurStudent = StudentHead->FindStudentByID(ID);
+        cur->Student = CurStudent->Info;
+        cur->Score = new CourseScore;
+        fi >> cur->Score->MidTerm >> cur->Score->Final >> cur->Score->Other;
+        CurStudent->AddAStudentScoreBoard(_CourseInfo, cur->Score);
+        fi.ignore();
+    }
+    CourseScoreBoard *pD = ScoreBoard;
+    ScoreBoard = ScoreBoard->Next;
+    delete(pD->Score);
+    delete(pD);
+    fi.close();
+}
+///////////////////////////////////////////////////////////////////////////
+
+//Course
+void Course::ShowCourseInfo()
+{
+    Info->ShowCourseInfo();
+>>>>>>> Stashed changes
 }
 
 void Course::CourseInfoWithNumber()
@@ -66,7 +129,23 @@ void Course::AllCoursesInfo()
     }
 }
 
+<<<<<<< Updated upstream
 void Course::Update(string Filename)
+=======
+void Course::ShowAllCourseScoreBoard()
+{
+    int i = 0;
+    CourseScoreBoard *cur = this->Scoreboard;
+    while (cur)
+    {
+        cout << ++i << " " ;
+        cur->ShowCourseScoreBoard();
+        cur = cur->Next;
+    }
+}
+
+void Course::Update()
+>>>>>>> Stashed changes
 {
     while (1)
     {
@@ -149,12 +228,29 @@ void Course::Update(string Filename)
     }
 }
 
-void Course::SaveCoursesData(string Filename)
+void Course::SaveCourseScoreBoard(string path, string Filename)
 {
-    ofstream fo(Filename);
+    ofstream fo;
+    fo.open(path + Filename);
+
+    CourseScoreBoard *cur = Scoreboard;
+    while (cur)
+    {
+        fo << cur->Student->ID << '\n';
+        fo << cur->Score->MidTerm << " " << cur->Score->Final << " " << cur->Score->Other << '\n';
+        cur = cur->Next;
+    }
+
+    fo.close();
+}
+
+void Course::SaveCoursesData(string path, string Filename)
+{
+    ofstream fo(path + Filename);
     Course *Cur = this;
     while (Cur)
     {
+<<<<<<< Updated upstream
         fo << Cur->CourseName << '\n';
         fo << Cur->CourseID << '\n';
         fo << Cur->LecturerName << '\n';
@@ -162,15 +258,40 @@ void Course::SaveCoursesData(string Filename)
         fo << Cur->EndDate.Day << " " << Cur->EndDate.Month << " " << Cur->EndDate.Year << '\n';
         fo << Cur->FirstS.Day << " " << Cur->FirstS.Ses << '\n';
         fo << Cur->SecondS.Day << " " << Cur->SecondS.Ses << '\n';
+=======
+        fo << Cur->Info->CourseName << '\n';
+        fo << Cur->Info->CourseID << '\n';
+        fo << Cur->Info->LecturerName << '\n';
+        fo << Cur->Info->StartDate.Day << " " << Cur->Info->StartDate.Month << " " << Cur->Info->StartDate.Year << '\n';
+        fo << Cur->Info->EndDate.Day << " " << Cur->Info->EndDate.Month << " " << Cur->Info->EndDate.Year << '\n';
+        fo << Cur->Info->FirstS.Day << " " << Cur->Info->FirstS.Ses << '\n';
+        fo << Cur->Info->SecondS.Day << " " << Cur->Info->SecondS.Ses << '\n';
+        Cur->SaveCourseScoreBoard(path + "CourseScoreBoard/", Cur->Info->CourseName + ".txt");
+>>>>>>> Stashed changes
         Cur = Cur->Next;
     }
 
     fo.close();
 }
 
-void LoadLastCoursesData(Course *&Head, string Filename)
+void Course::AddANewStudent(StudentInfo *SI, CourseScore *CS)
 {
-    ifstream fi(Filename);
+    CourseScoreBoard *Tail = Scoreboard;
+    while (Tail && Tail->Next) Tail = Tail->Next;
+    CourseScoreBoard *NewBoard = new CourseScoreBoard;
+    NewBoard->Student = SI;
+    NewBoard->Score = CS;
+    if (Tail == nullptr) Tail = NewBoard;
+        else Tail->Next = NewBoard;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+
+//Outer Functions
+void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *StudentHead)
+{
+    ifstream fi(path + Filename);
     Head = new Course;
     Course *Dummy = Head;
     string CourseName;
@@ -184,11 +305,20 @@ void LoadLastCoursesData(Course *&Head, string Filename)
         fi >> d >> m >> y;
         Dummy->StartDate = Date({d, m, y});
         fi >> d >> m >> y;
+<<<<<<< Updated upstream
         Dummy->EndDate = Date({d, m, y});
         fi >> Dummy->FirstS.Day >> Dummy->FirstS.Ses;
         fi >> Dummy->SecondS.Day >> Dummy->SecondS.Ses;
         Dummy->FirstS.Init();
         Dummy->SecondS.Init();
+=======
+        Dummy->Info->EndDate = Date({d, m, y});
+        fi >> Dummy->Info->FirstS.Day >> Dummy->Info->FirstS.Ses;
+        fi >> Dummy->Info->SecondS.Day >> Dummy->Info->SecondS.Ses;
+        Dummy->Info->FirstS.Init();
+        Dummy->Info->SecondS.Init();
+        LoadLastCourseScoreBoardData(Dummy->Scoreboard, Dummy->Info, path + "CourseScoreBoard/", CourseName + ".txt", StudentHead);
+>>>>>>> Stashed changes
         fi.ignore();
     }
     Course *pD = Head;
@@ -328,4 +458,24 @@ void StaffWorkWithCourse(Course *&Head, string Filename)
             }
         }
     }
+}
+
+void RemoveAStudentFromACourse(Course *&CourseHead, CourseInfo *_Course, StudentInfo *_Student)
+{
+    Course *cur = CourseHead;
+    while (cur->Info != _Course) cur = cur->Next;
+    CourseScoreBoard *SB = cur->Scoreboard;
+    if (SB->Student == _Student)
+    {
+        CourseScoreBoard *pD = SB;
+        SB = SB->Next;
+        delete(pD->Score);
+        delete(pD);
+        return;
+    }
+    while (SB->Next->Student != _Student) SB = SB->Next;
+    CourseScoreBoard *pD = SB->Next;
+    SB->Next = SB->Next->Next;
+    delete(pD->Score);
+    delete(pD);
 }

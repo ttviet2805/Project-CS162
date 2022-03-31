@@ -1,4 +1,39 @@
-int main() {
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#include "StudentAndCourseHeader.h"
+
+Student *AllStudent;
+Course *AllCourse;
+
+void Test()
+{
+    string AllStudentInfoPath = "Savefile/Student/";
+    string AllStudentInfoFilename = "AllStudentInfo.txt";
+    string AllCourseInfoPath = "Savefile/Course/";
+    string AllCourseInfoFilename = "AllCourseInfo.txt";
+    LoadLastStudentData(AllStudent, AllStudentInfoPath, AllStudentInfoFilename);
+    LoadLastCoursesData(AllCourse, AllCourseInfoPath, AllCourseInfoFilename, AllStudent);
+
+    Student *User = AllStudent->FindStudentByID("21125007");
+    User->EnrollACourse(AllCourse);
+
+    AllStudent->SaveStudentsData(AllStudentInfoPath, AllStudentInfoFilename);
+    AllCourse->SaveCoursesData(AllCourseInfoPath, AllCourseInfoFilename);
+
+
+    DeleteAllCourse(AllCourse);
+    DeleteAllStudent(AllStudent);
+}
+
+int main()
+{
+    Test();
+    return 0;
+}
+
 	// Doc du lieu (File: nhi phan, text)
 	// Du lieu nam hoc: 2019-2020, 2020-2021, 2021-2022
 	// Du lieu lop hoc: 2019CTT1, 2019CTT2, 2020CTT1, 2020CTT2
@@ -33,4 +68,3 @@ int main() {
 				// chon lop -> chon sinh vien
 
 	// Ghi du lieu
-}
