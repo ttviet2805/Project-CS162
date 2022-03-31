@@ -5,11 +5,10 @@ using namespace std;
 
 #include "StudentAndCourseHeader.h"
 
-Student *AllStudent;
-Course *AllCourse;
-
 void Test()
 {
+	Student *AllStudent;
+	Course *AllCourse;
     string AllStudentInfoPath = "Savefile/Student/";
     string AllStudentInfoFilename = "AllStudentInfo.txt";
     string AllCourseInfoPath = "Savefile/Course/";
