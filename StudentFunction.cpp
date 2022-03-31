@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <unistd.h>
 
-#include "StudentHeader.h"
 #include "DateHeader.h"
+#include "StudentAndCourseHeader.h"
 
 using namespace std;
 
@@ -17,57 +18,166 @@ void Student::ShowStudentInfo() {
     cout << '\n';
 }
 
-void Student::EnrollACourse(Course* AddCourse) {
-    Course* NewCourse = new Course;
-    (*NewCourse) = (*AddCourse);
-    NewCourse->Next = nullptr;
-
-    (*NewCourse).ShowCourseInfo();
-
-    Course* cur = CourseHead;
-
-    while(cur && cur->Next) cur = cur->Next;
-
-    if(CourseHead) {
-        cout << CourseHead->Info->CourseID << ' ' << CourseHead->Info->CourseName << '\n';
+bool Student::FindACourseAlreadyRegisted(CourseInfo *Info)
+{
+    StudentScoreBoard *cur = ScoreBoard;
+    while (cur)
+    {
+        if (cur->Info == Info) return 1;
+        cur = cur->Next;
     }
+    return 0;
+}
 
-    cout << "Do you want to enroll this course\n";
-    cout << "If you want, please write YES, else write NO: ";
+int Student::CountNumberOfCoursesRegisted()
+{
+    StudentScoreBoard *cur = ScoreBoard;
+    int res = 0;
+    while (cur) res++, cur = cur->Next;
+    return res;
+}
 
-    string Option; cin >> Option;
-    if(Option == "YES") {
-        if(cur) cur->Next = NewCourse;
-        else {
-            CourseHead = NewCourse;
+void Student::EnrollACourse(Course *CourseHead) {
+    Course *cur = CourseHead;
+    system("cls");
+    while(cur)
+    {
+        if (CountNumberOfCoursesRegisted() > 5)
+        {
+            cout << "Maximum number of registed courses!";
+            system("pause");
+            return;
         }
-        if(CourseHead) {
-        cout << CourseHead->Info->CourseID << ' ' << CourseHead->Info->CourseName << '\n';
-    }
-        cout << "Enrollment Success\n";
-    }
-    else {
-        cout << "You have not enroll this Course\n";
+
+        if (FindACourseAlreadyRegisted(cur->Info))
+        {
+            cur = cur->Next;
+            continue;
+        }
+        cout << cur->Info->CourseID << ' ' << cur->Info->CourseName << '\n';
+
+        cout << "Do you want to enroll this course\n";
+        cout << "If you want, please write YES, else write NO: ";
+
+        string Option; cin >> Option;
+        if(Option == "YES")
+        {
+            StudentScoreBoard *New = new StudentScoreBoard;
+            New->Info = cur->Info;
+            New->Score = new CourseScore;
+            cur->AddANewStudent(Info, New->Score);
+            AddAStudentScoreBoard(New->Info, New->Score);
+            cout << "Enrollment Success\n";
+        }
+        else cout << "You have not enroll this Course\n";
+
+        cur = cur->Next;
     }
 }
 
-void Student::ViewAListOfEnrollCourse() {
+void Student::ViewAListOfEnrollCourse()
+{
+    system("cls");
     cout << "Here is List of Enroll Courses\n";
-    Course* cur = CourseHead;
+    StudentScoreBoard* cur = ScoreBoard;
 
     while(cur) {
-        (*cur).ShowCourseInfo();
+        cur->Info->ShowCourseInfo();
         cur = cur->Next;
-        cout << '\n';
     }
 
-    cout << '\n';
+    system("pause");
 }
 
-void Student::RemoveACourse(Course* DelCourse) {
-    Delete(CourseHead);
+void Student::RemoveACourse(Course *CourseHead) //CourseHead la list tat ca cac mon hoc
+{
+    if (CountNumberOfCoursesRegisted() == 0)
+    {
+        cout << "Not registed any courses!";
+        system("pause");
+        return;
+    }
+
+    StudentScoreBoard *cur = ScoreBoard;
+    system("cls");
+    while(cur)
+    {
+        cout << cur->Info->CourseID << ' ' << cur->Info->CourseName << '\n';
+
+        cout << "Do you want to remove this course\n";
+        cout << "If you want, please write YES, else write NO: ";
+
+        string Option; cin >> Option;
+        if(Option == "YES")
+        {
+            if (cur == ScoreBoard)
+            {
+                RemoveAStudentFromACourse(CourseHead, cur->Info, Info);
+                cur = cur->Next;
+                ScoreBoard = ScoreBoard->Next;
+            }
+            else
+            {
+                StudentScoreBoard *p = ScoreBoard;
+                while (p->Next != cur) p = p->Next;
+                RemoveAStudentFromACourse(CourseHead, cur->Info, Info);
+                cur = cur->Next;
+                p->Next = cur;
+            }
+            cout << "Remove Success\n";
+        }
+        else
+        {
+            cout << "You have not remove this Course\n";
+            cur = cur->Next;
+        }
+    }
 }
 
+Student *Student::FindStudentByID(string ID)
+{
+    Student *cur = this;
+    while (cur)
+    {
+        if (cur->Info->ID == ID) return cur;
+        cur = cur->Next;
+    }
+    return nullptr;
+}
+
+void Student::AddAStudentScoreBoard(CourseInfo *Info, CourseScore *Score)
+{
+    StudentScoreBoard *curSSB = ScoreBoard;
+    if (curSSB == nullptr)
+    {
+        curSSB = new StudentScoreBoard({Info, Score, nullptr});
+        return;
+    }
+    while (curSSB->Next) curSSB = curSSB->Next;
+    curSSB->Next = new StudentScoreBoard({Info, Score, nullptr});
+}
+
+void Student::SaveStudentsData(string path, string Filename)
+{
+    ofstream fo;
+    fo.open(path + Filename);
+    Student *cur = this;
+    while (cur)
+    {
+        fo << cur->Info->ID << '\n';
+        fo << cur->Info->FirstName << '\n';
+        fo << cur->Info->LastName << '\n';
+        fo << cur->Info->Gender << '\n';
+        fo << cur->Info->Dob.Day << " " << cur->Info->Dob.Month << " " << cur->Info->Dob.Year << '\n';
+        fo << cur->Info->SocialID << '\n';
+        fo << cur->Info->StudentClass << '\n';
+        cur = cur->Next;
+    }
+    fo.close();
+}
+/////////////////////////////////////
+
+//Outer Functions of student
 void DeleteAStudent(Student *&pD)
 {
     delete(pD->Info);
@@ -84,10 +194,10 @@ void DeleteAllStudent(Student *&Head)
     }
 }
 
-void LoadLastStudentData(Student *&Head, string Filename)
+void LoadLastStudentData(Student *&Head, string path, string Filename)
 {
     ifstream fi;
-    fi.open(Filename);
+    fi.open(path + Filename);
     if (!fi.is_open()) return;
 
     Head = new Student;
@@ -104,14 +214,9 @@ void LoadLastStudentData(Student *&Head, string Filename)
         fi.ignore();
         getline(fi, cur->Info->SocialID);
         getline(fi, cur->Info->StudentClass);
-        
     }
     Student *pD = Head;
     Head = Head->Next;
     delete (pD);
     fi.close();
 }
-
-
-
-
