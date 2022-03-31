@@ -20,7 +20,6 @@ class StudentInfo
         bool isFree[6][5]; // first dimension is the day of week, second dimension is session
 
         StudentInfo() {
-        numCredit = 0;
 
         for(int i = 0; i < 6; i++)
             for(int j = 0; j < 5; j++)
