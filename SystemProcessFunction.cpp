@@ -42,8 +42,7 @@ void systemProcess() {
         drawRectangleWithText(83, 5, 28, 7, "Course Result");
         drawRectangleWithText(9, 5 + 9, 28, 7, "Change Password");
         drawRectangleWithText(46, 5 + 9, 28, 7, "Log Out");
-        drawRectangleWithText(0, 0, 8, 3, "BACK");
-        gotoxy(1000, 1000);
+//        drawRectangleWithText(0, 0, 8, 3, "BACK");
 
         while(1) {
             // Mouse click in Student Profile
