@@ -7,51 +7,16 @@
 
 using namespace std;
 
-void LoadLastStudentData(Student *&Head, string Filename)
-{
-    ifstream fi;
-    fi.open(Filename);
-    if (!fi.is_open()) return;
-
-    Head = new Student;
-    Student *cur = Head;
-
-    while (!fi.eof())
-    {
-        cur->Next = new Student, cur = cur->Next;
-        getline(fi, cur->ID);
-        getline(fi, cur->FirstName);
-        getline(fi, cur->LastName);
-        getline(fi, cur->Gender);
-        fi >> cur->Dob.Day >> cur->Dob.Month >> cur->Dob.Year;
-        fi.ignore();
-        getline(fi, cur->SocialID);
-        getline(fi, cur->StudentClass);
-
-    }
-    Student *pD = Head;
-    Head = Head->Next;
-    delete (pD);
-    fi.close();
-}
-
-void Student::StudentInfo() {
-    cout << "StudentID: " << ID << '\n';
-    cout << "Name: " << FirstName << ' ' << LastName << '\n';
-    cout << "Gender: " << Gender << '\n';
+void Student::ShowStudentInfo() {
+    cout << "StudentID: " << Info->ID << '\n';
+    cout << "Name: " << Info->FirstName << ' ' << Info->LastName << '\n';
+    cout << "Gender: " << Info->Gender << '\n';
     cout << "Date of Birth: ";
-    Dob.OutputDate();
+    Info->Dob.OutputDate();
 
     cout << '\n';
 }
 
-<<<<<<< Updated upstream
-void Student::EnrollACourse(Course NewCourse) {
-    if(!CourseHead) {
-        CourseHead = &NewCourse;
-        return;
-    }
-=======
 bool Student::FindACourseAlreadyRegisted(CourseInfo *Info)
 {
     StudentScoreBoard *cur = ScoreBoard;
@@ -70,7 +35,6 @@ int Student::CountNumberOfCoursesRegisted()
     while (cur) res++, cur = cur->Next;
     return res;
 }
->>>>>>> Stashed changes
 
 void Student::EnrollACourse(Course *CourseHead) {
     Course *cur = CourseHead;
@@ -84,20 +48,6 @@ void Student::EnrollACourse(Course *CourseHead) {
             return;
         }
 
-<<<<<<< Updated upstream
-    while(cur->Next) cur = cur->Next;
-
-    cout << "Do you want to enroll this course\n";
-    cout << "If you want, please write YES, else write NO\n";
-
-    string Option; cin >> Option;
-    if(Option == "YES") {
-        NewCourse.CourseInfo();
-
-        Course* tmp = &NewCourse;
-        cur->Next = tmp;
-        cout << "Enroll Succesful\n";
-=======
         if (FindACourseAlreadyRegisted(cur->Info))
         {
             cur = cur->Next;
@@ -145,7 +95,6 @@ void Student::RemoveACourse(Course *CourseHead) //CourseHead la list tat ca cac 
         cout << "Not registed any courses!";
         system("pause");
         return;
->>>>>>> Stashed changes
     }
 
     StudentScoreBoard *cur = ScoreBoard;
@@ -184,21 +133,12 @@ void Student::RemoveACourse(Course *CourseHead) //CourseHead la list tat ca cac 
     }
 }
 
-<<<<<<< Updated upstream
-void Student::ViewAListOfEnrollCourse() {
-    cout << "Here is List of Enroll Courses\n";
-    Course* cur = CourseHead;
-
-    while(cur) {
-        (*cur).CourseInfo();
-=======
 Student *Student::FindStudentByID(string ID)
 {
     Student *cur = this;
     while (cur)
     {
         if (cur->Info->ID == ID) return cur;
->>>>>>> Stashed changes
         cur = cur->Next;
     }
     return nullptr;
@@ -216,11 +156,6 @@ void Student::AddAStudentScoreBoard(CourseInfo *Info, CourseScore *Score)
     curSSB->Next = new StudentScoreBoard({Info, Score, nullptr});
 }
 
-<<<<<<< Updated upstream
-void Student::RemoveACourse(Course DelCourse) {
-    Course* cur = CourseHead;
-    Course* pre = nullptr;
-=======
 void Student::SaveStudentsData(string path, string Filename)
 {
     ofstream fo;
@@ -247,33 +182,26 @@ void DeleteAStudent(Student *&pD)
     delete(pD->Info);
     delete(pD);
 }
->>>>>>> Stashed changes
 
-    while(cur) {
-        if(cur->CourseID == DelCourse.CourseID) {
-            cout << "You have removed this course\n";
+void DeleteAllStudent(Student *&Head)
+{
+    while (Head)
+    {
+        Student *pD = Head;
+        Head = Head->Next;
+        DeleteAStudent(pD);
+    }
+}
 
-<<<<<<< Updated upstream
-            if(pre) pre->Next = cur->Next;
-            else {
-                CourseHead = cur->Next;
-            }
-=======
 void LoadLastStudentData(Student *&Head, string path, string Filename)
 {
     ifstream fi;
     fi.open(path + Filename);
     if (!fi.is_open()) return;
->>>>>>> Stashed changes
 
-            delete cur;
-            return;
-        }
+    Head = new Student;
+    Student *cur = Head;
 
-<<<<<<< Updated upstream
-        pre = cur;
-        cur = cur->Next;
-=======
     while (!fi.eof())
     {
         cur->Next = new Student, cur = cur->Next;
@@ -285,14 +213,9 @@ void LoadLastStudentData(Student *&Head, string path, string Filename)
         fi.ignore();
         getline(fi, cur->Info->SocialID);
         getline(fi, cur->Info->StudentClass);
->>>>>>> Stashed changes
     }
-
-    cout << "We have not find this course\n";
+    Student *pD = Head;
+    Head = Head->Next;
+    delete (pD);
+    fi.close();
 }
-
-
-
-
-
-
