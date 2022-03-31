@@ -14,8 +14,6 @@ bool Login::match(char inputted[], char sN[]) {
 void Login::logout(char filename[]) {
     cout << "Log out success\n";
 	Login();
-
-	login(filename);
 }
 
 int Login::foundUsername(char FileName[]) {
@@ -82,6 +80,7 @@ void setLogInPosition() {
 void Login::login(char FileName[]) {
 
     while(1) {
+        ShowCur(1);
         setLogInPosition();
         // Login View
         gotoxy(47, 6);
@@ -91,6 +90,8 @@ void Login::login(char FileName[]) {
 
         gotoxy(57, 6);
         cin >> username;
+
+        ShowCur(0);
 
         gotoxy(57, 7);
         memset(password, 0, sizeof(password));

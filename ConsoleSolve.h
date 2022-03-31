@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -17,4 +19,10 @@ void SetColor(WORD color);
 void printAtXY(short x, short y, string Text);
 
 void SetColor(int backgound_color, int text_color);
+
+void drawRectangle(int X, int Y, int sizeX, int sizeY);
+
+void drawRectangleWithText(int X, int Y, int sizeX, int sizeY, string S);
+
+void ShowCur(bool CursorVisibility); // show cursor or not
 
