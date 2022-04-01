@@ -1,10 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <unistd.h>
 
-#include "DateHeader.h"
 #include "StudentAndCourseHeader.h"
+#include "DateHeader.h"
 
 using namespace std;
 
@@ -14,8 +13,8 @@ void Student::ShowStudentInfo() {
     cout << "Gender: " << Info->Gender << '\n';
     cout << "Date of Birth: ";
     Info->Dob.OutputDate();
-
-    cout << '\n';
+    cout << "Social ID: " << Info->SocialID << '\n';
+    cout << "Class: " << Info->StudentClass << '\n';
 }
 
 bool Student::FindACourseAlreadyRegisted(CourseInfo *Info)
@@ -37,7 +36,7 @@ int Student::CountNumberOfCoursesRegisted()
     return res;
 }
 
-void Student::EnrollACourse(Course *CourseHead) {
+void Student::EnrollACourse(Course *&CourseHead) {
     Course *cur = CourseHead;
     system("cls");
     while(cur)
@@ -89,7 +88,7 @@ void Student::ViewAListOfEnrollCourse()
     system("pause");
 }
 
-void Student::RemoveACourse(Course *CourseHead) //CourseHead la list tat ca cac mon hoc
+void Student::RemoveACourse(Course *&CourseHead) //CourseHead la list tat ca cac mon hoc
 {
     if (CountNumberOfCoursesRegisted() == 0)
     {
@@ -150,7 +149,7 @@ void Student::AddAStudentScoreBoard(CourseInfo *Info, CourseScore *Score)
     StudentScoreBoard *curSSB = ScoreBoard;
     if (curSSB == nullptr)
     {
-        curSSB = new StudentScoreBoard({Info, Score, nullptr});
+        ScoreBoard = new StudentScoreBoard({Info, Score, nullptr});
         return;
     }
     while (curSSB->Next) curSSB = curSSB->Next;
@@ -203,10 +202,11 @@ void LoadLastStudentData(Student *&Head, string path, string Filename)
     Head = new Student;
     Student *cur = Head;
 
-    while (!fi.eof())
+    string tmpID;
+    while (!fi.eof() && getline(fi, tmpID))
     {
         cur->Next = new Student, cur = cur->Next;
-        getline(fi, cur->Info->ID);
+        cur->Info->ID = tmpID;
         getline(fi, cur->Info->FirstName);
         getline(fi, cur->Info->LastName);
         getline(fi, cur->Info->Gender);
@@ -220,3 +220,7 @@ void LoadLastStudentData(Student *&Head, string path, string Filename)
     delete (pD);
     fi.close();
 }
+
+
+
+

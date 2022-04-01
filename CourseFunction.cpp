@@ -66,9 +66,11 @@ void CourseScoreBoard::ShowCourseScoreBoard()
     Score->ShowCourseScore();
 }
 
-void LoadLastCourseScoreBoardData(CourseScoreBoard *ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename, Student *StudentHead)
+void LoadLastCourseScoreBoardData(CourseScoreBoard *&ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename, Student *&StudentHead)
 {
-    ifstream fi(path + Filename);
+    ifstream fi;
+    fi.open(path + Filename);
+    if (!fi.is_open()) return;
     string ID;
     ScoreBoard = new CourseScoreBoard;
     CourseScoreBoard *cur = ScoreBoard;
@@ -85,7 +87,6 @@ void LoadLastCourseScoreBoardData(CourseScoreBoard *ScoreBoard, CourseInfo *_Cou
     }
     CourseScoreBoard *pD = ScoreBoard;
     ScoreBoard = ScoreBoard->Next;
-    delete(pD->Score);
     delete(pD);
     fi.close();
 }
@@ -260,7 +261,7 @@ void Course::AddANewStudent(StudentInfo *SI, CourseScore *CS)
     CourseScoreBoard *NewBoard = new CourseScoreBoard;
     NewBoard->Student = SI;
     NewBoard->Score = CS;
-    if (Tail == nullptr) Tail = NewBoard;
+    if (Tail == nullptr) Scoreboard = NewBoard;
         else Tail->Next = NewBoard;
 }
 
@@ -268,7 +269,7 @@ void Course::AddANewStudent(StudentInfo *SI, CourseScore *CS)
 
 
 //Outer Functions
-void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *StudentHead)
+void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *&StudentHead)
 {
     ifstream fi(path + Filename);
     Head = new Course;

@@ -111,9 +111,9 @@ class Student {
         void ShowStudentInfo();
         bool FindACourseAlreadyRegisted(CourseInfo *Info);
         int CountNumberOfCoursesRegisted();
-        void EnrollACourse(Course *CourseHead); //CourseHead la danh sach tat ca cac mon hoc
+        void EnrollACourse(Course *&CourseHead); //CourseHead la danh sach tat ca cac mon hoc
         void ViewAListOfEnrollCourse();
-        void RemoveACourse(Course *CourseHead);
+        void RemoveACourse(Course *&CourseHead);
         Student *FindStudentByID(string ID);
         void AddAStudentScoreBoard(CourseInfo *Info, CourseScore *Score);
         void SaveStudentsData(string path, string Filename); //chi save student info, khong save scoreboard,
@@ -126,7 +126,7 @@ void LoadLastStudentData(Student *&Head, string path, string Filename);
 //////////////////////////////////
 
 
-void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *StudentHead);
-void LoadLastCourseScoreBoardData(CourseScoreBoard *ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename);
+void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *&StudentHead);
+void LoadLastCourseScoreBoardData(CourseScoreBoard *&ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename, Student *&StudentHead);
 
 #endif // STUDENTHEADER_H_INCLUDED
