@@ -247,6 +247,12 @@ void Course::SaveCoursesData(string path, string Filename)
         fo << Cur->Info->EndDate.Day << " " << Cur->Info->EndDate.Month << " " << Cur->Info->EndDate.Year << '\n';
         fo << Cur->Info->FirstS.Day << " " << Cur->Info->FirstS.Ses << '\n';
         fo << Cur->Info->SecondS.Day << " " << Cur->Info->SecondS.Ses << '\n';
+        Cur = Cur->Next;
+    }
+
+    Cur = this;
+    while (Cur)
+    {
         Cur->SaveCourseScoreBoard(path + "CourseScoreBoard/", Cur->Info->CourseName + ".txt");
         Cur = Cur->Next;
     }
