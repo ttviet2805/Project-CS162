@@ -4,9 +4,11 @@
 using namespace std;
 
 #include "StudentAndCourseHeader.h"
+#include "ClassHeader.h"
 
 Student *AllStudent;
 Course *AllCourse;
+Class *AllClass;
 
 void Test()
 {
@@ -14,10 +16,16 @@ void Test()
     string AllStudentInfoFilename = "AllStudentInfo.txt";
     string AllCourseInfoPath = "Savefile/Course/";
     string AllCourseInfoFilename = "AllCourseInfo.txt";
+    string AllClassInfoPath = "Savefile/Class/";
+    string AllClassInfoFilename = "AllClassInfo.txt";
 
-
+    //Note:
+    //Luon uu tien load all students truoc
+    //Courses va Classes uu tien nhu nhau
+    //Do ben Student qua nhieu thong tin nen se giam bot ben Class, muon ben AllStudents qua Class
     LoadLastStudentData(AllStudent, AllStudentInfoPath, AllStudentInfoFilename);
     LoadLastCoursesData(AllCourse, AllCourseInfoPath, AllCourseInfoFilename, AllStudent);
+    LoadLastClassData(AllClass, AllClassInfoPath, AllClassInfoFilename, AllStudent);
 
     AllStudent->ShowStudentInfo();
 
@@ -28,9 +36,11 @@ void Test()
 
     AllStudent->SaveStudentsData(AllStudentInfoPath, AllStudentInfoFilename);
     AllCourse->SaveCoursesData(AllCourseInfoPath, AllCourseInfoFilename);
+    AllClass->SaveClassData(AllClassInfoPath, AllClassInfoFilename);
 
     DeleteAllCourse(AllCourse);
     DeleteAllStudent(AllStudent);
+    DeleteAllClass(AllClass);
 }
 
 int main()
@@ -38,6 +48,7 @@ int main()
     Test();
     return 0;
 }
+
 
 // Doc du lieu (File: nhi phan, text)
 // Du lieu nam hoc: 2019-2020, 2020-2021, 2021-2022
