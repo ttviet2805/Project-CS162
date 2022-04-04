@@ -1,0 +1,21 @@
+Introduction to computer science
+CS162
+Dinh Ba Tien
+1 1 2022
+4 4 2022
+TUE S1
+SAR S1
+Calculus II
+MTH252
+Nguyen Huu Anh
+1 1 2022
+4 4 2022
+TUE S2
+THU S2
+General Physic II
+GP2
+Nguyen Huu Nha
+1 1 2022
+4 4 2022
+WED S3
+THU S3
