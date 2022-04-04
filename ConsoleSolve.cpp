@@ -70,7 +70,7 @@ void ShowCur(bool CursorVisibility)
     SetConsoleCursorInfo(handle, &ConCurInf);
 }
 
-void TextColor(int color)
+void changeTextColor(int color)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
