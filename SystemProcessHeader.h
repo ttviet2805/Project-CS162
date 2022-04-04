@@ -1,8 +1,12 @@
 #pragma once
 
-#include "StudentAndCourseHeader.h"
-#include "LoginHeader.h"
-#include "ConsoleSolve.h"
-#include "MouseConsoleFunction.h"
+#include <iostream>
+#include <fstream>
 
-void systemProcess();
+using namespace std;
+
+#include "MouseHeader.h"
+#include "LoginHeader.h"
+#include "StudentAndCourseHeader.h"
+
+void SystemProcess();

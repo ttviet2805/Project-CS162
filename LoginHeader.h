@@ -3,53 +3,46 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include"Utils.h"
-#include"Const.h"
-#include"ViewInfo.h"
-using namespace std;
+#include <cstring>
 
 using namespace std;
+
+const string defaultPass = "123456";
 
 class Account {
 public:
-    char username[50];
-    char password[50];
+    string username;
+    string password = defaultPass;
 
-    Account* Next;
-
-    Account() {
-        Next = nullptr;
-    }
+    Account* Next = nullptr;
 };
 
 // File txt of Login: username -> password -> username -> password -> ...
 class Login {
 private:
-	char username[50];
-	char* password;
-	static const char defaultPass = '1';
-
     // return 0 if can not find the Account File
     // return 1 if find the account
     // return 2 if can not find the account
-	int foundUsername(char filename[]);
-	bool match(char inputted[], char sN[]); // to check if 2 string equal together
+	int foundUsername(string filename);
+	bool match(string a, string b); // to check if 2 string equal together
 
-	int changePasswordInit(char filename[]);
+	int changePasswordInit(string filename);
 
 public:
-    Login() {
-	    delete password;
-        memset(username, 0, sizeof(username));
-        password = new char[50];
+    Account userAccount;
+	int stt;//so thu tu cua hoc sinh trong file
+	int type;//student/lecturer/staff
+
+	Login() {
+        userAccount.username = "";
+        userAccount.password = "";
         stt = -1;
         type = 1;
 	}
 
-	int stt;//so thu tu cua hoc sinh trong file
-	int type;//student/lecturer/staff
-	void login(char fileName[]); // login system
-	void logout(char fileName[]);
-	void changePassword(char filename[]);
+	void login(string fileName); // login system
+	void logout(string fileName);
+	void changePassword(string filename);
 };
 #endif
+

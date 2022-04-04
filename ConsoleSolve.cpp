@@ -59,42 +59,6 @@ void SetColor(WORD color)
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 
-void drawRectangle(int X, int Y, int sizeX, int sizeY) {
-	gotoxy(X, Y);
-
-	for(int i = X; i <= X + sizeX - 1; i++) cout << char(219);
-
-	gotoxy(X, Y + sizeY - 1);
-
-	for(int i = X; i <= X + sizeX - 1; i++) cout << char(219);
-
-	for(int i = Y; i <= Y + sizeY - 1; i++) {
-		gotoxy(X, i);
-		cout << char(219);
-	}
-
-	for(int i = Y; i <= Y + sizeY - 1; i++) {
-		gotoxy(X + sizeX - 1, i);
-		cout << char(219);
-	}
-}
-
-void drawRectangleWithText(int X, int Y, int sizeX, int sizeY, string S) {
-    drawRectangle(X, Y, sizeX, sizeY);
-
-    int middlePointX = X + sizeX / 2 - 1, middlePointY = Y + sizeY / 2;
-
-    if(sizeX % 2 == 0) {
-        if(S.size() % 2 == 0)
-            gotoxy(middlePointX - S.size() / 2 + 1, middlePointY);
-        else
-            gotoxy(middlePointX - S.size() / 2, middlePointY);
-    }
-    else
-        gotoxy(middlePointX - S.size() / 2 + 1, middlePointY);
-    cout << S;
-}
-
 void ShowCur(bool CursorVisibility)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -105,3 +69,9 @@ void ShowCur(bool CursorVisibility)
 
     SetConsoleCursorInfo(handle, &ConCurInf);
 }
+
+void TextColor(int color)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
