@@ -65,8 +65,8 @@ class StudentScoreBoard
 class CourseScoreBoard
 {
     public:
-        StudentInfo *Student;
-        CourseScore *Score;
+        StudentInfo *Student = nullptr;
+        CourseScore *Score = nullptr;
         CourseScoreBoard *Next = nullptr;
 
         void ShowCourseScoreBoard();
@@ -79,7 +79,7 @@ class CourseScoreBoard
 class Course {
 	public:
         CourseInfo *Info = new CourseInfo; //thong tin chung cua course
-        CourseScoreBoard *Scoreboard; //nhieu scoreboard, moi scoreboard gom` thong tin sv va diem cua sv
+        CourseScoreBoard *Scoreboard = nullptr; //nhieu scoreboard, moi scoreboard gom` thong tin sv va diem cua sv
         Course *Next = nullptr;
 
         void ShowCourseInfo();
