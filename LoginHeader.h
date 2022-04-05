@@ -30,18 +30,18 @@ private:
 
 public:
     Account userAccount;
-	int stt;//so thu tu cua hoc sinh trong file
+	int numID;//so thu tu cua hoc sinh trong file
 	int type;//student/lecturer/staff
 
 	Login() {
         userAccount.username = "";
         userAccount.password = "";
-        stt = -1;
+        numID = -1;
         type = 1;
 	}
 
 	void login(string fileName); // login system
-	void logout(string fileName);
+	void logout();
 	void changePassword(string filename);
 };
 #endif

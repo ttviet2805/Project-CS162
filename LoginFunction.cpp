@@ -11,7 +11,7 @@ bool Login::match(string a, string b) {
 	return true;
 }
 
-void Login::logout(string filename) {
+void Login::logout() {
     cout << "Log out success\n";
 	Login();
 }
@@ -24,7 +24,7 @@ int Login::foundUsername(string FileName) {
         string errorService = "Sorry, our service encountered an error, please retry!";
         gotoxy(midScreen - errorService.size() / 2 + 1, 11);
         cout << errorService;
-        Sleep(2000);
+        Sleep(3000);
         clrscr();
         return 0;
     }
@@ -39,7 +39,7 @@ int Login::foundUsername(string FileName) {
         fin >> curPassword;
 
         if(match(curUserName, userAccount.username) && match(curPassword, userAccount.password)) {
-            stt = numAccount;
+            numID = numAccount;
             fin.close();
             return 1;
         }
@@ -137,108 +137,91 @@ void Login::changePassword(string filename) {
 		else cout << "Wrong password, please retype: ";
 	}
 
-
 	changePasswordInit(filename);
 }
 
 int Login::changePasswordInit(string filename) {
-//	ifstream in;
-//	in.open(filename);
-//
-//	if (!in.is_open()) {
-//		cout << "Sorry, our service encountered an error, please retry!" << endl;
-//		return 0;
-//	}
-//
-//    // to get the data from Account File
-//	Account* accountHead = nullptr;
-//	Account* Dummy = new Account;
-//	Dummy->Next = nullptr;
-//	Account* curDummy = Dummy;
-//
-//    while(!in.eof()) {
-//        char tmpUsername[50];
-//        char tmpPassword[50];
-//        in >> tmpUsername;
-//        in >> tmpPassword;
-//
-//        curDummy->Next = new Account;
-//        strcpy(curDummy->Next->username, tmpUsername);
-//        strcpy(curDummy->Next->password, tmpPassword);
-//        curDummy = curDummy->Next;
-//    }
-//
-//    curDummy->Next = nullptr;
-//
-//    accountHead = Dummy->Next;
-//
-//    in.close();
-//
-//	cout << "Type in your new password, password must be at least 6 characters" << endl;
-//	cout << "New password: ";
-//	char newP[200];
-//	while(1) {
-//		cin >> newP;
-//		if (strlen(newP) < 6) {
-//			cout << "Password must be at least 6 characters!" << endl << "Retype: ";
-//		}
-//		else if (match(password, newP)) {
-//			cout << "New password must differ from your old password" << endl << "Retype: ";
-//		}
-//		else break;
-//	};
-//
-//	cout << "Password changed successfully!" << endl;
-//	//append new password to position at stt
-//
-//    fstream fout;
-//    fout.open(filename, ios::out | ios::trunc);
-//    int cnt = 0;
-//
-//    Account* accountCur = accountHead;
-//
-//    if(accountCur) {
-//        ++cnt;
-//
-//        if(cnt != stt) {
-//            fout << accountCur->username << '\n';
-//            fout << accountCur->password;
-//        }
-//        else {
-//            fout << accountCur->username << '\n';
-//            fout << newP;
-//        }
-//
-//        accountCur = accountCur->Next;
-//    }
-//
-//    while(accountCur) {
-//        ++cnt;
-//
-//        fout << '\n';
-//        if(cnt != stt) {
-//            fout << accountCur->username << '\n';
-//            fout << accountCur->password;
-//        }
-//        else {
-//            fout << accountCur->username << '\n';
-//            fout << newP;
-//        }
-//
-//        accountCur = accountCur->Next;
-//    }
-//
-//
-//    accountCur = accountHead;
-//
-//    while(accountCur) {
-//        Account* Del = accountCur;
-//        accountCur = accountCur->Next;
-//
-//        delete Del;
-//    }
-//
-//    fout.close();
-//
-//	return 1;
+	ifstream in;
+	in.open(filename);
+
+	if (!in.is_open()) {
+		cout << "Sorry, our service encountered an error, please retry!" << endl;
+		return 0;
+	}
+
+    // to get the data from Account File
+	Account* accountHead = nullptr;
+	Account* Dummy = new Account;
+	Account* curDummy = Dummy;
+
+    while(!in.eof()) {
+        string tmpUsername;
+        string tmpPassword;
+        getline(in, tmpUsername);
+        getline(in, tmpPassword);
+
+        curDummy->Next = new Account;
+        curDummy->Next->username = tmpUsername;
+        curDummy->Next->password = tmpPassword;
+        curDummy = curDummy->Next;
+    }
+
+    curDummy->Next = nullptr;
+
+    accountHead = Dummy->Next;
+
+    in.close();
+
+	cout << "Type in your new password, password must be at least 6 characters" << endl;
+	cout << "New password: ";
+	string newP;
+	while(1) {
+		getline(cin, newP);
+		if (newP.size() < 6) {
+			cout << "Password must be at least 6 characters!" << endl << "Retype: ";
+		}
+		else if (match(userAccount.password, newP)) {
+			cout << "New password must differ from your old password" << endl << "Retype: ";
+		}
+		else break;
+	};
+
+	cout << "Password changed successfully!" << endl;
+	//append new password to position at numID
+
+    fstream fout;
+    fout.open(filename, ios::out | ios::trunc);
+    int cnt = 0;
+
+    Account* accountCur = accountHead;
+
+    while(accountCur) {
+        ++cnt;
+        cout << accountCur->username << ' ' << accountCur->password << endl;
+
+        if(cnt != numID) {
+            fout << accountCur->username << '\n';
+            fout << accountCur->password;
+        }
+        else {
+            fout << accountCur->username << '\n';
+            fout << newP;
+        }
+
+        fout << '\n';
+        accountCur = accountCur->Next;
+    }
+
+    accountCur = accountHead;
+
+    while(accountCur) {
+        Account* Del = accountCur;
+        accountCur = accountCur->Next;
+
+        delete Del;
+    }
+
+    fout.close();
+
+	return 1;
 }
