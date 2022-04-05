@@ -23,7 +23,23 @@ void Button::drawRectangleWithText() {
     int posY = Y + sizeY / 2;
     int posX = X + sizeX / 2 - Text.size() / 2;
 
-    gotoxy(posX, posY);
+    // 4 2
+    if(sizeX % 2 == 0 && Text.size() % 2 == 0) {
+        gotoxy(posX, posY);
+    }
+    // 4 1
+    if(sizeX % 2 == 0 && Text.size() % 2 == 1) {
+        gotoxy(posX - 1, posY);
+    }
+    // 3 2
+    if(sizeX % 2 == 1 && Text.size() % 2 == 0) {
+        gotoxy(posX, posY);
+    }
+    // 3 1
+    if(sizeX % 2 == 1 && Text.size() % 2 == 1) {
+        gotoxy(posX, posY);
+    }
+
     cout << Text;
 }
 
@@ -42,4 +58,17 @@ void addButtonEnd(Button* &buttonHead, Button* addButton) {
 
 bool Button::isInButton(int curX, int curY) {
     return (X <= curX && curX <= X + sizeX - 1 && Y <= curY && curY <= Y + sizeY - 1);
+}
+
+void Button::fillRectangle() {
+    const int rectChar = 219;
+
+    changeTextColor(color);
+
+    for(int i = X; i <= X + sizeX - 1; i++) {
+        for(int j = Y; j <= Y + sizeY - 1; j++) {
+            gotoxy(i, j);
+            cout << char(rectChar);
+        }
+    }
 }

@@ -11,6 +11,21 @@ string AllStudentUserPath = "Savefile/User/";
 string AllStudentUserFilename = "StudentUser.txt";
 
 void myProfileFunction(Student* curStudent) {
+//    string studentID = "Student ID";
+//    string firstName = "First Name";
+//    string lastName = "Last Name";
+//    string gender = "gender";
+//    string Dob = "Date of Birth";
+//    string socialID = "Social ID";
+//    string Class = "Class";
+//
+//    changeTextColor(11);
+//    Button profileButton = Button(19, 5, 80, 3, "MY PROFILE");
+//    profileButton.drawRectangleWithText();
+//
+//    Button profileBackground = Button(19, 9, 80, 15, "");
+//    profileBackground.color = 8;
+//    profileBackground.fillRectangle();
     curStudent->ShowStudentInfo();
 }
 
@@ -31,12 +46,14 @@ void logOutFunction(Login &loginSystem) {
 }
 
 void SystemProcess() {
+    changeTextColor(8);
+
     Login loginSystem;
 
     while(1) {
         clrscr();
+
         COORD mousePos;
-        ShowCur(1);
         Student *AllStudent = nullptr;
         Course *AllCourse = nullptr;
 
@@ -93,7 +110,7 @@ void SystemProcess() {
             printAtXY(120 - studentName.size() - 1, 0, studentName);
 
             // draw all Button
-            changeTextColor(9);
+            changeTextColor(11);
             Button* curButton = buttonHead;
 
             while(curButton) {
@@ -101,8 +118,23 @@ void SystemProcess() {
                 curButton = curButton->Next;
             }
 
-            while(!getMousePosition(mousePos));
+            while(1) {
+                if(getMousePosition(mousePos)) {
+                    curButton = buttonHead;
+                    bool isClickInButton = false;
+
+                    while(curButton) {
+                        if(curButton->isInButton(mousePos.X, mousePos.Y)) isClickInButton = true;
+                        curButton = curButton->Next;
+                    }
+
+                    if(isClickInButton) break;
+                }
+            }
+
             clrscr();
+
+            gotoxy(0, 5);
 
             curButton = buttonHead;
             int cnt = 0;
@@ -148,11 +180,13 @@ void SystemProcess() {
 
             if(isLogOut) break;
 
-            gotoxy(55, 30);
-            cout << "Press 0 to Back: ";
-            int n;
-            while(cin >> n) {
-                if(n == 0) break;
+            Button backButton = Button(0, 0, 8, 3, "BACK");
+            changeTextColor(4);
+            backButton.drawRectangleWithText();
+
+            while(1) {
+                if(getMousePosition(mousePos) && backButton.isInButton(mousePos.X, mousePos.Y))
+                    break;
             }
         }
     }

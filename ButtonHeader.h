@@ -23,6 +23,8 @@ public:
     void drawRectangleWithText();
 
     bool isInButton(int curX, int curY);
+
+    void fillRectangle();
 };
 
 void addButtonEnd(Button* &buttonHead, Button* addButton);
