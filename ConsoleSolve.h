@@ -14,13 +14,13 @@ void clrscr(void);
 
 void gotoxy(short x,short y);
 
-void SetColor(WORD color);
+void changeTextColor(WORD color);
 
 void printAtXY(short x, short y, string Text);
 
-void SetColor(int backgound_color, int text_color);
+void printATXYWithBackGround(short x, short y, int backgroundColor, int textColor, string Text);
 
-void changeTextColor(int color);
+void SetColor(int backgound_color, int text_color);
 
 void ShowCur(bool CursorVisibility); // show cursor or not
 

@@ -43,7 +43,7 @@ void printAtXY(short x, short y, string Text) {
     cout << Text << ' ';
 }
 
-void SetColor(WORD color)
+void changeTextColor(WORD color)
 {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -70,8 +70,12 @@ void ShowCur(bool CursorVisibility)
     SetConsoleCursorInfo(handle, &ConCurInf);
 }
 
-void changeTextColor(int color)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+void printATXYWithBackGround(short x, short y, int backgroundColor, int textColor, string Text) {
+    gotoxy(x, y);
+    SetBGColor(backgroundColor);
+    changeTextColor(textColor);
+    cout << Text;
+    SetBGColor(0);
+    changeTextColor(15);
 }
 
