@@ -25,6 +25,8 @@ public:
     bool isInButton(int curX, int curY);
 
     void fillRectangle();
+
+    void fillRectangleWithText(int backgroundColor, int textColor);
 };
 
 void addButtonEnd(Button* &buttonHead, Button* addButton);

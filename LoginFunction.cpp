@@ -2,6 +2,7 @@
 
 #include"LoginHeader.h"
 #include "ConsoleSolve.h"
+#include "ButtonHeader.h"
 
 bool Login::match(string a, string b) {
 	if (a.size() != b.size()) return false;
@@ -12,7 +13,6 @@ bool Login::match(string a, string b) {
 }
 
 void Login::logout() {
-    cout << "Log out success\n";
 	Login();
 }
 
@@ -80,10 +80,10 @@ void setLogInPosition() {
 void Login::login(string FileName) {
 
     while(1) {
-        ShowCur(1);
         setLogInPosition();
         // Login View
         gotoxy(47, 6);
+        ShowCur(1);
         cout << "Username: ";
         gotoxy(47, 7);
         cout << "Password: ";
@@ -94,6 +94,7 @@ void Login::login(string FileName) {
         ShowCur(0);
 
         gotoxy(57, 7);
+        ShowCur(1);
 
         // login with print * in password
         string pass = "";
@@ -108,6 +109,8 @@ void Login::login(string FileName) {
             ch = _getch();
         }
 
+        ShowCur(0);
+
         userAccount.password = pass;
 
         cout << '\n';
@@ -115,7 +118,7 @@ void Login::login(string FileName) {
         int loginState = foundUsername(FileName);
 
         if(loginState == 1) {
-            string successLogin = "You have login successful\n";
+            string successLogin = "LOGIN SUCCESSFUL\n";
             gotoxy(midScreen - successLogin.size() / 2 + 1, 11);
             cout << successLogin;
             Sleep(2000);
@@ -127,17 +130,30 @@ void Login::login(string FileName) {
 }
 
 void Login::changePassword(string filename) {
-	cout << "******Change password******" << endl;
+    while(1) {
+        clrscr();
+        changeTextColor(11);
+        Button changePasswordButton = Button(19, 5, 80, 3, "Change Password");
+        changePasswordButton.drawRectangleWithText();
 
-	cout << "Please, retype your password again: ";
-	string oldP;
-	while(1) {
-		getline(cin, oldP);
-		if (match(userAccount.password, oldP)) break;
-		else cout << "Wrong password, please retype: ";
-	}
+        const int startX = 19, startY = 9;
+        gotoxy(startX, startY);
+        cout << "Please, retype your password again: ";
+        ShowCur(1);
 
-	changePasswordInit(filename);
+        string oldP;
+        getline(cin, oldP);
+        if (match(userAccount.password, oldP)) {
+            if(changePasswordInit(filename)) break;
+        }
+        else {
+            gotoxy(startX, startY + 1);
+            cout << "Wrong password, please retype: ";
+            Sleep(3000);
+        }
+    }
+
+    ShowCur(0);
 }
 
 int Login::changePasswordInit(string filename) {
@@ -172,21 +188,28 @@ int Login::changePasswordInit(string filename) {
 
     in.close();
 
+    gotoxy(19, 10);
 	cout << "Type in your new password, password must be at least 6 characters" << endl;
+	gotoxy(19, 11);
 	cout << "New password: ";
 	string newP;
-	while(1) {
-		getline(cin, newP);
-		if (newP.size() < 6) {
-			cout << "Password must be at least 6 characters!" << endl << "Retype: ";
-		}
-		else if (match(userAccount.password, newP)) {
-			cout << "New password must differ from your old password" << endl << "Retype: ";
-		}
-		else break;
-	};
+    getline(cin, newP);
+
+    gotoxy(19, 12);
+
+    if (newP.size() < 6) {
+        cout << "Password must be at least 6 characters!";
+        Sleep(3000);
+        return 0;
+    }
+    else if (match(userAccount.password, newP)) {
+        cout << "New password must differ from your old password";
+        Sleep(3000);
+        return 0;
+    }
 
 	cout << "Password changed successfully!" << endl;
+	Sleep(3000);
 	//append new password to position at numID
 
     fstream fout;
@@ -197,7 +220,6 @@ int Login::changePasswordInit(string filename) {
 
     while(accountCur) {
         ++cnt;
-        cout << accountCur->username << ' ' << accountCur->password << endl;
 
         if(cnt != numID) {
             fout << accountCur->username << '\n';

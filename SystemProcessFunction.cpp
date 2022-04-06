@@ -70,7 +70,59 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
 }
 
 void viewAListOfEnrolledCourseFunction(Student* curStudent) {
-    curStudent->ViewAListOfEnrollCourse();
+    changeTextColor(11);
+    Button profileButton = Button(19, 4, 80, 3, "View A List Of Enrolled Courses");
+    profileButton.drawRectangleWithText();
+
+    changeTextColor(11);
+
+    gotoxy(10, 9);
+    cout << "ID";
+    gotoxy(15, 9);
+    cout << "Course ID";
+    gotoxy(30, 9);
+    cout << "Course Name";
+    gotoxy(69, 9);
+    cout << "Number Of";
+    gotoxy(69, 10);
+    cout << "Credits";
+    gotoxy(81, 9);
+    cout << "Course Time";
+    gotoxy(96, 9);
+    cout << "Lecture Name";
+
+    const int startX = 10, startY = 12;
+
+    int cnt = 0;
+    StudentScoreBoard* cur = curStudent->ScoreBoard;
+
+    while(cur) {
+        ++cnt;
+
+        gotoxy(startX, startY + (cnt - 1) * 5);
+        cout << cnt;
+
+        gotoxy(startX + 5, startY + (cnt - 1) * 5);
+        cout << cur->Info->CourseID;
+
+        gotoxy(startX + 20, startY + (cnt - 1) * 5);
+        cout << cur->Info->CourseName;
+
+        gotoxy(startX + 63, startY + (cnt - 1) * 5);
+        cout << 0;
+
+        Session S1 = cur->Info->FirstS;
+        Session S2 = cur->Info->SecondS;
+        gotoxy(startX + 71, startY + (cnt - 1) * 5);
+        cout << "S1" << ": " << S1.Day << ' ' << S1.Hour << ": " << S1.Mins;
+        gotoxy(startX + 71, startY + 1 + (cnt - 1) * 5);
+        cout << "S2" << ": " << S2.Day << ' ' << S2.Hour << ": " << S2.Mins;
+
+        gotoxy(startX + 86, startY + (cnt - 1) * 5);
+        cout << cur->Info->LecturerName;
+
+        cur = cur->Next;
+    }
 }
 
 void changePasswordFunction(Login &loginSystem) {
