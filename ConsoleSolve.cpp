@@ -81,7 +81,7 @@ void printATXYWithBackGround(short x, short y, int backgroundColor, int textColo
 
 void loadingFunction(int X, int Y) {
     string loadingText = "Loading";
-    gotoxy(X + 12, Y);
+    gotoxy(X + 11, Y);
     cout << loadingText;
 
     gotoxy(X, Y + 1);

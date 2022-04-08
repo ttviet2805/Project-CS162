@@ -170,7 +170,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
     curPos = {startX + 103, startY};
     changeTextColor(4);
 
-    string Text = "Print Save to save: ";
+    string Text = "Enter Save to save: ";
     gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5);
     cout << Text;
 
@@ -190,6 +190,91 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
                     enrollCourseFunction(curStudent, AllCourse);
                     return;
                 }
+
+                bool isDuplicated = false;
+
+                Course* tmpCourse1 = AllCourse;
+                int numOverlap = 0;
+
+                for(int i = 1; i <= cnt; i++) {
+                    Course* tmpCourse2 = tmpCourse1->Next;
+
+                    for(int j = i + 1; j <= cnt; j++) {
+                        if(optionState[i] != '1' || optionState[j] != '1') {
+                            tmpCourse2 = tmpCourse2->Next;
+                            continue;
+                        }
+                        Session courseSes1 = tmpCourse1->Info->FirstS;
+                        Session courseSes2 = tmpCourse1->Info->SecondS;
+                        string DayCourse1S1 = courseSes1.Day;
+                        string DayCourse1S2 = courseSes2.Day;
+                        string SesCourse1S1 = courseSes1.Ses;
+                        string SesCourse1S2 = courseSes2.Ses;
+
+                        courseSes1 = tmpCourse2->Info->FirstS;
+                        courseSes2 = tmpCourse2->Info->SecondS;
+                        string DayCourse2S1 = courseSes1.Day;
+                        string DayCourse2S2 = courseSes2.Day;
+                        string SesCourse2S1 = courseSes1.Ses;
+                        string SesCourse2S2 = courseSes2.Ses;
+
+                        if((DayCourse1S1 == DayCourse2S1 && SesCourse1S1 == SesCourse2S1)) {
+                            numOverlap++;
+                            isDuplicated = true;
+                            string warningOverlap = tmpCourse1->Info->CourseName + " and " + tmpCourse2->Info->CourseName + " are overlap";
+                            gotoxy(middleScreenX - warningOverlap.size() / 2, startY + (cnt) * 5 + 2 + numOverlap);
+                            cout << warningOverlap;
+                            tmpCourse2 = tmpCourse2->Next;
+                            continue;
+                        }
+
+                        if(DayCourse1S1 == DayCourse2S2 && SesCourse1S1 == SesCourse2S2) {
+                            numOverlap++;
+                            isDuplicated = true;
+                            string warningOverlap = tmpCourse1->Info->CourseName + " and " + tmpCourse2->Info->CourseName + " are overlap";
+                            gotoxy(middleScreenX - warningOverlap.size() / 2, startY + (cnt) * 5 + 2 + numOverlap);
+                            cout << warningOverlap;
+                            tmpCourse2 = tmpCourse2->Next;
+                            continue;
+                        }
+
+                        if(DayCourse1S2 == DayCourse2S1 && SesCourse1S2 == SesCourse2S1) {
+                            numOverlap++;
+                            isDuplicated = true;
+                            string warningOverlap = tmpCourse1->Info->CourseName + " and " + tmpCourse2->Info->CourseName + " are overlap";
+                            gotoxy(middleScreenX - warningOverlap.size() / 2, startY + (cnt) * 5 + 2 + numOverlap);
+                            cout << warningOverlap;
+                            tmpCourse2 = tmpCourse2->Next;
+                            continue;
+                        }
+
+                        if(DayCourse1S2 == DayCourse2S2 && SesCourse1S2 == DayCourse2S2) {
+                            numOverlap++;
+                            isDuplicated = true;
+                            string warningOverlap = tmpCourse1->Info->CourseName + " and " + tmpCourse2->Info->CourseName + " are overlap";
+                            gotoxy(middleScreenX - warningOverlap.size() / 2, startY + (cnt) * 5 + 2 + numOverlap);
+                            cout << warningOverlap;
+                            tmpCourse2 = tmpCourse2->Next;
+                            continue;
+                        }
+
+                        tmpCourse2 = tmpCourse2->Next;
+                    }
+
+                    tmpCourse1 = tmpCourse1->Next;
+                }
+
+                if(isDuplicated) {
+                    string overlapWarning = "That is the list courses which are overlap together, please check and try again";
+                    gotoxy(middleScreenX - overlapWarning.size() / 2, startY + (cnt) * 5 + 2 + numOverlap +  2);
+                    cout << overlapWarning << '\n';
+                    gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + numOverlap + 6);
+                    system("pause");
+                    Sleep(2000);
+                    enrollCourseFunction(curStudent, AllCourse);
+                    return;
+                }
+
                 gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
                 cout << "You have save the data successfully";
                 break;
@@ -356,6 +441,10 @@ void studentSystemProcess() {
         // Login
         changeTextColor(12);
         loginSystem.login(AllStudentUserPath + AllStudentUserFilename);
+
+        changeTextColor(11);
+        ShowCur(0);
+        loadingFunction(45, 20);
 
         clrscr();
 
