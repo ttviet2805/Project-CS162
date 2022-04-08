@@ -34,11 +34,12 @@ void Session::Cin()
 //CourseInfo
 void CourseInfo::ShowCourseInfo()
 {
-    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
+    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Credit[] = "Number of credits: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
     cout << Name << CourseName << '\n';
     cout << ID << CourseID << '\n';
     cout << Lecturer << LecturerName << '\n';
+    cout << Credit << NumOfCredits << '\n';
     cout << Start; StartDate.OutputDate();
     cout << End; EndDate.OutputDate();
     cout << Ses1; FirstS.Cout();
@@ -102,15 +103,16 @@ void Course::ShowCourseInfo()
 void Course::ShowCourseInfoWithNumber()
 {
     system("cls");
-    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
+    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Credit[] = "Number of credits: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
     cout << "1. " << Name << Info->CourseName << '\n';
     cout << "2. " << ID << Info->CourseID << '\n';
     cout << "3. " << Lecturer << Info->LecturerName << '\n';
-    cout << "4. " << Start; Info->StartDate.OutputDate();
-    cout << "5. " << End; Info->EndDate.OutputDate();
-    cout << "6. " << Ses1; Info->FirstS.Cout();
-    cout << "7. " << Ses2; Info->SecondS.Cout();
+    cout << "4. " << Credit << Info->NumOfCredits << '\n';
+    cout << "5. " << Start; Info->StartDate.OutputDate();
+    cout << "6. " << End; Info->EndDate.OutputDate();
+    cout << "7. " << Ses1; Info->FirstS.Cout();
+    cout << "8. " << Ses2; Info->SecondS.Cout();
 }
 
 void Course::AllCoursesInfo()
@@ -165,10 +167,10 @@ void Course::Update()
             cout << "Please input a number: ";
             cin >> part;
             if (part == 0) break;
-            if (part > 7)
+            if (part > 8)
             {
                 cout << "Please input again!";
-                Sleep(2);
+                Sleep(2000);
                 continue;
             }
             system("cls");
@@ -195,15 +197,20 @@ void Course::Update()
                 }
                 case 4:
                 {
-                    Cur->Info->StartDate.InputDate();
+                    cin >> Cur->Info->NumOfCredits;
                     break;
                 }
                 case 5:
                 {
-                    Cur->Info->EndDate.InputDate();
+                    Cur->Info->StartDate.InputDate();
                     break;
                 }
                 case 6:
+                {
+                    Cur->Info->EndDate.InputDate();
+                    break;
+                }
+                case 7:
                 {
                     cin.ignore();
                     Cur->Info->FirstS.Cin();
@@ -312,11 +319,12 @@ void AddCourse(Course *&Head)
 {
     system("cls");
     Course *New = new Course;
-    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Start[] = "Start day: ", End[] = "End day: ",
+    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Credit[] = "Number of Credits: ", Start[] = "Start day: ", End[] = "End day: ",
                     Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
     cout << Name; cin.ignore(); getline(cin, New->Info->CourseName);
     cout << ID; getline(cin, New->Info->CourseID);
     cout << Lecturer; getline(cin, New->Info->LecturerName);
+    cout << Credit; cin >> New->Info->NumOfCredits;
     cout << Start; New->Info->StartDate.InputDate();
     cout << End; New->Info->EndDate.InputDate();
     cout << Ses1; New->Info->FirstS.Cin();
@@ -346,7 +354,7 @@ void Delete(Course *&Head)
         if (Head == nullptr)
         {
             cout << "No more course!";
-            Sleep(2);
+            Sleep(2000);
             break;
         }
         cout << "Choose course: \n";
