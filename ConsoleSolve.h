@@ -24,6 +24,8 @@ void SetColor(int backgound_color, int text_color);
 
 void ShowCur(bool CursorVisibility); // show cursor or not
 
+void loadingFunction(int X, int Y);
+
 /*
 
 0 = Black

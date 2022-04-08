@@ -13,6 +13,7 @@ bool Login::match(string a, string b) {
 }
 
 void Login::logout() {
+    gotoxy(47, 6);
 	Login();
 }
 
@@ -130,13 +131,18 @@ void Login::login(string FileName) {
 }
 
 void Login::changePassword(string filename) {
+    const int startX = 19, startY = 9;
+
+    Sleep(200);
+
     while(1) {
         clrscr();
+        gotoxy(startX, startY);
         changeTextColor(11);
         Button changePasswordButton = Button(19, 5, 80, 3, "Change Password");
         changePasswordButton.drawRectangleWithText();
 
-        const int startX = 19, startY = 9;
+
         gotoxy(startX, startY);
         cout << "Please, retype your password again: ";
         ShowCur(1);
@@ -148,7 +154,7 @@ void Login::changePassword(string filename) {
         }
         else {
             gotoxy(startX, startY + 1);
-            cout << "Wrong password, please retype: ";
+            cout << "Wrong password, please retype";
             Sleep(3000);
         }
     }
@@ -208,7 +214,10 @@ int Login::changePasswordInit(string filename) {
         return 0;
     }
 
+    gotoxy(19, 13);
 	cout << "Password changed successfully!" << endl;
+	gotoxy(19, 14);
+	cout << "Log out to confirm";
 	Sleep(3000);
 	//append new password to position at numID
 
