@@ -243,6 +243,7 @@ void Course::SaveCoursesData(string path, string Filename)
         fo << Cur->Info->CourseName << '\n';
         fo << Cur->Info->CourseID << '\n';
         fo << Cur->Info->LecturerName << '\n';
+        fo << Cur->Info->NumOfCredits << '\n';
         fo << Cur->Info->StartDate.Day << " " << Cur->Info->StartDate.Month << " " << Cur->Info->StartDate.Year << '\n';
         fo << Cur->Info->EndDate.Day << " " << Cur->Info->EndDate.Month << " " << Cur->Info->EndDate.Year << '\n';
         fo << Cur->Info->FirstS.Day << " " << Cur->Info->FirstS.Ses << '\n';
@@ -288,6 +289,7 @@ void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *&
         getline(fi, Dummy->Info->CourseID);
         getline(fi, Dummy->Info->LecturerName);
         int d, m, y;
+        fi >> Dummy->Info->NumOfCredits;
         fi >> d >> m >> y;
         Dummy->Info->StartDate = Date({d, m, y});
         fi >> d >> m >> y;

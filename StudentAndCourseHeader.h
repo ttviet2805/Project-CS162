@@ -39,6 +39,7 @@ class CourseInfo
         string CourseName, CourseID, LecturerName;
         Date StartDate, EndDate;
         Session FirstS, SecondS;
+        int NumOfCredits = 0;
 
         void ShowCourseInfo();
 };

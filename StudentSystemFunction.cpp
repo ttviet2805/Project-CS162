@@ -113,7 +113,7 @@ void viewAListOfEnrolledCourseFunction(Student* curStudent) {
         cout << cur->Info->CourseName;
 
         gotoxy(startX + 63, startY + (cnt - 1) * 5);
-        cout << 0;
+        cout << cur->Info->NumOfCredits;
 
         Session S1 = cur->Info->FirstS;
         Session S2 = cur->Info->SecondS;
@@ -252,6 +252,7 @@ void studentSystemProcess() {
                     }
 
                     if(cnt == 4) {
+
                         break;
                     }
 
@@ -281,5 +282,8 @@ void studentSystemProcess() {
                     break;
             }
         }
+
+    DeleteAllCourse(AllCourse);
+    DeleteAllStudent(AllStudent);
     }
 }
