@@ -207,8 +207,10 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
 
         if(curChar == ENTER) {
             if(optionState[num] == '0') {
-                numCourseEnrolled++;
-                optionState[num] = '1';
+                if(numCourseEnrolled < 5) {
+                    numCourseEnrolled++;
+                    optionState[num] = '1';
+                }
             }
             else {
                 optionState[num] = '0';
