@@ -91,6 +91,7 @@ class Course {
         void SaveCourseScoreBoard(string path, string Filename);
         void SaveCoursesData(string path, string Filename);
         void AddANewStudent(StudentInfo *SI, CourseScore *CS);
+        void deleteStudent(StudentInfo* curStudent);
 };
 
 void AddCourse(Course *&Head);
@@ -119,6 +120,7 @@ class Student {
         void AddAStudentScoreBoard(CourseInfo *Info, CourseScore *Score);
         void SaveStudentsData(string path, string Filename); //chi save student info, khong save scoreboard,
                                                              //luc doc bang diem cho course se doc luon bang diem cho student
+        void deleteCurrentCourse(CourseInfo* curCourseInfo);
 };
 
 void DeleteAStudent(Student *&pD);

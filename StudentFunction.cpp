@@ -221,6 +221,26 @@ void LoadLastStudentData(Student *&Head, string path, string Filename)
     fi.close();
 }
 
+void Student::deleteCurrentCourse(CourseInfo* curCourseInfo) {
+    StudentScoreBoard* cur = ScoreBoard;
+
+    if(cur && cur->Info == curCourseInfo) {
+        StudentScoreBoard* Del = cur;
+        ScoreBoard = ScoreBoard->Next;
+        delete Del;
+        return;
+    }
+
+    while(cur && cur->Next && cur->Next->Info != curCourseInfo) cur = cur->Next;
+
+    if(cur == nullptr || cur->Next == nullptr) return;
+
+    StudentScoreBoard* Del = cur->Next;
+    cur->Next = Del->Next;
+
+    delete Del;
+}
+
 
 
 

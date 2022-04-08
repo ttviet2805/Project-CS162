@@ -3,6 +3,12 @@
 const int middleScreenX = 60;
 const int middleScreenY = 15;
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+#define ENTER 13
+
 string AllStudentInfoPath = "Savefile/Student/";
 string AllStudentInfoFilename = "AllStudentInfo.txt";
 string AllCourseInfoPath = "Savefile/Course/";
@@ -66,11 +72,204 @@ void myProfileFunction(Student* curStudent) {
 }
 
 void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
+    clrscr();
     changeTextColor(11);
-    Button profileButton = Button(19, 5, 80, 3, "Enroll Courses");
-    profileButton.drawRectangleWithText();
+    Button enrollCourseButton = Button(19, 5, 80, 3, "Enroll Courses");
+    enrollCourseButton.drawRectangleWithText();
 
-    curStudent->EnrollACourse(AllCourse);
+    changeTextColor(4);
+    string warningString = "You are allow to enroll at most 5 courses";
+    gotoxy(middleScreenX - warningString.size() / 2, 9);
+    cout << warningString;
+
+    changeTextColor(11);
+
+    const int typeRow = 12;
+    const int startX = 5, startY = 14;
+
+    gotoxy(startX, typeRow);
+    cout << "ID";
+    gotoxy(startX + 5, typeRow);
+    cout << "Course ID";
+    gotoxy(startX + 20, typeRow);
+    cout << "Course Name";
+    gotoxy(startX + 59, typeRow);
+    cout << "Number Of";
+    gotoxy(startX + 59, typeRow + 1);
+    cout << "Credits";
+    gotoxy(startX + 71, typeRow);
+    cout << "Course Time";
+    gotoxy(startX + 86, typeRow);
+    cout << "Lecture Name";
+    gotoxy(startX + 103, typeRow);
+    cout << "Option";
+
+
+    int cnt = 0;
+    Course* cur = AllCourse;
+
+    COORD curPos = {0, 0};
+
+    while(cur) {
+        ++cnt;
+
+        gotoxy(startX, startY + (cnt - 1) * 5);
+        cout << cnt;
+
+        gotoxy(startX + 5, startY + (cnt - 1) * 5);
+        cout << cur->Info->CourseID;
+
+        gotoxy(startX + 20, startY + (cnt - 1) * 5);
+        cout << cur->Info->CourseName;
+
+        gotoxy(startX + 63, startY + (cnt - 1) * 5);
+        cout << cur->Info->NumOfCredits;
+
+        Session S1 = cur->Info->FirstS;
+        Session S2 = cur->Info->SecondS;
+        gotoxy(startX + 71, startY + (cnt - 1) * 5);
+        cout << "S1" << ": " << S1.Day << ' ' << S1.Hour << ": " << S1.Mins;
+        gotoxy(startX + 71, startY + 1 + (cnt - 1) * 5);
+        cout << "S2" << ": " << S2.Day << ' ' << S2.Hour << ": " << S2.Mins;
+
+        gotoxy(startX + 86, startY + (cnt - 1) * 5);
+        cout << cur->Info->LecturerName;
+
+        cur = cur->Next;
+    }
+
+    int numCourseEnrolled = 0;
+
+    string optionState = " ";
+    for(int i = 1; i <= cnt + 5; i++)
+        optionState += '0';
+
+    for(int i = 1; i <= cnt; i++) {
+        Course* tmpHead = AllCourse;
+        int tmpCnt = 1;
+
+        while(tmpCnt < i) {
+            tmpHead = tmpHead->Next;
+            ++tmpCnt;
+        }
+
+        if(curStudent->FindACourseAlreadyRegisted(tmpHead->Info)) {
+            optionState[i] = '1';
+            numCourseEnrolled++;
+
+            changeTextColor(4);
+            gotoxy(startX + 103, startY + (i - 1) * 5);
+            cout << char(254);
+        }
+    }
+
+    ShowCur(1);
+    int num = 1;
+    cur = AllCourse;
+    gotoxy(startX + 103, startY);
+    curPos = {startX + 103, startY};
+    changeTextColor(4);
+
+    string Text = "Print Save to save: ";
+    gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5);
+    cout << Text;
+
+    while(1) {
+        gotoxy(curPos.X, curPos.Y);
+
+        if(num == cnt + 1) {
+            gotoxy(middleScreenX - Text.size() / 2 + Text.size(), startY + (cnt) * 5);
+            string Option;
+            getline(cin, Option);
+
+            if(Option == "Save") {
+                if(numCourseEnrolled > 5) {
+                    gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
+                    cout << "You have enroll exceed the maximum number of registed courses!";
+                    Sleep(2000);
+                    enrollCourseFunction(curStudent, AllCourse);
+                    return;
+                }
+                gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
+                cout << "You have save the data successfully";
+                break;
+            }
+            else {
+                gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
+                cout << "You do not save your data, please check your typing!";
+                Sleep(2000);
+                enrollCourseFunction(curStudent, AllCourse);
+                return;
+            }
+        }
+
+        int curChar = getch();
+
+        if(curChar == ENTER) {
+            if(optionState[num] == '0') {
+                numCourseEnrolled++;
+                optionState[num] = '1';
+            }
+            else {
+                optionState[num] = '0';
+                numCourseEnrolled--;
+            }
+
+            if(optionState[num] == '1') cout << char(254);
+            else cout << " ";
+            gotoxy(curPos.X, curPos.Y);
+        }
+        else {
+            if(curChar == KEY_UP) {
+                if(num > 1) {
+                    num--;
+                    curPos.Y = startY + (num - 1) * 5;
+                    Sleep(100);
+                }
+            }
+            else {
+                if(curChar == KEY_DOWN) {
+                    if(num <= cnt) {
+                        num++;
+                        curPos.Y = startY + (num - 1) * 5;
+                        Sleep(100);
+                    }
+                }
+            }
+        }
+    }
+
+    Sleep(2000);
+    ShowCur(0);
+
+    Course* curCourse = AllCourse;
+    for(int i = 1; i <= cnt; i++) {
+        if(optionState[i] == '0') {
+            curCourse->deleteStudent(curStudent->Info);
+            curStudent->deleteCurrentCourse(curCourse->Info);
+        }
+
+        if(optionState[i] == '1') {
+            CourseScoreBoard* tmpCourseBoard = curCourse->Scoreboard;
+
+            while(tmpCourseBoard && tmpCourseBoard->Student != curStudent->Info) {
+                tmpCourseBoard = tmpCourseBoard->Next;
+            }
+
+            if(tmpCourseBoard);
+            else {
+                StudentScoreBoard *New = new StudentScoreBoard;
+                New->Info = curCourse->Info;
+                New->Score = new CourseScore;
+                curCourse->AddANewStudent(curStudent->Info, New->Score);
+                curStudent->AddAStudentScoreBoard(New->Info, New->Score);
+            }
+        }
+
+        curCourse = curCourse->Next;
+    }
+
+    AllCourse->SaveCoursesData(AllCourseInfoPath, AllCourseInfoFilename);
 }
 
 void viewAListOfEnrolledCourseFunction(Student* curStudent) {
@@ -271,7 +470,10 @@ void studentSystemProcess() {
                 curButton = curButton->Next;
             }
 
-            if(isLogOut) break;
+            if(isLogOut) {
+                gotoxy(46, 0);
+                break;
+            }
 
             Button backButton = Button(0, 0, 8, 3, "BACK");
             changeTextColor(4);
@@ -282,8 +484,5 @@ void studentSystemProcess() {
                     break;
             }
         }
-
-    DeleteAllCourse(AllCourse);
-    DeleteAllStudent(AllStudent);
     }
 }
