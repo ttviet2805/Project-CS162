@@ -23,7 +23,7 @@ void SystemProcess() {
             }
             else {
                 if(staffUser.isInButton(mousePos.X, mousePos.Y)) {
-                    cout << 1;
+                   staffSystemProcess();
                 }
             }
         }
