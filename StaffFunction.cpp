@@ -1,12 +1,12 @@
 #include "StaffHeader.h"
 
 void Staff::ShowStaffInfo() {
-    cout << "First name: " << FirstName << endl;
-    cout << "Last name: " << LastName << endl;
-    cout << "Gender: " << Gender << endl;
-    cout << "Staff ID: " << ID << endl;
+    cout << "First name: " << Info->FirstName << endl;
+    cout << "Last name: " << Info->LastName << endl;
+    cout << "Gender: " << Info->Gender << endl;
+    cout << "Staff ID: " << Info->ID << endl;
     cout << "Date of Birth: ";
-    Dob.OutputDate();
+    Info->Dob.OutputDate();
     cout << endl;
 }
 
@@ -21,11 +21,11 @@ void LoadAllStaffData(Staff* &staffHead, string Path, string FileName) {
 
     while(!fin.eof()) {
         cur->Next = new Staff;
-        getline(fin, cur->Next->FirstName);
-        getline(fin, cur->Next->LastName);
-        getline(fin, cur->Next->Gender);
-        getline(fin, cur->Next->ID);
-        fin >> cur->Next->Dob.Day >> cur->Next->Dob.Month >> cur->Next->Dob.Year;
+        getline(fin, cur->Next->Info->FirstName);
+        getline(fin, cur->Next->Info->LastName);
+        getline(fin, cur->Next->Info->Gender);
+        getline(fin, cur->Next->Info->ID);
+        fin >> cur->Next->Info->Dob.Day >> cur->Next->Info->Dob.Month >> cur->Next->Info->Dob.Year;
 
         cur = cur->Next;
     }

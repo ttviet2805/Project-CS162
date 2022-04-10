@@ -6,14 +6,18 @@
 using namespace std;
 
 #include "DateHeader.h"
-#include "AllConst.h"
+
+class StaffInfo {
+public:
+    string FirstName, LastName;
+    string Gender;
+    string ID;
+    Date Dob;
+};
 
 class Staff {
     public:
-        string FirstName, LastName;
-        string Gender;
-        string ID;
-        Date Dob;
+        StaffInfo* Info = new StaffInfo;
 
         Staff* Next = nullptr;
 
