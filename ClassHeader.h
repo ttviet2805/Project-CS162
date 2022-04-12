@@ -41,3 +41,4 @@ void LoadLastClassData(Class *&Head, string path, Student *&StudentHead, Course 
 //void AddaClass();
 void DeleteAClass(Class *&Head);
 void DeleteAllClass(Class *&Head);
+void ImportStudentInClassFromCSVFile(Student* &classStudentHead, Class* curClass, string Path, string FileName);

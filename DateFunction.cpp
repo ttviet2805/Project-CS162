@@ -11,6 +11,7 @@ void Date::InputDate()
     cin >> Day >> Month >> Year;
 }
 
-void Date::changeDate(int _Day, int _Month, int _Year) {
-    Day = _Day, Month = _Month, Year = _Year;
+void Date::changeDate(int D, int M, int Y)
+{
+    Day = D, Month = M, Year = Y;
 }
