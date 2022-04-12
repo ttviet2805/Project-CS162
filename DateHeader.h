@@ -10,6 +10,7 @@ class Date {
 
         void OutputDate();
         void InputDate();
+        void changeDate(int _Day, int _Month, int _Year);
 };
 
 
