@@ -92,6 +92,7 @@ class Course {
         void SaveCoursesData(string path, string Filename);
         void AddANewStudent(StudentInfo *SI, CourseScore *CS);
         void deleteStudent(StudentInfo* curStudent);
+        Course *FindACourseByID(string ID);
 };
 
 void AddCourse(Course *&Head);

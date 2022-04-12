@@ -437,6 +437,7 @@ void studentSystemProcess() {
 
         LoadLastStudentData(AllStudent, AllStudentInfoPath, AllStudentInfoFilename);
         LoadLastCoursesData(AllCourse, AllCourseInfoPath, AllCourseInfoFilename, AllStudent);
+        //LoadLastClassData()
 
         // Login
         changeTextColor(12);

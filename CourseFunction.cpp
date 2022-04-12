@@ -494,3 +494,14 @@ void Course::deleteStudent(StudentInfo* curStudentInfo) {
     cur->Next = Del->Next;
     delete Del;
 }
+
+Course *Course::FindACourseByID(string ID)
+{
+    Course *cur = this;
+    while (cur)
+    {
+        if (cur->Info->CourseID == ID) return cur;
+        cur = cur->Next;
+    }
+    return nullptr;
+}
