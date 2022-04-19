@@ -71,7 +71,7 @@ void myProfileFunction(Student* curStudent) {
     printATXYWithBackGround(62, 17, 15, 0, classString);
 }
 
-void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
+void enrollCourseFunction(Student* &curStudent) {
     clrscr();
     changeTextColor(11);
     Button enrollCourseButton = Button(19, 5, 80, 3, "Enroll Courses");
@@ -81,6 +81,39 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
     string warningString = "You are allow to enroll at most 5 courses";
     gotoxy(middleScreenX - warningString.size() / 2, 9);
     cout << warningString;
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+    Course* AllCourse = nullptr;
+    LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
+    Class* AllClass = nullptr;
+    LoadLastClassData(AllClass, schoolYearPath, AllStudent, AllCourse);
+
+    Class* curClass = findClassByID(AllClass, curStudent->Info->StudentClass);
+
+    Course* Dummy = new Course;
+    Course* cur = Dummy;
+    CourseOfClass* curCourseClass = curClass->Courses;
+
+    while(curCourseClass) {
+        Course* curCourse = AllCourse->FindACourseByID(curCourseClass->_Course->Info->CourseID);
+        if(curCourse) {
+             cur->Next = new Course;
+            *cur->Next = *curCourse;
+            cur->Next->Next = nullptr;
+            cur = cur->Next;
+        }
+        curCourseClass = curCourseClass->Next;
+    }
+
+    Course* lstCourse = Dummy->Next;
 
     changeTextColor(11);
 
@@ -104,11 +137,18 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
     gotoxy(startX + 103, typeRow);
     cout << "Option";
 
-
     int cnt = 0;
-    Course* cur = AllCourse;
+    cur = lstCourse;
 
     COORD curPos = {0, 0};
+
+//    StudentScoreBoard* tt = curStudent->ScoreBoard;
+//    cout << endl;
+//    while(tt) {
+//        cout << "Here " << tt->Info->CourseName << endl;
+//        tt = tt->Next;
+//    }
+//    system("pause");
 
     while(cur) {
         ++cnt;
@@ -145,7 +185,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
         optionState += '0';
 
     for(int i = 1; i <= cnt; i++) {
-        Course* tmpHead = AllCourse;
+        Course* tmpHead = lstCourse;
         int tmpCnt = 1;
 
         while(tmpCnt < i) {
@@ -165,7 +205,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
 
     ShowCur(1);
     int num = 1;
-    cur = AllCourse;
+    cur = lstCourse;
     gotoxy(startX + 103, startY);
     curPos = {startX + 103, startY};
     changeTextColor(4);
@@ -187,13 +227,13 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
                     gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
                     cout << "You have enroll exceed the maximum number of registed courses!";
                     Sleep(2000);
-                    enrollCourseFunction(curStudent, AllCourse);
+                    enrollCourseFunction(curStudent);
                     return;
                 }
 
                 bool isDuplicated = false;
 
-                Course* tmpCourse1 = AllCourse;
+                Course* tmpCourse1 = lstCourse;
                 int numOverlap = 0;
 
                 for(int i = 1; i <= cnt; i++) {
@@ -271,7 +311,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
                     gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + numOverlap + 6);
                     system("pause");
                     Sleep(2000);
-                    enrollCourseFunction(curStudent, AllCourse);
+                    enrollCourseFunction(curStudent);
                     return;
                 }
 
@@ -283,7 +323,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
                 gotoxy(middleScreenX - Text.size() / 2, startY + (cnt) * 5 + 2);
                 cout << "You do not save your data, please check your typing!";
                 Sleep(2000);
-                enrollCourseFunction(curStudent, AllCourse);
+                enrollCourseFunction(curStudent);
                 return;
             }
         }
@@ -329,7 +369,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
     Sleep(2000);
     ShowCur(0);
 
-    Course* curCourse = AllCourse;
+    Course* curCourse = lstCourse;
     for(int i = 1; i <= cnt; i++) {
         if(optionState[i] == '0') {
             curCourse->deleteStudent(curStudent->Info);
@@ -339,7 +379,7 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
         if(optionState[i] == '1') {
             CourseScoreBoard* tmpCourseBoard = curCourse->Scoreboard;
 
-            while(tmpCourseBoard && tmpCourseBoard->Student != curStudent->Info) {
+            while(tmpCourseBoard && tmpCourseBoard->Student->ID != curStudent->Info->ID) {
                 tmpCourseBoard = tmpCourseBoard->Next;
             }
 
@@ -353,13 +393,19 @@ void enrollCourseFunction(Student* &curStudent, Course* AllCourse) {
             }
         }
 
+        CourseScoreBoard* tt = curCourse->Scoreboard;
+        while(tt) {
+//            cout << "Here " << tt->Student->ID << ' ' << tt << endl;
+            tt = tt->Next;
+        }
+
+        curCourse->SaveCourseScoreBoard(schoolYearPath, "CourseScoreBoard/" + curCourse->Info->CourseName + ".txt");
         curCourse = curCourse->Next;
     }
-
-    AllCourse->SaveCoursesData(AllCourseInfoPath, AllCourseInfoFilename);
 }
 
 void viewAListOfEnrolledCourseFunction(Student* curStudent) {
+    clrscr();
     changeTextColor(11);
     Button profileButton = Button(19, 4, 80, 3, "View A List Of Enrolled Courses");
     profileButton.drawRectangleWithText();
@@ -415,6 +461,54 @@ void viewAListOfEnrolledCourseFunction(Student* curStudent) {
     }
 }
 
+void viewAListOfScoreBoard(Student* curStudent) {
+    clrscr();
+    changeTextColor(11);
+    Button listOfStudentButton = Button(19, 5, 80, 3, "View Scoreboard");
+    listOfStudentButton.drawRectangleWithText();
+
+    const int startCol = 15, startRow = 10;
+
+    gotoxy(startCol, startRow);
+    cout << "Course ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "Course name";
+    gotoxy(startCol + 40, startRow);
+    cout << "Total Mark";
+    gotoxy(startCol + 55, startRow);
+    cout << "Final Mark";
+    gotoxy(startCol + 70, startRow);
+    cout << "Midterm Mark";
+    gotoxy(startCol + 85, startRow);
+    cout << "Other Mark";
+
+    StudentScoreBoard* curScore = curStudent->ScoreBoard;
+    int tmpcnt = 1;
+
+    while(curScore) {
+        ++tmpcnt;
+        curScore->Score->CalScore();
+        gotoxy(startCol, startRow + tmpcnt);
+        cout << curScore->Info->CourseID;
+        gotoxy(startCol + 15, startRow + tmpcnt);
+        cout << curScore->Info->CourseName;
+        gotoxy(startCol + 40, startRow + tmpcnt);
+        curScore->Score->CalScore();
+        cout << curScore->Score->Total;
+        gotoxy(startCol + 55, startRow + tmpcnt);
+        cout << curScore->Score->Final;
+        gotoxy(startCol + 70, startRow + tmpcnt);
+        cout << curScore->Score->MidTerm;
+        gotoxy(startCol + 85, startRow + tmpcnt);
+        cout << curScore->Score->Other;
+        curScore = curScore->Next;
+        ++tmpcnt;
+    }
+
+    gotoxy(45, startRow + tmpcnt + 2);
+    system("pause");
+}
+
 void changePasswordFunction(Login &loginSystem) {
     loginSystem.changePassword(AllStudentUserPath + AllStudentUserFilename);
 }
@@ -432,11 +526,18 @@ void studentSystemProcess() {
         clrscr();
 
         COORD mousePos;
-        Student *AllStudent = nullptr;
-        Course *AllCourse = nullptr;
 
-        LoadLastStudentData(AllStudent, AllStudentInfoPath, AllStudentInfoFilename);
-        LoadLastCoursesData(AllCourse, AllCourseInfoPath, AllCourseInfoFilename, AllStudent);
+        string schoolYearPath = "";
+        ifstream fin;
+        fin.open("Savefile/Path/SchoolYearPath.txt");
+        getline(fin, schoolYearPath);
+        fin.close();
+
+        Student* AllStudent = nullptr;
+        LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+        Course* AllCourse = nullptr;
+        LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
         //LoadLastClassData()
 
         // Login
@@ -533,7 +634,7 @@ void studentSystemProcess() {
                     }
 
                     if(cnt == 2) {
-                        enrollCourseFunction(curStudent, AllCourse);
+                        enrollCourseFunction(curStudent);
                         break;
                     }
 
@@ -543,7 +644,7 @@ void studentSystemProcess() {
                     }
 
                     if(cnt == 4) {
-
+                        viewAListOfScoreBoard(curStudent);
                         break;
                     }
 
@@ -562,8 +663,12 @@ void studentSystemProcess() {
                 curButton = curButton->Next;
             }
 
+//            AllStudent->SaveStudentsData("Savefile/Student/", "AllStudentInfo.txt");
+//            AllCourse->SaveCoursesData(schoolYearPath, "/AllCourseInfo.txt");
+
             if(isLogOut) {
-                gotoxy(46, 0);
+                SystemProcess();
+                return;
                 break;
             }
 

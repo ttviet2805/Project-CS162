@@ -222,7 +222,7 @@ int Login::changePasswordInit(string filename) {
 	//append new password to position at numID
 
     fstream fout;
-    fout.open(filename, ios::out | ios::trunc);
+    fout.open(filename, ios::trunc);
     int cnt = 0;
 
     Account* accountCur = accountHead;

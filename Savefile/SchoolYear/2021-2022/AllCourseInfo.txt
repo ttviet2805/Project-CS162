@@ -1,0 +1,8 @@
+Welcome to CS
+1
+Viet
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2

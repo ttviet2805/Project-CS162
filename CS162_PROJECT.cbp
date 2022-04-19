@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="CS162_PROJECT" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/CS162_PROJECT" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/CS162_PROJECT" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="ButtonFunction.cpp" />
+		<Unit filename="ButtonHeader.h" />
+		<Unit filename="ClassFunction.cpp" />
+		<Unit filename="ClassHeader.h" />
+		<Unit filename="ConsoleSolve.cpp" />
+		<Unit filename="ConsoleSolve.h" />
+		<Unit filename="CourseFunction.cpp" />
+		<Unit filename="DateFunction.cpp" />
+		<Unit filename="DateHeader.h" />
+		<Unit filename="LoginFunction.cpp" />
+		<Unit filename="LoginHeader.h" />
+		<Unit filename="MouseFunction.cpp" />
+		<Unit filename="MouseHeader.h" />
+		<Unit filename="SemesterFunction.cpp" />
+		<Unit filename="SemesterHeader.h" />
+		<Unit filename="StaffFunction.cpp" />
+		<Unit filename="StaffHeader.h" />
+		<Unit filename="StaffSystemFunction.cpp" />
+		<Unit filename="StaffSystemHeader.h" />
+		<Unit filename="StudentAndCourseHeader.h" />
+		<Unit filename="StudentFunction.cpp" />
+		<Unit filename="StudentSystemFunction.cpp" />
+		<Unit filename="SystemProcessFunction.cpp" />
+		<Unit filename="SystemProcessHeader.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

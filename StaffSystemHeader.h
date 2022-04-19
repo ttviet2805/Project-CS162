@@ -10,5 +10,6 @@ using namespace std;
 #include "MouseHeader.h"
 #include "StaffSystemHeader.h"
 #include "LoginHeader.h"
+#include "SystemProcessHeader.h"
 
 void staffSystemProcess();

@@ -10,5 +10,7 @@ using namespace std;
 #include "StudentAndCourseHeader.h"
 #include "ConsoleSolve.h"
 #include "ButtonHeader.h"
+#include "StaffHeader.h"
+#include "SystemProcessHeader.h"
 
 void studentSystemProcess();

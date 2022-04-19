@@ -71,7 +71,7 @@ class CourseScoreBoard
         CourseScoreBoard *Next = nullptr;
 
         void ShowCourseScoreBoard();
-
+        void UpdateScore(CourseScore* curCourseScore);
 };
 
 //////////////////////////////////////////////
@@ -101,6 +101,7 @@ void Delete(Course *&Head);
 void DeleteAllCourse(Course *&Head);
 void StaffWorkWithCourse(Course *&Head, string Filename);
 void RemoveAStudentFromACourse(Course *&Head, CourseInfo *_Course, StudentInfo *_Student);
+void AddANewCourse(Course* &CourseHead, Course* newCourse);
 //////////////////
 
 //Student
@@ -124,6 +125,7 @@ class Student {
         void deleteCurrentCourse(CourseInfo* curCourseInfo);
 };
 
+void addANewStudentIntoStudentList(Student* &AllStudent, Student* newStudent);
 void DeleteAStudent(Student *&pD);
 void DeleteAllStudent(Student *&pD);
 void LoadLastStudentData(Student *&Head, string path, string Filename);
@@ -132,5 +134,4 @@ void LoadLastStudentData(Student *&Head, string path, string Filename);
 
 void LoadLastCoursesData(Course *&Head, string path, string Filename, Student *&StudentHead);
 void LoadLastCourseScoreBoardData(CourseScoreBoard *&ScoreBoard, CourseInfo *_CourseInfo, string path, string Filename, Student *&StudentHead);
-
 #endif // STUDENTHEADER_H_INCLUDED

@@ -1,0 +1,176 @@
+# depslib dependency file v1.0
+1649778529 source:d:\hcmus semester 2\computer science\task\cs162_project\datefunction.cpp
+	"DateHeader.h"
+
+1649778530 d:\hcmus semester 2\computer science\task\cs162_project\dateheader.h
+	<iostream>
+
+1649484756 source:d:\hcmus semester 2\computer science\task\cs162_project\main.cpp
+	<iostream>
+	<fstream>
+	"StudentAndCourseHeader.h"
+	"SystemProcessHeader.h"
+
+1648718060 d:\hcmus semester 2\computer science\task\cs162_project\studentheader.h
+	<iostream>
+	<string.h>
+	"DateHeader.h"
+	"CourseHeader.h"
+
+1648715864 d:\hcmus semester 2\computer science\task\cs162_project\courseheader.h
+	<iostream>
+	"DateHeader.h"
+	"StudentHeader.h"
+
+1650371325 source:d:\hcmus semester 2\computer science\task\cs162_project\studentfunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"StudentAndCourseHeader.h"
+	"DateHeader.h"
+
+1650377160 source:d:\hcmus semester 2\computer science\task\cs162_project\coursefunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<unistd.h>
+	<windows.h>
+	"DateHeader.h"
+	"StudentAndCourseHeader.h"
+
+1647919158 source:d:\hcmus semester 2\computer science\task\cs162_project\viewinfo.cpp
+	"ViewInfo.h"
+
+1647919158 d:\hcmus semester 2\computer science\task\cs162_project\viewinfo.h
+	<iostream>
+	<fstream>
+	<string.h>
+	"Utils.h"
+
+1647919158 d:\hcmus semester 2\computer science\task\cs162_project\utils.h
+	<iostream>
+	<fstream>
+	<string.h>
+
+1650120198 source:d:\hcmus semester 2\computer science\task\cs162_project\loginfunction.cpp
+	<conio.h>
+	"LoginHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+
+1649130885 d:\hcmus semester 2\computer science\task\cs162_project\loginheader.h
+	<iostream>
+	<fstream>
+	<string>
+	<cstring>
+
+1647919158 d:\hcmus semester 2\computer science\task\cs162_project\const.h
+
+1649429384 source:d:\hcmus semester 2\computer science\task\cs162_project\consolesolve.cpp
+	"ConsoleSolve.h"
+
+1649378999 d:\hcmus semester 2\computer science\task\cs162_project\consolesolve.h
+	<iostream>
+	<windows.h>
+	<conio.h>
+
+1648741382 source:d:\hcmus semester 2\computer science\task\cs162_project\mouseconsolefunction.cpp
+	"MouseConsoleFunction.h"
+	<bits/stdc++.h>
+
+1648718016 d:\hcmus semester 2\computer science\task\cs162_project\mouseconsolefunction.h
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+
+1649485821 d:\hcmus semester 2\computer science\task\cs162_project\systemprocessheader.h
+	"StudentSystemHeader.h"
+	"StaffSystemHeader.h"
+
+1650376665 source:d:\hcmus semester 2\computer science\task\cs162_project\systemprocessfunction.cpp
+	"SystemProcessHeader.h"
+
+1649239190 d:\hcmus semester 2\computer science\task\cs162_project\buttonheader.h
+	<iostream>
+	"ConsoleSolve.h"
+
+1649249046 source:d:\hcmus semester 2\computer science\task\cs162_project\buttonfunction.cpp
+	"ButtonHeader.h"
+
+1650359176 d:\hcmus semester 2\computer science\task\cs162_project\studentandcourseheader.h
+	<iostream>
+	"DateHeader.h"
+
+1649738346 d:\hcmus semester 2\computer science\task\cs162_project\mouseheader.h
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+
+1649127863 source:d:\hcmus semester 2\computer science\task\cs162_project\mousefunction.cpp
+	"MouseHeader.h"
+
+1650377426 source:d:\hcmus semester 2\computer science\task\cs162_project\studentsystemfunction.cpp
+	"StudentSystemHeader.h"
+
+1650377383 d:\hcmus semester 2\computer science\task\cs162_project\studentsystemheader.h
+	<iostream>
+	<fstream>
+	"MouseHeader.h"
+	"LoginHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+	"StaffHeader.h"
+	"SystemProcessHeader.h"
+
+1650380279 source:d:\hcmus semester 2\computer science\task\cs162_project\staffsystemfunction.cpp
+	"StaffSystemHeader.h"
+
+1650377394 d:\hcmus semester 2\computer science\task\cs162_project\staffsystemheader.h
+	<fstream>
+	<iostream>
+	"StaffHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"MouseHeader.h"
+	"StaffSystemHeader.h"
+	"LoginHeader.h"
+	"SystemProcessHeader.h"
+
+1650380008 source:d:\hcmus semester 2\computer science\task\cs162_project\stafffunction.cpp
+	"StaffHeader.h"
+
+1650341090 d:\hcmus semester 2\computer science\task\cs162_project\staffheader.h
+	<fstream>
+	<iostream>
+	<direct.h>
+	"DateHeader.h"
+	"ClassHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+	"SemesterHeader.h"
+
+1649485701 d:\hcmus semester 2\computer science\task\cs162_project\allconst.h
+
+1650343001 d:\hcmus semester 2\computer science\task\cs162_project\classheader.h
+	<iostream>
+	"StudentAndCourseHeader.h"
+
+1650367475 source:d:\hcmus semester 2\computer science\task\cs162_project\classfunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"ClassHeader.h"
+	"StudentAndCourseHeader.h"
+
+1650274345 d:\hcmus semester 2\computer science\task\cs162_project\semesterheader.h
+	<bits/stdc++.h>
+	"ConsoleSolve.h"
+	"StaffHeader.h"
+	"StudentAndCourseHeader.h"
+	"ClassHeader.h"
+
+1650299369 source:d:\hcmus semester 2\computer science\task\cs162_project\semesterfunction.cpp
+	"SemesterHeader.h"
+

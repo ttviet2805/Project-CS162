@@ -22,7 +22,7 @@ bool Student::FindACourseAlreadyRegisted(CourseInfo *Info)
     StudentScoreBoard *cur = ScoreBoard;
     while (cur)
     {
-        if (cur->Info == Info) return 1;
+        if (cur->Info->CourseID == Info->CourseID) return 1;
         cur = cur->Next;
     }
     return 0;
@@ -224,14 +224,14 @@ void LoadLastStudentData(Student *&Head, string path, string Filename)
 void Student::deleteCurrentCourse(CourseInfo* curCourseInfo) {
     StudentScoreBoard* cur = ScoreBoard;
 
-    if(cur && cur->Info == curCourseInfo) {
+    if(cur && cur->Info->CourseID == curCourseInfo->CourseID) {
         StudentScoreBoard* Del = cur;
         ScoreBoard = ScoreBoard->Next;
         delete Del;
         return;
     }
 
-    while(cur && cur->Next && cur->Next->Info != curCourseInfo) cur = cur->Next;
+    while(cur && cur->Next && cur->Next->Info->CourseID != curCourseInfo->CourseID) cur = cur->Next;
 
     if(cur == nullptr || cur->Next == nullptr) return;
 
@@ -241,6 +241,15 @@ void Student::deleteCurrentCourse(CourseInfo* curCourseInfo) {
     delete Del;
 }
 
+void addANewStudentIntoStudentList(Student* &AllStudent, Student* newStudent) {
+    Student* cur = AllStudent;
 
+    if(cur) {
+        while(cur->Next) cur = cur->Next;
 
-
+        cur->Next = newStudent;
+    }
+    else {
+        cur = newStudent;
+    }
+}

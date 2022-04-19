@@ -1,8 +1,6 @@
 #include "SystemProcessHeader.h"
 
 void SystemProcess() {
-    staffSystemProcess();
-    exit(0);
     ShowCur(0);
     changeTextColor(4);
     Button typeUserButton = Button(30, 5, 60, 5, "Type of User");

@@ -51,7 +51,7 @@ void CourseInfo::ShowCourseInfo()
 void CourseScore::CalScore()
 {
     //tinh diem
-    Final = Other * 0.2 + MidTerm * 0.3 + Final * 0.5;
+    Total = Other * 0.2 + MidTerm * 0.3 + Final * 0.5;
 }
 
 void CourseScore::ShowCourseScore()
@@ -231,13 +231,20 @@ void Course::SaveCourseScoreBoard(string path, string Filename)
     ofstream fo;
     fo.open(path + Filename);
 
+//    if(fo.is_open()) {
+//        cout << "YUP";
+//    }
+//    cout << path + Filename << endl;
     CourseScoreBoard *cur = Scoreboard;
     while (cur)
     {
+//        cout << "# " << cur->Student->ID<< ' ' << cur << endl;
         fo << cur->Student->ID << '\n';
         fo << cur->Score->MidTerm << " " << cur->Score->Final << " " << cur->Score->Other << '\n';
         cur = cur->Next;
     }
+
+//    cout << endl;
 
     fo.close();
 }
@@ -479,7 +486,7 @@ void RemoveAStudentFromACourse(Course *&CourseHead, CourseInfo *_Course, Student
 void Course::deleteStudent(StudentInfo* curStudentInfo) {
     CourseScoreBoard* cur = Scoreboard;
 
-    if(cur && cur->Student == curStudentInfo) {
+    if(cur && cur->Student->ID == curStudentInfo->ID) {
         CourseScoreBoard* Del = cur;
         Scoreboard = Scoreboard->Next;
         delete Del;
@@ -504,4 +511,19 @@ Course *Course::FindACourseByID(string ID)
         cur = cur->Next;
     }
     return nullptr;
+}
+
+void AddANewCourse(Course* &CourseHead, Course* newCourse) {
+    Course* cur = CourseHead;
+    if(!cur) {
+        CourseHead = newCourse;
+        return;
+    }
+
+    while(cur->Next) cur = cur->Next;
+    cur->Next = newCourse;
+}
+
+void CourseScoreBoard::UpdateScore(CourseScore* curCourseScore) {
+    Score = curCourseScore;
 }

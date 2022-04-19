@@ -11,6 +11,7 @@ using namespace std;
 #include "StudentAndCourseHeader.h"
 #include "ConsoleSolve.h"
 #include "ButtonHeader.h"
+#include "SemesterHeader.h"
 
 class SchoolYear {
 public:
@@ -18,9 +19,11 @@ public:
 
     Date startDate, endDate;
 
-    void ShowSchoolYearInfo();
     void setDate(int d1, int m1, int y1, int d2, int m2, int y2);
 };
+
+SchoolYear* loadSchoolYear();
+void ShowSchoolYearInfo();
 
 class StaffInfo {
 public:
@@ -42,7 +45,12 @@ class Staff {
 void CreateAFolder(string FileName);
 void LoadAllStaffData(Staff* &staffHead, string Path, string FileName);
 void LoadAllStudentDataByCSV(Student* &studentHead, string Path, string FileName);
-Class* CreateAClass();
+void CreateAClass();
 void AddANewClass(Class* &classHead, Class* newClass);
+void addStudentIntoClassByStaff();
 
 void createANewSchoolYear();
+
+void staffAddCourse();
+
+void solveWithACourse(Course* &curCouse);

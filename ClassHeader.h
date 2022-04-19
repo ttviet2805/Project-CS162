@@ -29,16 +29,18 @@ class Class
         Class *Next = nullptr;
 
         void SaveAClassData(string path);
-        void SaveClassData(string path);
+        void SaveClassData(string path, string allClassInfoPath);
         Student *FindStudentByID(string ID);
         void AddAStudentIntoAClass(Student *&_Student);
         void AddACourseIntoAClass(Course *&_Course);
+        void RemoveACourse(Course* delCourse);
         void ShowAllStudentInfo();
         void ShowAllCourseInfo();
 };
 
 void LoadLastClassData(Class *&Head, string path, Student *&StudentHead, Course *&CourseHead);
-//void AddaClass();
+void AddaClass(Class* &classHead, Class* newClass);
 void DeleteAClass(Class *&Head);
 void DeleteAllClass(Class *&Head);
-void ImportStudentInClassFromCSVFile(Student* &classStudentHead, Class* curClass, string Path, string FileName);
+void ImportStudentInClassFromCSVFile(Student* &StudentHead, string Path, Class* curClass);
+Class* findClassByID(Class* AllClass, string ClassName);

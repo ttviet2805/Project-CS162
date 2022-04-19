@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -25,8 +27,30 @@ void Class::SaveAClassData(string path)
     fo.close();
 }
 
-void Class::SaveClassData(string path)
+Class* findClassByID(Class* AllClass, string ClassName) {
+    while(AllClass) {
+        if(AllClass->ClassName == ClassName) return AllClass;
+        AllClass = AllClass->Next;
+    }
+
+    return nullptr;
+}
+
+void SaveIntoAllClassFile(Class* curClass, string Path) {
+    ofstream fout(Path);
+
+    while(curClass) {
+        fout << curClass->ClassName << '\n';
+        curClass = curClass->Next;
+    }
+
+    fout.close();
+}
+
+void Class::SaveClassData(string path, string allClassInfoPath)
 {
+    SaveIntoAllClassFile(this, allClassInfoPath);
+
     Class *cur = this;
     while (cur)
     {
@@ -99,7 +123,7 @@ void Class::ShowAllCourseInfo()
 void LoadLastClassData(Class *&Head, string path, Student *&StudentHead, Course *&CourseHead) // path bao gom ca ten semester Savefile/2021-2022/HKI/
 {
     ifstream fi;
-    fi.open("SaveFile/Class/AllClassInfo.txt");
+    fi.open(path + "Class/AllClassInfo.txt");
 
     Head = new Class;
     Class *cur = Head;
@@ -117,7 +141,7 @@ void LoadLastClassData(Class *&Head, string path, Student *&StudentHead, Course 
         }
 
         ifstream ficourse;
-        ficourse.open(path + ClassName + "/Course.txt");
+        ficourse.open(path + "Class/" + ClassName + "/Course.txt");
 
         string CourseID;
         while (!ficourse.eof() && getline(ficourse, CourseID)) {
@@ -157,39 +181,44 @@ void DeleteAllClass(Class *&Head)
 }
 
 //ClassName khong bao gom duoi .csv
-void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* &ClassHead, string Path, string ClassName) {
+void ImportStudentInClassFromCSVFile(Student* &StudentHead, string Path, Class* curClass) {
     ifstream fin;
-    fin.open(Path + ClassName + ".csv");
+    fin.open(Path);
 
     if(!fin.is_open()) {
         cout << "Can not find the CSV File\n";
+        fin.close();
         return;
     }
 
-    Class *NewClass = new Class;
-    NewClass->ClassName = ClassName;
-    NewClass->Students = new StudentInClass;
-    StudentInClass *CurStudentInClass = NewClass->Students;
-    Student *NewStudentList = new Student;
-    Student *cur = NewStudentList;
+    StudentInClass* Dummy = new StudentInClass;
+    StudentInClass *CurStudentInClass = curClass->Students;
+    Dummy->Next = CurStudentInClass;
+    CurStudentInClass = Dummy;
+    while(CurStudentInClass->Next) CurStudentInClass = CurStudentInClass->Next;
+
+    Student *DummyStudent = new Student;
+    Student *cur = DummyStudent;
 
     string TempID;
     while(!fin.eof() && getline(fin, TempID, ',')) {
         cur->Next = new Student;
         cur->Next->Info->ID = TempID;
-        getline(fin, cur->Next->Info->SocialID, ',');
         getline(fin, cur->Next->Info->FirstName, ',');
         getline(fin, cur->Next->Info->LastName, ',');
-        getline(fin, cur->Next->Info->StudentClass, ',');
         getline(fin, cur->Next->Info->Gender, ',');
 
-        string Dob; getline(fin, Dob, '\n');
+        string Dob; getline(fin, Dob, ',');
         int day = 0, month = 0, year = 0;
         int low = 0;
         while(low < (int) Dob.size() && Dob[low] != '/') day = day * 10 + Dob[low] - '0', low++;
         low++;
         while(low < (int) Dob.size() && Dob[low] != '/') month = month * 10 + Dob[low] - '0', low++;
+        low++;
         while(low < (int) Dob.size()) year = year * 10 + Dob[low] - '0', low++;
+
+        getline(fin, cur->Next->Info->SocialID, ',');
+        getline(fin, cur->Next->Info->StudentClass, '\n');
 
         cur->Next->Info->Dob.changeDate(day, month, year);
 
@@ -199,35 +228,57 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* &ClassHead, s
         cur = cur->Next;
     }
 
-    StudentInClass *SICpD = NewClass->Students;
-    NewClass->Students = NewClass->Students->Next;
-    DeleteAStudent(SICpD->_Student);
-    delete(SICpD);
+    CurStudentInClass = Dummy->Next;
+    Student* newStudentList = DummyStudent->Next;
+    delete Dummy;
+    delete DummyStudent;
 
-    //Them class moi vao danh sach cac class
-    Class *CurClass = ClassHead;
-    if (CurClass == nullptr) ClassHead = NewClass;
-    else
-    {
-        while (CurClass->Next) CurClass = CurClass->Next;
-        CurClass->Next = NewClass;
-    }
+//    StudentInClass *SICpD = curClass->Students;
+//    curClass->Students = curClass->Students->Next;
+//    DeleteAStudent(SICpD->_Student);
+//    delete(SICpD);
 
     //Them hoc sinh cua class moi vao danh sach tat ca hoc sinh cua truong
-    Student *SpD = NewStudentList;
-    NewStudentList = NewStudentList->Next;
-    DeleteAStudent(SpD);
+//    Student *SpD = NewStudentList;
+//    NewStudentList = NewStudentList->Next;
+//    DeleteAStudent(SpD);
 
     Student *curInAllStudent = StudentHead;
-    if (curInAllStudent == nullptr) StudentHead = NewStudentList;
+    if (curInAllStudent == nullptr) StudentHead = newStudentList;
     else
     {
         while (curInAllStudent->Next) curInAllStudent = curInAllStudent->Next;
-        curInAllStudent->Next = NewStudentList;
+        curInAllStudent->Next = newStudentList;
     }
     fin.close();
 
-    //Xoa trang file CSV
-    ofstream fo(Path + ClassName + ".csv");
+//    Xoa trang file CSV
+    ofstream fo(Path);
     fo.close();
+}
+
+void AddaClass(Class* &classHead, Class* newClass) {
+    Class* cur = classHead;
+
+    if(cur) {
+        while(cur->Next) cur = cur->Next;
+        cur->Next = newClass;
+    }
+    else {
+        classHead = newClass;
+    }
+}
+
+void Class::RemoveACourse(Course* delCourse) {
+    CourseOfClass* tmp = Courses;
+
+    while(tmp && tmp->Next && tmp->Next->_Course != delCourse) {
+        tmp = tmp = tmp->Next;
+    }
+
+    if(tmp && tmp->Next) {
+        CourseOfClass* Del = tmp->Next;
+        tmp->Next = Del->Next;
+        delete Del;
+    }
 }
