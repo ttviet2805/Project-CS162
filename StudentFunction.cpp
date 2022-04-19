@@ -250,6 +250,6 @@ void addANewStudentIntoStudentList(Student* &AllStudent, Student* newStudent) {
         cur->Next = newStudent;
     }
     else {
-        cur = newStudent;
+        AllStudent = newStudent;
     }
 }

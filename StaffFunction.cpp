@@ -419,6 +419,7 @@ void addStudentIntoClassByStaff() {
     }
 
     AllStudent->SaveStudentsData("Savefile/Student/", "AllStudentInfo.txt");
+    AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
 
     gotoxy(startCol - 10, startRow + 4 + numStu * 8);
     cout << "Add new students successfully";

@@ -181,8 +181,14 @@ void DeleteAllClass(Class *&Head)
 }
 
 //ClassName khong bao gom duoi .csv
-void ImportStudentInClassFromCSVFile(Student* &StudentHead, string Path, Class* curClass) {
+void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
+    string schoolYearPath = "";
     ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    string Path = schoolYearPath + "Class/" + curClass->ClassName + "/Student.csv";
     fin.open(Path);
 
     if(!fin.is_open()) {
@@ -252,6 +258,7 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, string Path, Class* 
     }
     fin.close();
 
+    StudentHead->SaveStudentsData(schoolYearPath + "Student/", "AllStudentInfo.txt");
 //    Xoa trang file CSV
     ofstream fo(Path);
     fo.close();

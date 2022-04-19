@@ -42,5 +42,5 @@ void LoadLastClassData(Class *&Head, string path, Student *&StudentHead, Course 
 void AddaClass(Class* &classHead, Class* newClass);
 void DeleteAClass(Class *&Head);
 void DeleteAllClass(Class *&Head);
-void ImportStudentInClassFromCSVFile(Student* &StudentHead, string Path, Class* curClass);
+void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass);
 Class* findClassByID(Class* AllClass, string ClassName);

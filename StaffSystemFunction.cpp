@@ -133,7 +133,7 @@ void loadStudentFromCSV() {
     Button createClassButton = Button(19, 5, 80, 3, "Import Student From CSV File");
     createClassButton.drawRectangleWithText();
 
-    const int startRow = 10, startCol = 35;
+    const int startRow = 10, startCol = 53;
 
     SchoolYear* curSchoolYear = loadSchoolYear();
     if(!curSchoolYear) {
@@ -188,22 +188,22 @@ void loadStudentFromCSV() {
         return;
     }
 
-    gotoxy(startCol, startRow + 1);
-    cout << "Directory: ";
-    string Path; getline(cin, Path);
-
     // Savefile/SchoolYear/2021-2022/Class/21CTT1/AllStudentInfo.csv
-    ImportStudentInClassFromCSVFile(AllStudent, Path, curClass);
+    ImportStudentInClassFromCSVFile(AllStudent, curClass);
 
     AllStudent->SaveStudentsData("Savefile/Student/", "AllStudentInfo.txt");
 
     ShowCur(0);
 
-    gotoxy(startCol, startRow + 3);
-    cout << "Load Student From CSV File Successfully";
+    loadingFunction(45, startRow + 6);
 
-    gotoxy(startCol, startRow + 5);
-    system("pause");
+    //Savefile/SchoolYear/2021-2022/Class/21CTT1/Student.csv
+
+//    gotoxy(startCol, startRow + 3);
+//    cout << "Load Student From CSV File Successfully";
+//
+//    gotoxy(startCol, startRow + 5);
+//    system("pause");
 }
 
 void listOfClassFunction() {
@@ -264,6 +264,7 @@ void listOfClassFunction() {
         if(cnt == 0) {
             gotoxy(startCol, startRow);
             cout << "No class exists";
+            cout << endl;
             system("pause");
             break;
         }
