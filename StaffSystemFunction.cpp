@@ -206,6 +206,151 @@ void loadStudentFromCSV() {
 //    system("pause");
 }
 
+void viewClassScoreboard(Class* curClass) {
+    clrscr();
+    changeTextColor(11);
+    Button listOfStudentButton = Button(19, 5, 80, 3, "View Scoreboard");
+    listOfStudentButton.drawRectangleWithText();
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+
+    Course* AllCourse = nullptr;
+    LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
+    const int startCol = 15, startRow = 10;
+
+    gotoxy(startCol, startRow);
+    cout << "ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "First name";
+    gotoxy(startCol + 40, startRow);
+    cout << "Last name";
+    gotoxy(startCol + 60, startRow);
+    cout << "Total Mark";
+    gotoxy(startCol + 75, startRow);
+    cout << "GPA";
+
+    StudentInClass* curStu = curClass->Students;
+    int tmpcnt = 1;
+
+    while(curStu) {
+        ++tmpcnt;
+        gotoxy(startCol, startRow + tmpcnt);
+        cout << curStu->_Student->Info->ID;
+        gotoxy(startCol + 15, startRow + tmpcnt);
+        cout << curStu->_Student->Info->FirstName;
+        gotoxy(startCol + 40, startRow + tmpcnt);
+        cout << curStu->_Student->Info->LastName;
+
+        Student* ttt = AllStudent->FindStudentByID(curStu->_Student->Info->ID);
+        StudentScoreBoard* curStuScore = ttt->ScoreBoard;
+
+        float totalScore = 0;
+        int cnt = 0;
+        while(curStuScore) {
+            ++cnt;
+            curStuScore->Score->CalScore();
+            totalScore += curStuScore->Score->Total;
+            curStuScore = curStuScore->Next;
+        }
+
+        if(cnt != 0)
+            totalScore = totalScore * 1.0 / cnt;
+
+        gotoxy(startCol + 60, startRow + tmpcnt);
+        cout << totalScore;
+
+        gotoxy(startCol + 75, startRow + tmpcnt);
+        float res = totalScore * 1.0 / 10 * 4;
+        cout << fixed << setprecision(2) << res;
+
+        ++tmpcnt;
+        curStu = curStu->Next;
+    }
+
+    gotoxy(45, startRow + tmpcnt + 2);
+    system("pause");
+}
+
+void listofClassMenu(Class* curClass, string curSchoolYearName) {
+    const int startRow = 11;
+    const int startCol = 48;
+    const int numButton = 3;
+    string listOfStudent = "List Of Students";
+    string viewScoreboard = "View Scoreboard";
+    string BackButton = "Back";
+
+    while(1) {
+        ShowCur(0);
+        clrscr();
+        changeTextColor(11);
+        Button createClassButton = Button(19, 5, 80, 3, "Class");
+        createClassButton.drawRectangleWithText();
+
+        gotoxy(startCol, startRow);
+        cout << listOfStudent;
+        gotoxy(startCol, startRow + 1);
+        cout << viewScoreboard;
+        gotoxy(startCol, startRow + 2);
+        cout << BackButton;
+
+        int curCol = 1;
+        bool isEnter = false;
+
+        while(1)
+        {
+            gotoxy(startCol - 3, curCol + startRow - 1);
+            cout << ">>";
+
+            int c = getch();
+            int prevCol = curCol;
+
+            if(c == ENTER) {
+                switch(curCol) {
+                case 1:
+                    IntoClass(curClass, curSchoolYearName);
+                    isEnter = true;
+                    break;
+
+                case 2:
+                    viewClassScoreboard(curClass);
+                    isEnter = true;
+                    break;
+
+                case 3:
+                    isEnter = true;
+                    return;
+                    break;
+                }
+            }
+            else {
+                if(c == KEY_UP) {
+                    curCol--;
+                    if(curCol < 1) curCol = numButton;
+                }
+                else {
+                    if(c == KEY_DOWN) {
+                        curCol++;
+                        if(curCol > numButton) curCol = 1;
+                    }
+                }
+            }
+
+            if(isEnter) break;
+
+            gotoxy(startCol - 3, prevCol + startRow - 1);
+            cout << "  ";
+        }
+    }
+}
+
 void listOfClassFunction() {
     const int startRow = 10;
     const int startCol = 50;
@@ -297,7 +442,8 @@ void listOfClassFunction() {
                     tmpClass = tmpClass->Next;
                 }
 
-                IntoClass(tmpClass, curSchoolYear->schoolYearName);
+                listofClassMenu(tmpClass, curSchoolYear->schoolYearName);
+//                IntoClass(tmpClass, curSchoolYear->schoolYearName);
 
             }
             else {

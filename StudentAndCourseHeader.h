@@ -48,9 +48,11 @@ class CourseScore
 {
     public:
         float MidTerm = -1, Final = -1, Other = -1, Total = 0;
+
         bool isFinish();
         void CalScore();
         void ShowCourseScore();
+        float CalGPA();
 };
 ///////////////////////////////////
 

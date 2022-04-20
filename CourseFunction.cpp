@@ -532,3 +532,7 @@ bool CourseScore::isFinish() {
     if(MidTerm != -1 || Final != -1 || Other != -1) return true;
     return false;
 }
+
+float CourseScore::CalGPA() {
+    float res = Total * 1.0 / 10 * 4;
+}
