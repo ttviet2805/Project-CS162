@@ -47,8 +47,8 @@ class CourseInfo
 class CourseScore
 {
     public:
-        float MidTerm = 0, Final = 0, Other = 0, Total = 0;
-
+        float MidTerm = -1, Final = -1, Other = -1, Total = 0;
+        bool isFinish();
         void CalScore();
         void ShowCourseScore();
 };

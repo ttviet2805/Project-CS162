@@ -701,110 +701,6 @@ void staffviewlistOfStudentInCourse(Course* curCourse) {
     system("pause");
 }
 
-void staffExportStudentToCSVFile(Course* curCourse) {
-    ShowCur(0);
-    clrscr();
-    changeTextColor(11);
-    Button listOfStudentButton = Button(19, 5, 80, 3, "Export to CSV File");
-    listOfStudentButton.drawRectangleWithText();
-
-    Student* AllStudent = nullptr;
-    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
-
-    string schoolYearPath = "";
-    ifstream fin;
-    fin.open("Savefile/Path/SchoolYearPath.txt");
-    getline(fin, schoolYearPath);
-    fin.close();
-
-    const int startCol = 5, startRow = 10;
-
-    Student* Dummy = new Student;
-    Student* curStudent = Dummy;
-    CourseScoreBoard* curCourseScoreBoard = curCourse->Scoreboard;
-
-    while(curCourseScoreBoard) {
-        Student* curStu = AllStudent->FindStudentByID(curCourseScoreBoard->Student->ID);
-        curStudent->Next = new Student;
-        *curStudent->Next = *curStu;
-        curStudent->Next->Next = nullptr;
-        curStudent = curStudent->Next;
-        curCourseScoreBoard = curCourseScoreBoard->Next;
-    }
-
-    Student* lstStudent = Dummy->Next;
-
-    loadingFunction(45, 24);
-
-    string CSVFilename; getline(cin, CSVFilename);
-
-    ofstream fout;
-    fout.open(schoolYearPath + "Course/" + curCourse->Info->CourseName + ".csv");
-
-    while(lstStudent) {
-        fout << lstStudent->Info->ID << ',' << lstStudent->Info->FirstName << ',' << lstStudent->Info->LastName;
-        fout << ',' << lstStudent->Info->Gender << ',';
-        Date tmpDate = lstStudent->Info->Dob;
-        fout << tmpDate.Day << '/' << tmpDate.Month << '/' << tmpDate.Year << ',';
-        fout << lstStudent->Info->SocialID << ',' << lstStudent->Info->StudentClass << '\n';
-        lstStudent = lstStudent->Next;
-    }
-
-    fout.close();
-}
-
-void staffViewScoreBoard(Course* curCourse) {
-    clrscr();
-    changeTextColor(11);
-    Button listOfStudentButton = Button(19, 5, 80, 3, "View Course's Scoreboard");
-    listOfStudentButton.drawRectangleWithText();
-
-    const int startCol = 5, startRow = 10;
-
-    gotoxy(startCol, startRow);
-    cout << "ID";
-    gotoxy(startCol + 15, startRow);
-    cout << "First name";
-    gotoxy(startCol + 40, startRow);
-    cout << "Last name";
-    gotoxy(startCol + 55, startRow);
-    cout << "Total Mark";
-    gotoxy(startCol + 70, startRow);
-    cout << "Final Mark";
-    gotoxy(startCol + 85, startRow);
-    cout << "Midterm Mark";
-    gotoxy(startCol + 100, startRow);
-    cout << "Other Mark";
-
-
-    CourseScoreBoard* curScore = curCourse->Scoreboard;
-    int tmpcnt = 1;
-
-    while(curScore) {
-        ++tmpcnt;
-        curScore->Score->CalScore();
-        gotoxy(startCol, startRow + tmpcnt);
-        cout << curScore->Student->ID;
-        gotoxy(startCol + 15, startRow + tmpcnt);
-        cout << curScore->Student->FirstName;
-        gotoxy(startCol + 40, startRow + tmpcnt);
-        cout << curScore->Student->LastName;
-        gotoxy(startCol + 55, startRow + tmpcnt);
-        cout << curScore->Score->Total;
-        gotoxy(startCol + 70, startRow + tmpcnt);
-        cout << curScore->Score->Final;
-        gotoxy(startCol + 85, startRow + tmpcnt);
-        cout << curScore->Score->MidTerm;
-        gotoxy(startCol + 100, startRow + tmpcnt);
-        cout << curScore->Score->Other;
-        curScore = curScore->Next;
-        ++tmpcnt;
-    }
-
-    gotoxy(45, startRow + tmpcnt + 2);
-    system("pause");
-}
-
 void staffImportScoreBoardByManual(Course* &curCourse) {
     ShowCur(1);
     clrscr();
@@ -823,8 +719,7 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
 
     const int startRow = 11;
     const int startCol = 48;
-    // de sua lan dau xuong dong ne
-    // thu xem
+
     gotoxy(0, 11);
 
     int numStu;
@@ -886,6 +781,257 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
     curCourse->SaveCourseScoreBoard(schoolYearPath, "CourseScoreBoard/" + curCourse->Info->CourseName + ".txt");
     cout << "Import Student's Score successful" << endl;
     cout << endl;
+    system("pause");
+}
+
+void staffImportScoreBoardByCSV(Course* curCourse) {
+    ShowCur(0);
+    clrscr();
+    changeTextColor(11);
+    Button listOfStudentButton = Button(19, 5, 80, 3, "Import By CSV File");
+    listOfStudentButton.drawRectangleWithText();
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+
+    const int startRow = 11;
+    const int startCol = 48;
+
+    CourseScoreBoard* curScore = curCourse->Scoreboard;
+
+    fin.open(schoolYearPath + "CourseScoreBoard/" + curCourse->Info->CourseName + ".csv");
+
+    string tmpID;
+    while(!fin.eof() && getline(fin, tmpID, ',')) {
+        Student* curStudent = AllStudent->FindStudentByID(tmpID);
+        if(!curStudent) {
+            cout << "Our system does not have this student's data" << '\n';
+            cout << "Try Again";
+            Sleep(3000);
+            staffImportScoreBoardByCSV(curCourse);
+            return;
+        }
+
+        CourseScore* curStudentScore = new CourseScore;
+        char trash;
+        fin >> curStudentScore->Final;
+        fin >> trash;
+        fin >> curStudentScore->MidTerm;
+        fin >> trash;
+        fin >> curStudentScore->Other;
+        fin.get();
+
+        CourseScoreBoard* tmpScore = curScore;
+        if(tmpScore->Student->ID == tmpID) {
+            tmpScore->UpdateScore(curStudentScore);
+        }
+        else {
+            while(tmpScore && tmpScore->Next && tmpScore->Next->Student->ID != tmpID) {
+                tmpScore = tmpScore->Next;
+            }
+
+            if(!tmpScore->Next) {
+                CourseScoreBoard* New = new CourseScoreBoard;
+                New->Student = curStudent->Info;
+                New->Score = curStudentScore;
+                New->Next = tmpScore->Next;
+                tmpScore->Next = New;
+            }
+            else {
+                tmpScore->Next->UpdateScore(curStudentScore);
+            }
+        }
+    }
+
+    curCourse->SaveCourseScoreBoard(schoolYearPath, "CourseScoreBoard/" + curCourse->Info->CourseName + ".txt");
+
+    fin.close();
+
+    loadingFunction(45, 24);
+}
+
+void staffExportStudentToCSVFile(Course* curCourse) {
+    ShowCur(0);
+    clrscr();
+    changeTextColor(11);
+    Button listOfStudentButton = Button(19, 5, 80, 3, "Export to CSV File");
+    listOfStudentButton.drawRectangleWithText();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    const int startCol = 5, startRow = 10;
+
+    Student* Dummy = new Student;
+    Student* curStudent = Dummy;
+    CourseScoreBoard* curCourseScoreBoard = curCourse->Scoreboard;
+
+    while(curCourseScoreBoard) {
+        Student* curStu = AllStudent->FindStudentByID(curCourseScoreBoard->Student->ID);
+        curStudent->Next = new Student;
+        *curStudent->Next = *curStu;
+        curStudent->Next->Next = nullptr;
+        curStudent = curStudent->Next;
+        curCourseScoreBoard = curCourseScoreBoard->Next;
+    }
+
+    Student* lstStudent = Dummy->Next;
+
+    loadingFunction(45, 24);
+
+    string CSVFilename; getline(cin, CSVFilename);
+
+    ofstream fout;
+    fout.open(schoolYearPath + "Course/" + curCourse->Info->CourseName + ".csv");
+
+    while(lstStudent) {
+        fout << lstStudent->Info->ID << ',' << lstStudent->Info->FirstName << ',' << lstStudent->Info->LastName;
+        fout << ',' << lstStudent->Info->Gender << ',';
+        Date tmpDate = lstStudent->Info->Dob;
+        fout << tmpDate.Day << '/' << tmpDate.Month << '/' << tmpDate.Year << ',';
+        fout << lstStudent->Info->SocialID << ',' << lstStudent->Info->StudentClass << '\n';
+        lstStudent = lstStudent->Next;
+    }
+
+    fout.close();
+}
+
+void staffImportScoreBoard(Course* curCourse) {
+    const int startRow = 11;
+    const int startCol = 48;
+    const int numButton = 3;
+    string importByManual = "Import By Manual";
+    string importByCSV = "Import By CSV File";
+    string BackButton = "Back";
+
+    while(1) {
+        ShowCur(0);
+        clrscr();
+        changeTextColor(11);
+        Button createClassButton = Button(19, 5, 80, 3, "Import Course's Scoreboard");
+        createClassButton.drawRectangleWithText();
+
+        gotoxy(startCol, startRow);
+        cout << importByManual;
+        gotoxy(startCol, startRow + 1);
+        cout << importByCSV;
+        gotoxy(startCol, startRow + 2);
+        cout << BackButton;
+
+        int curCol = 1;
+        bool isEnter = false;
+
+        while(1)
+        {
+            gotoxy(startCol - 3, curCol + startRow - 1);
+            cout << ">>";
+
+            int c = getch();
+            int prevCol = curCol;
+
+            if(c == ENTER) {
+                switch(curCol) {
+                case 1:
+                    staffImportScoreBoardByManual(curCourse);
+                    isEnter = true;
+                    break;
+
+                case 2:
+                    staffImportScoreBoardByCSV(curCourse);
+                    isEnter = true;
+                    break;
+
+                case 3:
+                    isEnter = true;
+                    return;
+                    break;
+                }
+            }
+            else {
+                if(c == KEY_UP) {
+                    curCol--;
+                    if(curCol < 1) curCol = numButton;
+                }
+                else {
+                    if(c == KEY_DOWN) {
+                        curCol++;
+                        if(curCol > numButton) curCol = 1;
+                    }
+                }
+            }
+
+            if(isEnter) break;
+
+            gotoxy(startCol - 3, prevCol + startRow - 1);
+            cout << "  ";
+        }
+    }
+}
+
+void staffViewScoreBoard(Course* curCourse) {
+    clrscr();
+    changeTextColor(11);
+    Button listOfStudentButton = Button(19, 5, 80, 3, "View Course's Scoreboard");
+    listOfStudentButton.drawRectangleWithText();
+
+    const int startCol = 5, startRow = 10;
+
+    gotoxy(startCol, startRow);
+    cout << "ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "First name";
+    gotoxy(startCol + 40, startRow);
+    cout << "Last name";
+    gotoxy(startCol + 55, startRow);
+    cout << "Total Mark";
+    gotoxy(startCol + 70, startRow);
+    cout << "Final Mark";
+    gotoxy(startCol + 85, startRow);
+    cout << "Midterm Mark";
+    gotoxy(startCol + 100, startRow);
+    cout << "Other Mark";
+
+
+    CourseScoreBoard* curScore = curCourse->Scoreboard;
+    int tmpcnt = 1;
+
+    while(curScore) {
+        if(curScore->Score->isFinish()) {
+            ++tmpcnt;
+            curScore->Score->CalScore();
+            gotoxy(startCol, startRow + tmpcnt);
+            cout << curScore->Student->ID;
+            gotoxy(startCol + 15, startRow + tmpcnt);
+            cout << curScore->Student->FirstName;
+            gotoxy(startCol + 40, startRow + tmpcnt);
+            cout << curScore->Student->LastName;
+            gotoxy(startCol + 55, startRow + tmpcnt);
+            cout << curScore->Score->Total;
+            gotoxy(startCol + 70, startRow + tmpcnt);
+            cout << curScore->Score->Final;
+            gotoxy(startCol + 85, startRow + tmpcnt);
+            cout << curScore->Score->MidTerm;
+            gotoxy(startCol + 100, startRow + tmpcnt);
+            cout << curScore->Score->Other;
+            ++tmpcnt;
+        }
+
+        curScore = curScore->Next;
+    }
+
+    gotoxy(45, startRow + tmpcnt + 2);
     system("pause");
 }
 
@@ -996,7 +1142,7 @@ void solveWithACourse(Course* &curCourse) {
                     break;
 
                 case 5:
-                    staffImportScoreBoardByManual(curCourse);
+                    staffImportScoreBoard(curCourse);
                     isEnter = true;
                     break;
 

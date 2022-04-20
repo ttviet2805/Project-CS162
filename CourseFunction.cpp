@@ -527,3 +527,8 @@ void AddANewCourse(Course* &CourseHead, Course* newCourse) {
 void CourseScoreBoard::UpdateScore(CourseScore* curCourseScore) {
     Score = curCourseScore;
 }
+
+bool CourseScore::isFinish() {
+    if(MidTerm != -1 || Final != -1 || Other != -1) return true;
+    return false;
+}

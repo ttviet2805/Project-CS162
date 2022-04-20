@@ -486,23 +486,26 @@ void viewAListOfScoreBoard(Student* curStudent) {
     int tmpcnt = 1;
 
     while(curScore) {
-        ++tmpcnt;
-        curScore->Score->CalScore();
-        gotoxy(startCol, startRow + tmpcnt);
-        cout << curScore->Info->CourseID;
-        gotoxy(startCol + 15, startRow + tmpcnt);
-        cout << curScore->Info->CourseName;
-        gotoxy(startCol + 40, startRow + tmpcnt);
-        curScore->Score->CalScore();
-        cout << curScore->Score->Total;
-        gotoxy(startCol + 55, startRow + tmpcnt);
-        cout << curScore->Score->Final;
-        gotoxy(startCol + 70, startRow + tmpcnt);
-        cout << curScore->Score->MidTerm;
-        gotoxy(startCol + 85, startRow + tmpcnt);
-        cout << curScore->Score->Other;
+        if(curScore->Score->isFinish()) {
+            ++tmpcnt;
+            curScore->Score->CalScore();
+            gotoxy(startCol, startRow + tmpcnt);
+            cout << curScore->Info->CourseID;
+            gotoxy(startCol + 15, startRow + tmpcnt);
+            cout << curScore->Info->CourseName;
+            gotoxy(startCol + 40, startRow + tmpcnt);
+            curScore->Score->CalScore();
+            cout << curScore->Score->Total;
+            gotoxy(startCol + 55, startRow + tmpcnt);
+            cout << curScore->Score->Final;
+            gotoxy(startCol + 70, startRow + tmpcnt);
+            cout << curScore->Score->MidTerm;
+            gotoxy(startCol + 85, startRow + tmpcnt);
+            cout << curScore->Score->Other;
+            ++tmpcnt;
+        }
+
         curScore = curScore->Next;
-        ++tmpcnt;
     }
 
     gotoxy(45, startRow + tmpcnt + 2);

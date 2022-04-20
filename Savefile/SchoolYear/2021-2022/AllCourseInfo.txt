@@ -1,0 +1,8 @@
+Welcome to CS
+CS162
+Dinh Ba Tien
+4
+1 1 1
+1 1 1
+MON S1
+TUE S2
