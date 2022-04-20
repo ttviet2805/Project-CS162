@@ -859,6 +859,8 @@ void logOutStaffFunction(Login &loginSystem) {
 }
 
 void staffSystemProcess() {
+//    manageCourseFunction();
+//    exit(0);
     changeTextColor(8);
 
     Login loginSystem;
@@ -889,7 +891,6 @@ void staffSystemProcess() {
 
         while(curStaff) {
             if(curStaff->Info->ID == loginSystem.userAccount.username) {
-                loginSystem.numID = Count;
                 break;
             }
 

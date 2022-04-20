@@ -23,9 +23,10 @@ void LoadAllStaffData(Staff* &staffHead, string Path, string FileName) {
     Staff* Dummy = new Staff;
     Staff* cur = Dummy;
 
-    while(!fin.eof()) {
+    string firstName;
+    while(!fin.eof() && getline(fin, firstName)) {
         cur->Next = new Staff;
-        getline(fin, cur->Next->Info->FirstName);
+        cur->Next->Info->FirstName = firstName;
         getline(fin, cur->Next->Info->LastName);
         getline(fin, cur->Next->Info->Gender);
         getline(fin, cur->Next->Info->ID);
@@ -376,6 +377,9 @@ void addStudentIntoClassByStaff() {
 
     Class* curClass = findClassByID(AllClass, curClassName);
 
+    Login* AllUser = nullptr;
+    loadUserAccount(AllUser, "Savefile/User/StudentUser.txt");
+
     for(int i = 1; i <= numStu; i++) {
         Student* newStudent = new Student;
 
@@ -416,7 +420,15 @@ void addStudentIntoClassByStaff() {
         newStudent->Info->StudentClass = curClassName;
         curClass->AddAStudentIntoAClass(newStudent);
         addANewStudentIntoStudentList(AllStudent, newStudent);
+        Login* newUser = new Login;
+        newUser->userAccount.username = newStudent->Info->ID;
+        newUser->userAccount.password = "123456";
+
+        gotoxy(0, 0);
+        addANewUser(AllUser, newUser);
     }
+
+    saveUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
     AllStudent->SaveStudentsData("Savefile/Student/", "AllStudentInfo.txt");
     AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
@@ -485,6 +497,7 @@ void staffAddCourse() {
     cout << Ses1 << " (MON S1) ", New->Info->FirstS.Cin();
     gotoxy(startCol, startRow + 7);
     cout << Ses2 << " (MON S1) ", New->Info->SecondS.Cin();
+    cin.get();
 
     AddANewCourse(AllCourse, New);
 
@@ -493,8 +506,6 @@ void staffAddCourse() {
     curClass->AddACourseIntoAClass(New);
 
     curClass->SaveAClassData(schoolYearPath + "Class/");
-
-    system("pause");
 }
 
 void staffModifyCourse(Course* &curCourse) {

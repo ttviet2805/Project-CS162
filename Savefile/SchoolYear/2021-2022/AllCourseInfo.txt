@@ -1,8 +1,0 @@
-Welcome to IT
-1
-Viet
-4
-1 1 1
-1 1 1
-MON S1
-TUE S2

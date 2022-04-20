@@ -555,16 +555,6 @@ void studentSystemProcess() {
         // Find User
         int Count = 0;
         Student* curStudent = AllStudent->FindStudentByID(loginSystem.userAccount.username);
-        Student* tmpStudent = AllStudent;
-        while(tmpStudent) {
-            ++Count;
-
-            if(tmpStudent->Info->ID == curStudent->Info->ID) {
-                loginSystem.numID = Count;
-                break;
-            }
-            tmpStudent = tmpStudent->Next;
-        }
 
         // Menu
         ShowCur(0);

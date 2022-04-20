@@ -12,6 +12,7 @@ using namespace std;
 #include "ConsoleSolve.h"
 #include "ButtonHeader.h"
 #include "SemesterHeader.h"
+#include "LoginHeader.h"
 
 class SchoolYear {
 public:
@@ -44,7 +45,6 @@ class Staff {
 
 void CreateAFolder(string FileName);
 void LoadAllStaffData(Staff* &staffHead, string Path, string FileName);
-void LoadAllStudentDataByCSV(Student* &studentHead, string Path, string FileName);
 void CreateAClass();
 void AddANewClass(Class* &classHead, Class* newClass);
 void addStudentIntoClassByStaff();

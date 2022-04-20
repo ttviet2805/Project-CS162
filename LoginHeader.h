@@ -13,8 +13,6 @@ class Account {
 public:
     string username;
     string password = defaultPass;
-
-    Account* Next = nullptr;
 };
 
 // File txt of Login: username -> password -> username -> password -> ...
@@ -30,19 +28,22 @@ private:
 
 public:
     Account userAccount;
-	int numID;//so thu tu cua hoc sinh trong file
-	int type;//student/lecturer/staff
+    Login* Next = nullptr;
 
 	Login() {
         userAccount.username = "";
         userAccount.password = "";
-        numID = -1;
-        type = 1;
 	}
 
 	void login(string fileName); // login system
 	void logout();
 	void changePassword(string filename);
 };
+
+void loadUserAccount(Login* &userHead, string filename);
+void saveUserAccount(Login* userHead, string filename);
+
+Login* findUserByAccount(Login* AllUser, string username);
+void addANewUser(Login* &AllUser, Login* newUser);
 #endif
 

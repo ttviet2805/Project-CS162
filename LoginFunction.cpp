@@ -18,32 +18,16 @@ void Login::logout() {
 }
 
 int Login::foundUsername(string FileName) {
-    ifstream fin;
-    fin.open(FileName);
+    Login* AllUser = nullptr;
+    loadUserAccount(AllUser, FileName);
 
-    if(!fin.is_open()) {
-        string errorService = "Sorry, our service encountered an error, please retry!";
-        gotoxy(midScreen - errorService.size() / 2 + 1, 11);
-        cout << errorService;
-        Sleep(3000);
-        clrscr();
-        return 0;
-    }
+    Login* cur = AllUser;
 
-    string curUserName, curPassword;
-
-    int numAccount = 0;
-
-    while(!fin.eof()) {
-        ++numAccount;
-        fin >> curUserName;
-        fin >> curPassword;
-
-        if(match(curUserName, userAccount.username) && match(curPassword, userAccount.password)) {
-            numID = numAccount;
-            fin.close();
+    while(cur) {
+        if(match(cur->userAccount.username, userAccount.username) && match(cur->userAccount.password, userAccount.password))
             return 1;
-        }
+
+        cur = cur->Next;
     }
 
     string noExistAccount = "User non-existed, please check your typing";
@@ -52,7 +36,6 @@ int Login::foundUsername(string FileName) {
     Sleep(3000);
     clrscr();
 
-    fin.close();
     return 2;
 }
 
@@ -79,7 +62,6 @@ void setLogInPosition() {
 }
 
 void Login::login(string FileName) {
-
     while(1) {
         setLogInPosition();
         // Login View
@@ -163,36 +145,8 @@ void Login::changePassword(string filename) {
 }
 
 int Login::changePasswordInit(string filename) {
-	ifstream in;
-	in.open(filename);
-
-	if (!in.is_open()) {
-		cout << "Sorry, our service encountered an error, please retry!" << endl;
-		return 0;
-	}
-
-    // to get the data from Account File
-	Account* accountHead = nullptr;
-	Account* Dummy = new Account;
-	Account* curDummy = Dummy;
-
-    while(!in.eof()) {
-        string tmpUsername;
-        string tmpPassword;
-        getline(in, tmpUsername);
-        getline(in, tmpPassword);
-
-        curDummy->Next = new Account;
-        curDummy->Next->username = tmpUsername;
-        curDummy->Next->password = tmpPassword;
-        curDummy = curDummy->Next;
-    }
-
-    curDummy->Next = nullptr;
-
-    accountHead = Dummy->Next;
-
-    in.close();
+	Login* AllUser = nullptr;
+    loadUserAccount(AllUser, filename);
 
     gotoxy(19, 10);
 	cout << "Type in your new password, password must be at least 6 characters" << endl;
@@ -221,38 +175,74 @@ int Login::changePasswordInit(string filename) {
 	Sleep(3000);
 	//append new password to position at numID
 
-    fstream fout;
-    fout.open(filename, ios::trunc);
-    int cnt = 0;
+    Login* curUser = findUserByAccount(AllUser, userAccount.username);
 
-    Account* accountCur = accountHead;
-
-    while(accountCur) {
-        ++cnt;
-
-        if(cnt != numID) {
-            fout << accountCur->username << '\n';
-            fout << accountCur->password;
-        }
-        else {
-            fout << accountCur->username << '\n';
-            fout << newP;
-        }
-
-        fout << '\n';
-        accountCur = accountCur->Next;
+    if(!curUser) {
+        cout << "Do not find the user";
+        Sleep(3000);
     }
 
-    accountCur = accountHead;
+    curUser->userAccount.password = newP;
 
-    while(accountCur) {
-        Account* Del = accountCur;
-        accountCur = accountCur->Next;
+    saveUserAccount(AllUser, filename);
 
-        delete Del;
+	return 1;
+}
+
+Login* findUserByAccount(Login* AllUser, string username) {
+    Login* cur = AllUser;
+
+    while(cur) {
+        if(cur->userAccount.username == username) return cur;
+        cur = cur->Next;
+    }
+
+    return nullptr;
+}
+
+void loadUserAccount(Login* &userHead, string filename) {
+    ifstream fin;
+    fin.open(filename);
+
+    Login* Dummy = new Login;
+    Login* cur = Dummy;
+
+    string userName;
+    while(!fin.eof() && getline(fin, userName)) {
+        cur->Next = new Login;
+        cur->Next->userAccount.username = userName;
+        getline(fin, cur->Next->userAccount.password);
+        cur = cur->Next;
+    }
+
+    userHead = Dummy->Next;
+    cur = Dummy;
+    Dummy = Dummy->Next;
+    delete cur;
+
+    fin.close();
+}
+
+void saveUserAccount(Login* userHead, string filename) {
+    ofstream fout(filename);
+    Login* cur = userHead;
+
+    while(cur) {
+        fout << cur->userAccount.username << '\n' << cur->userAccount.password << '\n';
+        cur = cur->Next;
     }
 
     fout.close();
+}
 
-	return 1;
+void addANewUser(Login* &AllUser, Login* newUser) {
+    Login* cur = AllUser;
+
+    if(!cur) {
+        AllUser = newUser;
+    }
+    else {
+        while(cur->Next) cur = cur->Next;
+        cur->Next = newUser;
+    }
 }
