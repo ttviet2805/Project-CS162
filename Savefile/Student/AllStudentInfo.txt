@@ -12,3 +12,24 @@ Male
 2 2 2
 2
 21CTT1
+21125007
+Pham
+Giang
+Male
+20 5 2003
+123
+21CTT1
+21
+Viet
+Tran
+Male
+19 3 2003
+123
+21CTT2
+22
+Hoang
+Bui
+Male
+29 9 2003
+12
+21CTT2

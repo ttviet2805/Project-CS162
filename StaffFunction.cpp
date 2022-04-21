@@ -317,18 +317,15 @@ void addStudentIntoClassByStaff() {
 
     string curClassName = "";
 
-    const int startRow = 9;
-    const int startCol = 40;
-
-    gotoxy(startCol, startRow);
+    gotoxy(40, 9);
     cout << "Enter Class: ";
     getline(cin, curClassName);
 
     SchoolYear* curSchoolYear = loadSchoolYear();
     if(!curSchoolYear) {
-        gotoxy(startCol, startRow + 2);
+        gotoxy(40, 9 + 2);
         cout << "Do not have school year data!!!";
-        gotoxy(startCol, startRow + 4);
+        gotoxy(40, 9 + 4);
         system("pause");
         return;
     }
@@ -348,18 +345,17 @@ void addStudentIntoClassByStaff() {
     fin.close();
 
     if(!isExist) {
-        gotoxy(startCol, startRow + 2);
+        gotoxy(40, 9 + 2);
         cout << "This class do not exist, try again";
-        gotoxy(startCol, startRow + 4);
+        gotoxy(40, 9 + 4);
         system("pause");
         addStudentIntoClassByStaff();
         return;
     }
 
-    gotoxy(startCol, startRow + 1);
+    gotoxy(40, 11);
     cout << "Enter the number of students you want to add: ";
     int numStu; cin >> numStu;
-
     cin.get();
 
     Student* AllStudent = nullptr;
@@ -380,27 +376,34 @@ void addStudentIntoClassByStaff() {
     Login* AllUser = nullptr;
     loadUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
+    const int startCol = 10, startRow = 14;
+
+    gotoxy(startCol, startRow);
+    cout << "ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "First name";
+    gotoxy(startCol + 40, startRow);
+    cout << "Last name";
+    gotoxy(startCol + 60, startRow);
+    cout << "Gender";
+    gotoxy(startCol + 70, startRow);
+    cout << "Date of Birth";
+    gotoxy(startCol + 85, startRow);
+    cout << "Social ID";
+
     for(int i = 1; i <= numStu; i++) {
         Student* newStudent = new Student;
 
-        int curRow = startRow + 3 + (i - 1) * 8;
-        gotoxy(startCol - 10, curRow);
-        cout << "Student " << i << '\n';
-        gotoxy(startCol - 10, curRow + 1);
-        cout << "ID: ";
+        int curRow = startRow + (i - 1) * 2 + 2;
+        gotoxy(startCol, curRow);
         getline(cin, newStudent->Info->ID);
-        gotoxy(0, 0);
-        gotoxy(startCol - 10, curRow + 2);
-        cout << "First name: ";
+        gotoxy(startCol + 15, curRow);
         getline(cin, newStudent->Info->FirstName);
-        gotoxy(startCol - 10, curRow + 3);
-        cout << "Last name: ";
+        gotoxy(startCol + 40, curRow);
         getline(cin, newStudent->Info->LastName);
-        gotoxy(startCol - 10, curRow + 4);
-        cout << "Gender: ";
+        gotoxy(startCol + 60, curRow);
         getline(cin, newStudent->Info->Gender);
-        gotoxy(startCol - 10, curRow + 5);
-        cout << "Date of Birth: (dd/mm/yyyy) ";
+        gotoxy(startCol + 70, curRow);
         string Dob; getline(cin, Dob);
 
         int day = 0, month = 0, year = 0;
@@ -412,19 +415,17 @@ void addStudentIntoClassByStaff() {
         while(low < (int) Dob.size()) year = year * 10 + Dob[low] - '0', low++;
         newStudent->Info->Dob.changeDate(day, month, year);
 
-        gotoxy(startCol - 10, curRow + 6);
-        cout << "Social ID: ";
+        gotoxy(startCol + 85, curRow);
         getline(cin, newStudent->Info->SocialID);
-        gotoxy(startCol - 10, curRow + 7);
 
         newStudent->Info->StudentClass = curClassName;
         curClass->AddAStudentIntoAClass(newStudent);
         addANewStudentIntoStudentList(AllStudent, newStudent);
+
         Login* newUser = new Login;
         newUser->userAccount.username = newStudent->Info->ID;
         newUser->userAccount.password = "123456";
 
-        gotoxy(0, 0);
         addANewUser(AllUser, newUser);
     }
 
@@ -433,9 +434,10 @@ void addStudentIntoClassByStaff() {
     AllStudent->SaveStudentsData("Savefile/Student/", "AllStudentInfo.txt");
     AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
 
-    gotoxy(startCol - 10, startRow + 4 + numStu * 8);
+    system("pause");
+    gotoxy(40, startRow + numStu * 2 + 2);
     cout << "Add new students successfully";
-    gotoxy(startCol - 10, startRow + 6 + numStu * 8);
+    gotoxy(40, startRow + numStu * 2 + 4);
     system("pause");
 }
 
@@ -443,7 +445,7 @@ void staffAddCourse() {
     clrscr();
     ShowCur(1);
     changeTextColor(11);
-    Button profileButton = Button(19, 5, 80, 3, "Add Course");
+    Button profileButton = Button(19, 5, 80, 3, "Add A New Course");
     profileButton.drawRectangleWithText();
 
     string schoolYearPath = "";
@@ -460,44 +462,67 @@ void staffAddCourse() {
     Class* AllClass = nullptr;
     LoadLastClassData(AllClass, schoolYearPath, AllStudent, AllCourse);
 
-    const int startRow = 10;
-    const int startCol = 40;
-
-    Course *New = new Course;
-    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Credit[] = "Number of Credits: ", Start[] = "Start day: ", End[] = "End day: ",
-                    Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-
     string curClassName = "";
-    gotoxy(startCol, startRow - 1);
+    gotoxy(40, 9);
     cout << "Course of Class: ";
     getline(cin, curClassName);
 
     Class* curClass = findClassByID(AllClass, curClassName);
     if(!curClass) {
-        gotoxy(startCol, startRow + 2);
+        gotoxy(40, 9 + 2);
         cout << "Our system can not find this class, try again!!!";
         Sleep(3000);
         staffAddCourse();
         return;
     }
 
+    const int startRow = 11, startCol = 4;
+    int curRow = startRow + 2;
     gotoxy(startCol, startRow);
-    cout << Name; getline(cin, New->Info->CourseName);
-    gotoxy(startCol, startRow + 1);
-    cout << ID; getline(cin, New->Info->CourseID);
-    gotoxy(startCol, startRow + 2);
-    cout << Lecturer; getline(cin, New->Info->LecturerName);
-    gotoxy(startCol, startRow + 3);
-    cout << Credit; cin >> New->Info->NumOfCredits;
-    gotoxy(startCol, startRow + 4);
-    cout << Start; New->Info->StartDate.InputDate();
-    gotoxy(startCol, startRow + 5);
-    cout << End; New->Info->EndDate.InputDate();
-    gotoxy(startCol, startRow + 6);
-    cout << Ses1 << " (MON S1) ", New->Info->FirstS.Cin();
-    gotoxy(startCol, startRow + 7);
-    cout << Ses2 << " (MON S1) ", New->Info->SecondS.Cin();
+    cout << "Course ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "Course Name";
+    gotoxy(startCol + 45, startRow);
+    cout << "Lecture Name";
+    gotoxy(startCol + 70, startRow);
+    cout << "Number Of";
+    gotoxy(startCol + 70, startRow + 1);
+    cout << "Credits";
+    gotoxy(startCol + 85, startRow);
+    cout << "Course Time";
+    gotoxy(startCol + 85, curRow);
+    cout << "Start:",
+    gotoxy(startCol + 85, curRow + 1);
+    cout << "End:";
+    gotoxy(startCol + 85, curRow + 2);
+    cout << "Session 1: " << "(MON S1) ";
+    gotoxy(startCol + 85, curRow + 3);
+    cout << "Session 2: " << "(MON S1) ";
+
+    Course *New = new Course;
+
+    gotoxy(startCol, curRow);
+    getline(cin, New->Info->CourseID);
+    gotoxy(startCol + 15, curRow);
+    getline(cin, New->Info->CourseName);
+    gotoxy(startCol + 45, curRow);
+    getline(cin, New->Info->LecturerName);
+    gotoxy(startCol + 70, curRow);
+    cin >> New->Info->NumOfCredits;
+    gotoxy(startCol + 85, curRow);
+    cout << "Start:"; New->Info->StartDate.InputDate();
+    gotoxy(startCol + 85, curRow + 1);
+    cout << "End:"; New->Info->EndDate.InputDate();
+    gotoxy(startCol + 85, curRow + 2);
+    cout << "Session 1: " << "(MON S1) ", New->Info->FirstS.Cin();
+    gotoxy(startCol + 85, curRow + 3);
+    cout << "Session 2: " << "(MON S1) ", New->Info->SecondS.Cin();
     cin.get();
+
+    gotoxy(startCol + 40, curRow + 7);
+    cout << "Add a new course successfully";
+    gotoxy(startCol + 40, curRow + 9);
+    system("pause");
 
     AddANewCourse(AllCourse, New);
 
