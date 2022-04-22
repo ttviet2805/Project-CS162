@@ -44,3 +44,5 @@ void DeleteAClass(Class *&Head);
 void DeleteAllClass(Class *&Head);
 void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass);
 Class* findClassByID(Class* AllClass, string ClassName);
+
+void SaveIntoAllClassFile(Class* curClass, string Path);

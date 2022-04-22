@@ -17,12 +17,14 @@ void Class::SaveAClassData(string path)
     ofstream fo;
     fo.open(path + ClassName + "/Course.txt");
 
+//    cout << "here";
     CourseOfClass *curCourse = Courses;
     while (curCourse)
     {
         fo << curCourse->_Course->Info->CourseID << '\n';
         curCourse = curCourse->Next;
     }
+//    cout << "Here2";
 
     fo.close();
 }
@@ -192,7 +194,7 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
     fin.open(Path);
 
     if(!fin.is_open()) {
-        cout << "Can not find the CSV File\n";
+//        cout << "Can not find the CSV File\n";
         fin.close();
         return;
     }

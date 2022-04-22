@@ -269,6 +269,22 @@ void createANewSchoolYear() {
         gotoxy(40, startCol + 10);
         cout << "Create A New School Year Successfully";
 
+        string schoolYearPath = "";
+        ifstream fin;
+        fin.open("Savefile/Path/SchoolYearPath.txt");
+        getline(fin, schoolYearPath);
+        fin.close();
+
+        Student* AllStudent = nullptr;
+        LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+        Course* AllCourse = nullptr;
+        LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
+        Class* AllClass = nullptr;
+        LoadLastClassData(AllClass, schoolYearPath, AllStudent, AllCourse);
+
+        SaveIntoAllClassFile(AllClass, "Savefile/Class/AllClassInfo.txt");
+
         ofstream fout("Savefile/SchoolYear/SchoolYearInfo.txt");
         fout << newSchoolYear->schoolYearName << '\n';
         fout << newSchoolYear->startDate.Day << ' ' << newSchoolYear->startDate.Month << ' ' << newSchoolYear->startDate.Year << '\n';
@@ -426,8 +442,11 @@ void addStudentIntoClassByStaff() {
         newUser->userAccount.username = newStudent->Info->ID;
         newUser->userAccount.password = "123456";
 
+        system("pause");
         addANewUser(AllUser, newUser);
     }
+
+    system("pause");
 
     saveUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
@@ -435,6 +454,7 @@ void addStudentIntoClassByStaff() {
     AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
 
     system("pause");
+
     gotoxy(40, startRow + numStu * 2 + 2);
     cout << "Add new students successfully";
     gotoxy(40, startRow + numStu * 2 + 4);
@@ -537,7 +557,7 @@ void staffModifyCourse(Course* &curCourse) {
     clrscr();
     ShowCur(1);
     changeTextColor(11);
-    Button profileButton = Button(19, 5, 80, 3, "Modify Course");
+    Button profileButton = Button(19, 5, 80, 3, "Modify Current Course");
     profileButton.drawRectangleWithText();
 
     string schoolYearPath = "";
@@ -548,38 +568,69 @@ void staffModifyCourse(Course* &curCourse) {
 
     Student* AllStudent = nullptr;
     LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+    Course* AllCourse = nullptr;
+    LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
 
-    const int startRow = 10;
-    const int startCol = 40;
+    Course* tmpCourse = AllCourse;
+    while(tmpCourse) {
+        if(tmpCourse->Info->CourseID == curCourse->Info->CourseID) {
+            break;
+        }
+        tmpCourse = tmpCourse->Next;
+    }
 
-    Course *New = new Course;
-    char Name[] = "Name: ", ID[] = "ID: ", Lecturer[] = "Lecturer: ", Credit[] = "Number of Credits: ", Start[] = "Start day: ", End[] = "End day: ",
-                    Ses1[] = "Session 1: ", Ses2[] = "Session 2: ";
-
+    const int startRow = 11, startCol = 4;
+    int curRow = startRow + 2;
     gotoxy(startCol, startRow);
-    cout << Name; getline(cin, curCourse->Info->CourseName);
-    gotoxy(startCol, startRow + 1);
-    cout << ID; getline(cin, curCourse->Info->CourseID);
-    gotoxy(startCol, startRow + 2);
-    cout << Lecturer; getline(cin, curCourse->Info->LecturerName);
-    gotoxy(startCol, startRow + 3);
-    cout << Credit; cin >> curCourse->Info->NumOfCredits;
-    gotoxy(startCol, startRow + 4);
-    cout << Start; curCourse->Info->StartDate.InputDate();
-    gotoxy(startCol, startRow + 5);
-    cout << End; curCourse->Info->EndDate.InputDate();
-    gotoxy(startCol, startRow + 6);
-    cout << Ses1 << " (MON S1) ", curCourse->Info->FirstS.Cin();
-    gotoxy(startCol, startRow + 7);
-    cout << Ses2 << " (MON S1) ", curCourse->Info->SecondS.Cin();
+    cout << "Course ID";
+    gotoxy(startCol + 15, startRow);
+    cout << "Course Name";
+    gotoxy(startCol + 45, startRow);
+    cout << "Lecture Name";
+    gotoxy(startCol + 70, startRow);
+    cout << "Number Of";
+    gotoxy(startCol + 70, startRow + 1);
+    cout << "Credits";
+    gotoxy(startCol + 85, startRow);
+    cout << "Course Time";
+    gotoxy(startCol + 85, curRow);
+    cout << "Start:",
+    gotoxy(startCol + 85, curRow + 1);
+    cout << "End:";
+    gotoxy(startCol + 85, curRow + 2);
+    cout << "Session 1: " << "(MON S1) ";
+    gotoxy(startCol + 85, curRow + 3);
+    cout << "Session 2: " << "(MON S1) ";
+
+    gotoxy(startCol, curRow);
+    getline(cin, curCourse->Info->CourseID);
+    gotoxy(startCol + 15, curRow);
+    getline(cin, curCourse->Info->CourseName);
+    gotoxy(startCol + 45, curRow);
+    getline(cin, curCourse->Info->LecturerName);
+    gotoxy(startCol + 70, curRow);
+    cin >> curCourse->Info->NumOfCredits;
+    gotoxy(startCol + 85, curRow);
+    cout << "Start:"; curCourse->Info->StartDate.InputDate();
+    gotoxy(startCol + 85, curRow + 1);
+    cout << "End:"; curCourse->Info->EndDate.InputDate();
+    gotoxy(startCol + 85, curRow + 2);
+    cout << "Session 1: " << "(MON S1) ", curCourse->Info->FirstS.Cin();
+    gotoxy(startCol + 85, curRow + 3);
+    cout << "Session 2: " << "(MON S1) ", curCourse->Info->SecondS.Cin();
     cin.get();
 
-    gotoxy(startCol, startRow + 9);
-    cout << "Modify Course Successful";
-    gotoxy(startCol, startRow + 11);
-    system("pause");
+    if(tmpCourse) {
+        Course* nextCourse = tmpCourse->Next;
+        *tmpCourse = *curCourse;
+        tmpCourse->Next = nextCourse;
+    }
 
-    curCourse->SaveCoursesData(schoolYearPath, "/AllCourseInfo.txt");
+    gotoxy(40, startRow + 9);
+    cout << "Modify Course Successful";
+    gotoxy(40, startRow + 11);
+
+    AllCourse->SaveCoursesData(schoolYearPath, "/AllCourseInfo.txt");
 }
 
 void staffDeleteCourse(Course* &curCourse) {
@@ -751,8 +802,6 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
     cout << "Enter number students: "; cin >> numStu;
     cin.get();
 
-    CourseScoreBoard* curScore = curCourse->Scoreboard;
-
     for(int i = 1; i <= numStu; i++) {
         cout << "Student " << i << '\n';
         cout << "ID: ";
@@ -773,31 +822,41 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
         cout << "Other Score: "; cin >> curStudentScore->Other;
         cin.get();
 
-        CourseScoreBoard* tmpScore = curScore;
-        if(tmpScore->Student->ID == tmpID) {
-            tmpScore->UpdateScore(curStudentScore);
+        CourseScoreBoard* tmpScore = curCourse->Scoreboard;
+        if(!tmpScore) {
+            CourseScoreBoard* New = new CourseScoreBoard;
+            New->Student = curStudent->Info;
+            New->Score = curStudentScore;
+            New->Next = nullptr;
+            curCourse->Scoreboard = New;
         }
         else {
-            while(tmpScore && tmpScore->Next && tmpScore->Next->Student->ID != tmpID) {
-                tmpScore = tmpScore->Next;
-            }
-
-            if(!tmpScore->Next) {
-                CourseScoreBoard* New = new CourseScoreBoard;
-                New->Student = curStudent->Info;
-                New->Score = curStudentScore;
-                New->Next = tmpScore->Next;
-                tmpScore->Next = New;
+            if(tmpScore->Student->ID == tmpID) {
+                tmpScore->UpdateScore(curStudentScore);
             }
             else {
-                tmpScore->Next->UpdateScore(curStudentScore);
+                while(tmpScore && tmpScore->Next && tmpScore->Next->Student->ID != tmpID) {
+                    tmpScore = tmpScore->Next;
+                }
+
+                if(!tmpScore->Next) {
+                    CourseScoreBoard* New = new CourseScoreBoard;
+                    New->Student = curStudent->Info;
+                    New->Score = curStudentScore;
+                    New->Next = tmpScore->Next;
+                    tmpScore->Next = New;
+                }
+                else {
+                    tmpScore->Next->UpdateScore(curStudentScore);
+                }
             }
         }
 
         cout << '\n';
     }
-
-//    CourseScoreBoard* tmpScore = curScore;
+//
+//    cout << endl;
+//    CourseScoreBoard* tmpScore = curCourse->Scoreboard;
 //    while(tmpScore) {
 //        cout << tmpScore->Score->Final << ' ' << tmpScore->Student->ID << endl;
 //        tmpScore = tmpScore->Next;

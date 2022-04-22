@@ -63,6 +63,28 @@ void schoolYearInformationFuntion() {
     ShowSchoolYearInfo();
 }
 
+void loadOldClassFunction() {
+    clrscr();
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+    Course* AllCourse = nullptr;
+    LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
+    Class* AllClass = nullptr;
+    LoadLastClassData(AllClass, "Savefile/", AllStudent, AllCourse);
+
+    AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
+
+    loadingFunction(45, 24);
+}
+
 void IntoClass(Class* curClass, string curSchoolYear) {
     ShowCur(0);
     clrscr();
@@ -470,8 +492,9 @@ void listOfClassFunction() {
 void createClassFunction() {
     const int startRow = 11;
     const int startCol = 48;
-    const int numButton = 4;
+    const int numButton = 5;
     string createClass = "Create A New Class";
+    string loadOldClass = "Load Old Classes";
     string addStudentIntoClass = "Add Students Into Class";
     string fromCSV = "Add Students Into Class From CSV File";
     string BackButton = "Back";
@@ -486,10 +509,12 @@ void createClassFunction() {
         gotoxy(startCol, startRow);
         cout << createClass;
         gotoxy(startCol, startRow + 1);
-        cout << addStudentIntoClass;
+        cout << loadOldClass;
         gotoxy(startCol, startRow + 2);
-        cout << fromCSV;
+        cout << addStudentIntoClass;
         gotoxy(startCol, startRow + 3);
+        cout << fromCSV;
+        gotoxy(startCol, startRow + 4);
         cout << BackButton;
 
         int curCol = 1;
@@ -512,15 +537,20 @@ void createClassFunction() {
 
                 case 2:
                     isEnter = true;
-                    addStudentIntoClassByStaff();
+                    loadOldClassFunction();
                     break;
 
                 case 3:
+                    isEnter = true;
+                    addStudentIntoClassByStaff();
+                    break;
+
+                case 4:
                     loadStudentFromCSV();
                     isEnter = true;
                     break;
 
-                case 4:
+                case 5:
                     isEnter = true;
                     return;
                     break;
@@ -1005,6 +1035,7 @@ void logOutStaffFunction(Login &loginSystem) {
 }
 
 void staffSystemProcess() {
+//    manageStudentFunction();
 //    manageCourseFunction();
 //    exit(0);
     changeTextColor(8);
