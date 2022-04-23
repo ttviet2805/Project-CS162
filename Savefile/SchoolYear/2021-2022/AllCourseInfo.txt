@@ -1,16 +1,152 @@
-Welcome to CS
-CS162
-Dinh Ba Tien
+General Physic
+GP2
+Nguyen Huu Nha
 4
 1 1 1
 2 2 2
 MON S1
 TUE S2
-General Physics II
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+General Physic
 GP2
 Nguyen Huu Nha
 4
-1 0 0
-1 1974882624 0
-2 2
-MON S1,TUE,S2CAL,Calculus,Nguyen Huu Anh,4,1,1,1,2,2,2,TUE,S3,WED,S4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+General Physic
+GP2
+Nguyen Huu Nha
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+Laws
+LAW
+Nguyen Ngoc Phuong Hong
+4
+1 1 1
+2 2 2
+MON S4
+TUE S4
+General Physic
+GP2
+Nguyen Huu Nha
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+Laws
+LAW
+Nguyen Ngoc Phuong Hong
+4
+1 1 1
+2 2 2
+MON S4
+TUE S4
+Kinh te chinh tri
+KTCT
+Ngo Tuan Phuong
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+General Physic
+GP2
+Nguyen Huu Nha
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+Laws
+LAW
+Nguyen Ngoc Phuong Hong
+4
+1 1 1
+2 2 2
+MON S4
+TUE S4
+Kinh te chinh tri
+KTCT
+Ngo Tuan Phuong
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+General Physic
+GP2
+Nguyen Huu Nha
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
+Calculus
+CAL
+Nguyen Huu Awnh
+4
+1 1 1
+2 2 2
+TUE S3
+WED S4
+Laws
+LAW
+Nguyen Ngoc Phuong Hong
+4
+1 1 1
+2 2 2
+MON S4
+TUE S4
+Kinh te chinh tri
+KTCT
+Ngo Tuan Phuong
+4
+1 1 1
+2 2 2
+MON S1
+TUE S2
