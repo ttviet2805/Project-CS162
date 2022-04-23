@@ -1,43 +1,11 @@
-General Physic
+General Physics II
 GP2
 Nguyen Huu Nha
 4
 1 1 1
 2 2 2
-MON S1
-TUE S2
-Calculus
-CAL
-Nguyen Huu Awnh
-4
-1 1 1
-2 2 2
-TUE S3
-WED S4
-General Physic
-GP2
-Nguyen Huu Nha
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-Calculus
-CAL
-Nguyen Huu Awnh
-4
-1 1 1
-2 2 2
-TUE S3
-WED S4
-General Physic
-GP2
-Nguyen Huu Nha
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
+WED S3
+THU S3
 Calculus
 CAL
 Nguyen Huu Awnh
@@ -54,99 +22,11 @@ Nguyen Ngoc Phuong Hong
 2 2 2
 MON S4
 TUE S4
-General Physic
-GP2
-Nguyen Huu Nha
+Introduction to CS
+CS161
+Dinh Ba Tien
 4
 1 1 1
 2 2 2
-MON S1
-TUE S2
-Calculus
-CAL
-Nguyen Huu Awnh
-4
-1 1 1
-2 2 2
-TUE S3
-WED S4
-Laws
-LAW
-Nguyen Ngoc Phuong Hong
-4
-1 1 1
-2 2 2
-MON S4
-TUE S4
-Kinh te chinh tri
-KTCT
-Ngo Tuan Phuong
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-General Physic
-GP2
-Nguyen Huu Nha
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-Calculus
-CAL
-Nguyen Huu Awnh
-4
-1 1 1
-2 2 2
-TUE S3
-WED S4
-Laws
-LAW
-Nguyen Ngoc Phuong Hong
-4
-1 1 1
-2 2 2
-MON S4
-TUE S4
-Kinh te chinh tri
-KTCT
-Ngo Tuan Phuong
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-General Physic
-GP2
-Nguyen Huu Nha
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-Calculus
-CAL
-Nguyen Huu Awnh
-4
-1 1 1
-2 2 2
-TUE S3
-WED S4
-Laws
-LAW
-Nguyen Ngoc Phuong Hong
-4
-1 1 1
-2 2 2
-MON S4
-TUE S4
-Kinh te chinh tri
-KTCT
-Ngo Tuan Phuong
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
+TUE S1
+SAT S1

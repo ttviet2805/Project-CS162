@@ -1,3 +1,52 @@
+19125001
+Nguyen Trung Phuc
+Anh
+Male
+1 1 1
+1
+19CTT1
+19125002
+Vo Hong
+Phuc
+Male
+1 1 1
+2
+19CTT1
+19125003
+Tran Tho
+Manh
+Male
+1 1 1
+3
+19CTT1
+19126001
+Nguyen Quang
+Thang
+Male
+1 1 1
+4
+19CTT2
+19126002
+Le Hoang
+Lam
+Male
+1 1 1
+5
+19CTT2
+20125001
+Dao Quang
+Dung
+Male
+20 12 2002
+8
+20CTT1
+20125002
+Do Quoc
+Trung
+Male
+1 1 1
+9
+20CTT1
 21125027
 Hoang Nghia
 Viet
@@ -20,23 +69,23 @@ Male
 123456
 21CTT1
 21125029
-Tran
+Tran Tuan
 Viet
 Male
 28 5 2003
 187896787
 21CTT1
-21125029
-Tran Tuan
-Viet
+20126001
+Tran Trung
+Hieu
 Male
-28 5 2003
-123
-21CTT1
-21125076
-Hoang Thien
-Duc
+25 10 2003
+10
+20CTT2
+21126002
+Pham Ngoc
+Duong
 Male
-1 1 2003
-12
-21CTT1
+1 1 1
+11
+20CTT2
