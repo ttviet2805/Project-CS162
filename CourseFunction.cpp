@@ -21,6 +21,7 @@ void Session::Init()
 
 void Session::Cout()
 {
+    Init();
     cout << Day << " (" + Ses + ") " << Hour << ':' << Mins << '\n';
 }
 

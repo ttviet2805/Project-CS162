@@ -49,6 +49,8 @@ void CreateAClass();
 void AddANewClass(Class* &classHead, Class* newClass);
 void addStudentIntoClassByStaff();
 
+void staffAddCourseByCSV();
+
 void createANewSchoolYear();
 
 void staffAddCourse();

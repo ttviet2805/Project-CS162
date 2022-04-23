@@ -287,11 +287,13 @@ void viewClassScoreboard(Class* curClass) {
             totalScore = totalScore * 1.0 / cnt;
 
         gotoxy(startCol + 60, startRow + tmpcnt);
-        cout << totalScore;
+        if(ttt && ttt->ScoreBoard && ttt->ScoreBoard->Score->isFinish())
+            cout << totalScore;
 
         gotoxy(startCol + 75, startRow + tmpcnt);
         float res = totalScore * 1.0 / 10 * 4;
-        cout << fixed << setprecision(2) << res;
+        if(ttt && ttt->ScoreBoard && ttt->ScoreBoard->Score->isFinish())
+            cout << fixed << setprecision(2) << res;
 
         ++tmpcnt;
         curStu = curStu->Next;
@@ -765,6 +767,7 @@ void addCourseFunction() {
                     break;
 
                 case 2:
+                    staffAddCourseByCSV();
                     isEnter = true;
                     break;
 
@@ -1036,8 +1039,8 @@ void logOutStaffFunction(Login &loginSystem) {
 
 void staffSystemProcess() {
 //    manageStudentFunction();
-//    manageCourseFunction();
-//    exit(0);
+    manageCourseFunction();
+    exit(0);
     changeTextColor(8);
 
     Login loginSystem;

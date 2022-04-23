@@ -442,11 +442,11 @@ void addStudentIntoClassByStaff() {
         newUser->userAccount.username = newStudent->Info->ID;
         newUser->userAccount.password = "123456";
 
-        system("pause");
+//        system("pause");
         addANewUser(AllUser, newUser);
     }
 
-    system("pause");
+//    system("pause");
 
     saveUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
@@ -537,6 +537,8 @@ void staffAddCourse() {
     cout << "Session 1: " << "(MON S1) ", New->Info->FirstS.Cin();
     gotoxy(startCol + 85, curRow + 3);
     cout << "Session 2: " << "(MON S1) ", New->Info->SecondS.Cin();
+    New->Info->FirstS.Init();
+    New->Info->SecondS.Init();
     cin.get();
 
     gotoxy(startCol + 40, curRow + 7);
@@ -551,6 +553,87 @@ void staffAddCourse() {
     curClass->AddACourseIntoAClass(New);
 
     curClass->SaveAClassData(schoolYearPath + "Class/");
+}
+
+void staffAddCourseByCSV() {
+    clrscr();
+    ShowCur(1);
+    changeTextColor(11);
+    Button profileButton = Button(19, 5, 80, 3, "Add Course By CSV");
+    profileButton.drawRectangleWithText();
+
+    string schoolYearPath = "";
+    ifstream fin;
+    fin.open("Savefile/Path/SchoolYearPath.txt");
+    getline(fin, schoolYearPath);
+    fin.close();
+
+    Student* AllStudent = nullptr;
+    LoadLastStudentData(AllStudent, "Savefile/Student/", "AllStudentInfo.txt");
+    Course* AllCourse = nullptr;
+    LoadLastCoursesData(AllCourse, schoolYearPath, "AllCourseInfo.txt", AllStudent);
+
+    Class* AllClass = nullptr;
+    LoadLastClassData(AllClass, schoolYearPath, AllStudent, AllCourse);
+
+    string curClassName = "";
+    gotoxy(40, 9);
+    cout << "Course of Class: ";
+    getline(cin, curClassName);
+
+    Class* curClass = findClassByID(AllClass, curClassName);
+    if(!curClass) {
+        gotoxy(40, 9 + 2);
+        cout << "Our system can not find this class, try again!!!";
+        Sleep(3000);
+        staffAddCourse();
+        return;
+    }
+
+    fin.open(schoolYearPath + "Class/" + curClass->ClassName + "/Courses.csv");
+
+    string tmpID;
+    while(!fin.eof() && getline(fin, tmpID, ',')) {
+        Course *New = new Course;
+
+        New->Info->CourseID = tmpID;
+        getline(fin, New->Info->CourseName, ',');
+        getline(fin, New->Info->LecturerName, ',');
+        fin >> New->Info->NumOfCredits;
+        char trash;
+        fin >> trash;
+        fin >> New->Info->StartDate.Day;
+        fin >> trash;
+        New->Info->StartDate.Month;
+        fin >> trash;
+        New->Info->StartDate.Year;
+        fin >> trash;
+        fin >> New->Info->EndDate.Day;
+        fin >> trash;
+        New->Info->EndDate.Month;
+        fin >> trash;
+        New->Info->EndDate.Year;
+        fin >> trash;
+        getline(fin, New->Info->FirstS.Day, ',');
+        getline(fin, New->Info->FirstS.Ses, ',');
+        getline(fin, New->Info->SecondS.Day, ',');
+        getline(fin, New->Info->SecondS.Ses, '\n');
+        fin.get();
+
+        New->Info->FirstS.Init();
+        New->Info->SecondS.Init();
+
+        AddANewCourse(AllCourse, New);
+        curClass->AddACourseIntoAClass(New);
+    }
+
+    fin.close();
+
+    AllCourse->SaveCoursesData(schoolYearPath, "/AllCourseInfo.txt");
+
+    curClass->SaveAClassData(schoolYearPath + "Class/");
+
+    loadingFunction(45, 24);
 }
 
 void staffModifyCourse(Course* &curCourse) {
@@ -651,6 +734,8 @@ void staffDeleteCourse(Course* &curCourse) {
 
     clrscr();
 
+    string curCourseName = curCourse->Info->CourseName;
+
     ShowCur(1);
     gotoxy(45, 10);
     cout << "Are you sure to delete this course?";
@@ -689,17 +774,19 @@ void staffDeleteCourse(Course* &curCourse) {
             tmpClass = tmpClass->Next;
         }
 
-        ofstream fout(schoolYearPath + "CourseScoreBoard/" + curCourse->Info->CourseName + ".txt");
+
+        ofstream fout(schoolYearPath + "CourseScoreBoard/" + curCourseName + ".txt");
         fout.close();
 
         AllClass->SaveClassData(schoolYearPath + "Class/",schoolYearPath + "Class/" + "AllClassInfo.txt");
         AllCourse->SaveCoursesData(schoolYearPath, "/AllCourseInfo.txt");
-        AllStudent->SaveStudentsData(schoolYearPath + "Student/", "AllStudentInfo.txt");
 
         gotoxy(45, 15);
         system("pause");
         return;
     }
+
+    system("pause");
 
     gotoxy(45, 13);
     cout << "You have not delete this course";
@@ -809,11 +896,12 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
 
         Student* curStudent = AllStudent->FindStudentByID(tmpID);
         if(!curStudent) {
-            cout << "Our system does not have this student's data" << '\n';
-            cout << "Try Again";
-            Sleep(3000);
-            staffImportScoreBoardByManual(curCourse);
-            return;
+            cout << "Our system does not have this student's data: " << tmpID << '\n';
+            continue;
+//            cout << "Try Again";
+//            Sleep(3000);
+//            staffImportScoreBoardByManual(curCourse);
+//            return;
         }
 
         CourseScore* curStudentScore = new CourseScore;
@@ -863,6 +951,7 @@ void staffImportScoreBoardByManual(Course* &curCourse) {
 //    }
 
     curCourse->SaveCourseScoreBoard(schoolYearPath, "CourseScoreBoard/" + curCourse->Info->CourseName + ".txt");
+    cout << endl;
     cout << "Import Student's Score successful" << endl;
     cout << endl;
     system("pause");
@@ -895,11 +984,11 @@ void staffImportScoreBoardByCSV(Course* curCourse) {
     while(!fin.eof() && getline(fin, tmpID, ',')) {
         Student* curStudent = AllStudent->FindStudentByID(tmpID);
         if(!curStudent) {
-            cout << "Our system does not have this student's data" << '\n';
-            cout << "Try Again";
-            Sleep(3000);
-            staffImportScoreBoardByCSV(curCourse);
-            return;
+            cout << "Our system does not have this student's data: " << tmpID << '\n';
+//            cout << "Try Again";
+//            Sleep(3000);
+//            staffImportScoreBoardByCSV(curCourse);
+            continue;
         }
 
         CourseScore* curStudentScore = new CourseScore;

@@ -8,8 +8,8 @@ using namespace std;
 
 int main()
 {
-//    staffSystemProcess();
-//    exit(0);
+    staffSystemProcess();
+    exit(0);
     SystemProcess();
 
     return 0;

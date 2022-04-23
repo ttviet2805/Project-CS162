@@ -1,32 +1,16 @@
-General Physics 2
-2
-Nguyen Huu Nha
-4
-1 1 1
-2 2 2
-MON S1
-TUE S2
-Introduction to CS
+Welcome to CS
 CS162
 Dinh Ba Tien
 4
-1 1 2022
-2 2 2022
-MON S1
-TUE S2
-General Physic
-GP2
-Nguyen Huu Nha
-4
-1 2 2003
-1 1 2004
-MON S2
-TUE S3
-Introduction to Laws
-LAWS1
-Nguyen Ngoc Phuong Hong
-4
 1 1 1
 2 2 2
 MON S1
 TUE S2
+General Physics II
+GP2
+Nguyen Huu Nha
+4
+1 0 0
+1 1974882624 0
+2 2
+MON S1,TUE,S2CAL,Calculus,Nguyen Huu Anh,4,1,1,1,2,2,2,TUE,S3,WED,S4

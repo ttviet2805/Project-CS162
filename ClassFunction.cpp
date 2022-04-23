@@ -17,14 +17,13 @@ void Class::SaveAClassData(string path)
     ofstream fo;
     fo.open(path + ClassName + "/Course.txt");
 
-//    cout << "here";
     CourseOfClass *curCourse = Courses;
     while (curCourse)
     {
-        fo << curCourse->_Course->Info->CourseID << '\n';
+        if(curCourse->_Course)
+            fo << curCourse->_Course->Info->CourseID << '\n';
         curCourse = curCourse->Next;
     }
-//    cout << "Here2";
 
     fo.close();
 }
@@ -190,14 +189,19 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
     getline(fin, schoolYearPath);
     fin.close();
 
-    string Path = schoolYearPath + "Class/" + curClass->ClassName + "/Student.csv";
+    string Path = schoolYearPath + "Class/" + curClass->ClassName + '/' + curClass->ClassName + ".csv";
     fin.open(Path);
+//    cout << Path << endl;
+    system("pause");
 
     if(!fin.is_open()) {
 //        cout << "Can not find the CSV File\n";
         fin.close();
         return;
     }
+
+    Login* AllUser = nullptr;
+    loadUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
     StudentInClass* Dummy = new StudentInClass;
     StudentInClass *CurStudentInClass = curClass->Students;
@@ -210,6 +214,7 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
 
     string TempID;
     while(!fin.eof() && getline(fin, TempID, ',')) {
+//            cout << TempID << endl;
         cur->Next = new Student;
         cur->Next->Info->ID = TempID;
         getline(fin, cur->Next->Info->FirstName, ',');
@@ -227,14 +232,24 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
 
         getline(fin, cur->Next->Info->SocialID, ',');
         getline(fin, cur->Next->Info->StudentClass, '\n');
+//        cin.get();
 
         cur->Next->Info->Dob.changeDate(day, month, year);
 
         CurStudentInClass->Next = new StudentInClass({cur, nullptr});
         CurStudentInClass = CurStudentInClass->Next;
 
+        Login* newUser = new Login;
+        newUser->userAccount.username = cur->Next->Info->ID;
+        newUser->userAccount.password = "123456";
+
+//        system("pause");
+        addANewUser(AllUser, newUser);
+
         cur = cur->Next;
     }
+
+    saveUserAccount(AllUser, "Savefile/User/StudentUser.txt");
 
     CurStudentInClass = Dummy->Next;
     Student* newStudentList = DummyStudent->Next;
@@ -262,8 +277,8 @@ void ImportStudentInClassFromCSVFile(Student* &StudentHead, Class* curClass) {
 
     StudentHead->SaveStudentsData(schoolYearPath + "Student/", "AllStudentInfo.txt");
 //    Xoa trang file CSV
-    ofstream fo(Path);
-    fo.close();
+//    ofstream fo(Path);
+//    fo.close();
 }
 
 void AddaClass(Class* &classHead, Class* newClass) {
@@ -281,7 +296,15 @@ void AddaClass(Class* &classHead, Class* newClass) {
 void Class::RemoveACourse(Course* delCourse) {
     CourseOfClass* tmp = Courses;
 
-    while(tmp && tmp->Next && tmp->Next->_Course != delCourse) {
+    if(!tmp) return;
+
+    if(tmp->_Course && tmp->_Course->Info->CourseID == delCourse->Info->CourseID) {
+        Courses = Courses->Next;
+        delete delCourse;
+        return;
+    }
+
+    while(tmp && tmp->Next && tmp->Next->_Course && tmp->Next->_Course->Info->CourseID != delCourse->Info->CourseID) {
         tmp = tmp = tmp->Next;
     }
 
