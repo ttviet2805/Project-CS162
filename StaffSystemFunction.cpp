@@ -936,7 +936,7 @@ void manageCourseFunction() {
     string courseRegInfo = "Course Registration Infomation";
     string AddCourse = "Add Courses";
     string ListOfClass = "List Of Courses";
-    string BackButton = "Back";
+    string BackButton = "Exit";
 
     while(1) {
         ShowCur(0);

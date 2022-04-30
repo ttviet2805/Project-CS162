@@ -98,6 +98,13 @@ void createANewSemester() {
     cout << "Year: ";
     cin >> newSemester->startDate.Year;
 
+    if (!isValidDate(newSemester->startDate)){
+        gotoxy(40, startCol + 5);
+        cout << "Invalid date, enter 0 to return to main menu: ";
+        int k;
+        cin >> k;
+        return;
+    }
     gotoxy(40, startCol + 5);
     cout << "Enter the end date Information\n";
     gotoxy(40, startCol + 6);
@@ -111,6 +118,13 @@ void createANewSemester() {
     cin >> newSemester->endDate.Year;
 
     cin.get();
+    if (!isValidDate(newSemester->endDate)){
+        gotoxy(40, startCol + 9);
+        cout << "Invalid date, enter 0 to return to main menu: ";
+        int k;
+        cin >> k;
+        return;
+    }
 
     SchoolYear* curSchoolYear = loadSchoolYear();
 

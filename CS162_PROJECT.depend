@@ -176,3 +176,133 @@
 1650299369 source:d:\hcmus semester 2\computer science\task\cs162_project\semesterfunction.cpp
 	"SemesterHeader.h"
 
+1651287862 source:d:\c++ projects\project-cs162\buttonfunction.cpp
+	"ButtonHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\buttonheader.h
+	<iostream>
+	"ConsoleSolve.h"
+
+1651287862 d:\c++ projects\project-cs162\consolesolve.h
+	<iostream>
+	<windows.h>
+	<conio.h>
+
+1651287862 source:d:\c++ projects\project-cs162\classfunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"ClassHeader.h"
+	"StudentAndCourseHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\classheader.h
+	<iostream>
+	"StudentAndCourseHeader.h"
+	"LoginHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\studentandcourseheader.h
+	<iostream>
+	"DateHeader.h"
+
+1651288037 d:\c++ projects\project-cs162\dateheader.h
+	<iostream>
+
+1651287862 d:\c++ projects\project-cs162\loginheader.h
+	<iostream>
+	<fstream>
+	<string>
+	<cstring>
+
+1651287862 source:d:\c++ projects\project-cs162\consolesolve.cpp
+	"ConsoleSolve.h"
+
+1651287862 source:d:\c++ projects\project-cs162\coursefunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<unistd.h>
+	<windows.h>
+	"DateHeader.h"
+	"StudentAndCourseHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\loginfunction.cpp
+	<conio.h>
+	"LoginHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\main.cpp
+	<iostream>
+	<fstream>
+	"StudentAndCourseHeader.h"
+	"SystemProcessHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\systemprocessheader.h
+	"StudentSystemHeader.h"
+	"StaffSystemHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\studentsystemheader.h
+	<iostream>
+	<fstream>
+	"MouseHeader.h"
+	"LoginHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+	"StaffHeader.h"
+	"SystemProcessHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\mouseheader.h
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+
+1651287862 d:\c++ projects\project-cs162\staffheader.h
+	<fstream>
+	<iostream>
+	<direct.h>
+	"DateHeader.h"
+	"ClassHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"ButtonHeader.h"
+	"SemesterHeader.h"
+	"LoginHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\semesterheader.h
+	<bits/stdc++.h>
+	"ConsoleSolve.h"
+	"StaffHeader.h"
+	"StudentAndCourseHeader.h"
+	"ClassHeader.h"
+
+1651287862 d:\c++ projects\project-cs162\staffsystemheader.h
+	<fstream>
+	<iostream>
+	"StaffHeader.h"
+	"StudentAndCourseHeader.h"
+	"ConsoleSolve.h"
+	"MouseHeader.h"
+	"StaffSystemHeader.h"
+	"LoginHeader.h"
+	"SystemProcessHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\mousefunction.cpp
+	"MouseHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\stafffunction.cpp
+	"StaffHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\studentfunction.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"StudentAndCourseHeader.h"
+	"DateHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\studentsystemfunction.cpp
+	"StudentSystemHeader.h"
+
+1651287862 source:d:\c++ projects\project-cs162\systemprocessfunction.cpp
+	"SystemProcessHeader.h"
+

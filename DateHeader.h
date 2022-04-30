@@ -13,4 +13,5 @@ class Date {
         void changeDate(int D, int M, int Y);
 };
 
-
+int daysInMonth(int month, int year);
+bool isValidDate(Date date);
